@@ -1,1 +1,1 @@
-# Tiple-Roman-Domination-in-graphs
+# Triple-Roman-Domination-in-graphs
