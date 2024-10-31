@@ -1,7 +1,5 @@
 #include "GeneticAlgorithm.hpp"
  
-GeneticAlgorithm::~GeneticAlgorithm() {}
- 
 std::vector<Chromosome> GeneticAlgorithm::getPopulation() { return this->population; }
 
 size_t GeneticAlgorithm::getPopulationSize() { return this->populationSize; }
@@ -10,9 +8,15 @@ size_t GeneticAlgorithm::getGenesSize() { return this->genesSize; }
 
 size_t GeneticAlgorithm::getGenerations() { return this->generations; }
 
+double GeneticAlgorithm::getMutationRate() { return this->mutationRate; }
+
+double GeneticAlgorithm::getElitismRate() { return this->elitismRate; }
+
 Graph GeneticAlgorithm::getGraph() { return this->graph; }
 
 std::vector<int> GeneticAlgorithm::getBestSolution() { return this->bestSolution; } 
+
+
 /**
  * @brief Creates a population of chromosomes with a specific number of genes.
  * 
@@ -206,6 +210,45 @@ Chromosome GeneticAlgorithm::crossOver(Chromosome& chromosome1, Chromosome& chro
 }
 
 
+Chromosome GeneticAlgorithm::mutation(Chromosome& chromosome) {
+    std::random_device randomNumber;
+    std::mt19937 seed(randomNumber()); 
+    std::uniform_real_distribution<> gap(0.0, 1.0);
+    
+	double probability = 0.0;
+	
+    for (size_t i = 0; i < chromosome.genes.size(); ++i) {
+        probability = gap(seed);
+        if (probability <= this->mutationRate) {
+        	if (chromosome.genes[i] == 0)
+        		chromosome.genes[i] = 2;
+        		
+        	else if (chromosome.genes[i] == 3)
+        		chromosome.genes[i] = 2;
+        	
+        	feasibilityCheck(chromosome);
+        }
+
+    }
+
+    return  chromosome;
+}
+
+
+std::vector<Chromosome>& GeneticAlgorithm::elitism() {
+
+	Chromosome bestSolution = this->tournamentSelection(this->population);
+	this->population.clear();
+	
+	size_t iterations = this->populationSize * this->elitismRate;
+
+	for (size_t i = 0; i < iterations; ++i)
+		population.push_back(bestSolution);
+
+	return population;
+}
+
+
 /**
  * @brief Checks the feasibility of a chromosome.
  * 
@@ -275,8 +318,8 @@ Chromosome GeneticAlgorithm::feasibilityCheck(Chromosome& chromosome) {
  */
 
 std::vector<Chromosome>& GeneticAlgorithm::createNewPopulation() {
-    this->population.clear();
-
+    this->population.swap(this->elitism());
+	
     while (this->population.size() < populationSize) {
         Chromosome selected1 = this->selectionMethod(tournamentSelection);
         Chromosome selected2 = this->selectionMethod(rouletteWheelSelection);

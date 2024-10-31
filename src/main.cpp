@@ -5,11 +5,11 @@
 
 
 int main(int argc, char** argv) {
-    if (argc > 5) {
+    if (argc > 7) {
         Graph graph("graph.txt", false);
-        // graph, populationSize, genesSize, generations, heuristic, numberOfAnts, iterations
+        // graph, populationSize, genesSize, generations, heuristic, mutation rate, elitism rate, numberOfAnts, iterations, 
         TripleRomanDomination* drd = new TripleRomanDomination(graph, std::stoi(argv[1]), graph.getOrder(), std::stoi(argv[2]), std::stoi(argv[3]),
-                std::stoi(argv[4]), std::stoi(argv[5])); 
+                std::stoi(argv[4]), std::stoi(argv[5]), std::stof(argv[6]), std::stof(argv[7])); 
         std::cout << "Triple Roman Domination Number computed by Genetic Algorithm: " << drd->getGamma3rGeneticAlgorithm() << std::endl;
         std::cout << "Triple Roman Domination Number computed by ACO: " << drd->getGamma3rACO() << std::endl;
 

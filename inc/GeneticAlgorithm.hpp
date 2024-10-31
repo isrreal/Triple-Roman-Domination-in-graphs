@@ -14,6 +14,9 @@ class GeneticAlgorithm {
 	    size_t generations;
         Graph graph;
         std::vector<int> bestSolution;
+        
+        double mutationRate;
+        double elitismRate;
 
 		void createPopulation(Chromosome(*heuristic)(Graph), Graph graph);
 		
@@ -21,6 +24,10 @@ class GeneticAlgorithm {
 		
 		Chromosome crossOver(Chromosome& chromosome1, Chromosome& cromossomo2,
                 	Chromosome(*crossOverHeuristic)(Chromosome&, Chromosome&)); 
+                	
+        Chromosome mutation(Chromosome& chromosome);
+        
+        std::vector<Chromosome>& elitism();
                 
 		Chromosome feasibilityCheck(Chromosome& chromosome);
 		
@@ -33,17 +40,22 @@ class GeneticAlgorithm {
 		static Chromosome rouletteWheelSelection(std::vector<Chromosome> population); 
 		
 	public:
-		GeneticAlgorithm(Graph& graph, size_t populationSize, size_t genesSize, size_t generations):
+		GeneticAlgorithm(Graph& graph, size_t populationSize, size_t genesSize, size_t generations,
+			double mutationRate, double elitismRate):
         				populationSize(populationSize), genesSize(genesSize),
                         generations(generations), population(populationSize),
+                        mutationRate(mutationRate), elitismRate(elitismRate),
                         graph(graph) {}                 
 
-		~GeneticAlgorithm();
+		~GeneticAlgorithm() {}
+		
         Graph getGraph();
 		std::vector<Chromosome> getPopulation();     
 		size_t getPopulationSize();    
 		size_t getGenesSize();
 		size_t getGenerations();   
+		double getMutationRate();
+		double getElitismRate();
         std::vector<int> getBestSolution();		      
 
 		void run(size_t generations, Chromosome(*heuristic)(Graph));
