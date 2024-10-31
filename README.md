@@ -107,16 +107,27 @@ The content below illustrates the Roman Empire represented as a graph with **8 v
 5 7 6 7
 ```
    
-5. Run the code
-   ```bash
-   # Syntax:
-   # ./app <population_size> <generations> <chromosome_creation_heuristic> <number_of_ants> <iterations>
-   #
-   # Parameters:
-   #   population_size                - Size of the population for the Genetic Algorithm
-   #   generations                    - Number of generations to run in the Genetic Algorithm
-   #   chromosome_creation_heuristic  - Heuristic for creating chromosomes [1, 2, or 3]. Default is 1.
-   #   number_of_ants                 - Number of ants for the Ant Colony Optimization (ACO)
-   #   iterations                     - Number of iterations for the ACO
+5. Run the Code
 
-   ./app <population_size> <generations> <chromosome_creation_heuristic> <number_of_ants> <iterations>
+To execute the application, use the following syntax:
+
+```bash
+# Syntax:
+# ./app <population_size> <generations> <chromosome_creation_heuristic> <mutation_rate> <elitism_rate> <number_of_ants> <iterations>
+
+# Parameters:
+#   population_size               - Defines the size of the initial population. A larger size increases solution diversity but may increase computation time.
+#   generations                   - Number of generations (iterations) the Genetic Algorithm will run to evolve solutions.
+#   chromosome_creation_heuristic - Heuristic used for initializing chromosomes:
+#                                     1 - Basic randomized approach
+#                                     2 - Weighted by vertex degree
+#                                     3 - Weighted by neighborhood constraints
+#   mutation_rate                 - Rate at which mutation occurs, altering labels on selected vertices to introduce diversity and escape local optima.
+#   elitism_rate                  - Percentage of top-performing solutions retained in each generation, ensuring the best solutions are carried over.
+#   number_of_ants                - Number of ants used in the Ant Colony Optimization (ACO) process, influencing solution exploration and reinforcement.
+#   iterations                    - Number of iterations for the ACO phase, allowing for finer convergence in conjunction with the Genetic Algorithm.
+
+# Example:
+./app 100 200 1 0.05 0.1 50 100
+```
+
