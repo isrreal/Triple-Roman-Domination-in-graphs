@@ -52,7 +52,7 @@ void GeneticAlgorithm::createPopulation(Chromosome(*generateChromosomeHeuristic)
  * 
  * @param chromosome A pointer to the chromosome to evaluate.
  * @param fitnessHeuristic A pointer to a function that evaluates the fitness of the chromosome.
- * @return Chromosome* The chromosome with its fitness score calculated, or nullptr if no heuristic is provided.
+ * @return Chromosome The chromosome with its fitness score calculated, or nullptr if no heuristic is provided.
  */
 
 Chromosome GeneticAlgorithm::fitness(Chromosome& chromosome, Chromosome(*fitnessHeuristic)(Chromosome&) = nullptr) { 
@@ -65,13 +65,14 @@ Chromosome GeneticAlgorithm::fitness(Chromosome& chromosome, Chromosome(*fitness
 }
 
 /**
- * @brief Selects the best chromosome from the population using tournament selection.
+ * @brief Selects the chromosome from the population using tournament selection.
  * 
- * This method randomly selects chromosomes from the population, evaluates their fitness, 
- * and returns the one with the highest fitness value.
+ * This method randomly selects two chromosomes from the population, evaluates their fitness, 
+ * and choses a random number r between 0 and 1. If r < k (where k is a parameters, for example 0.75),
+ * fitter of the two parameters is selected to be a parent; otherwise, the one with the higher fitness value is selected.
  * 
  * @param population The vector of chromosomes in the current population.
- * @return Chromosome* The chromosome with the highest fitness value.
+ * @return Chromosome The chromosome with the highest or lowest fitness value.
  */
 
 Chromosome GeneticAlgorithm::tournamentSelection(std::vector<Chromosome> population) { 
@@ -97,7 +98,7 @@ Chromosome GeneticAlgorithm::tournamentSelection(std::vector<Chromosome> populat
  * This method randomly selects and returns a chromosome from the population.
  * 
  * @param population The vector of chromosomes in the current population.
- * @return Chromosome* The randomly selected chromosome.
+ * @return Chromosome The randomly selected chromosome.
  */
 
 Chromosome GeneticAlgorithm::rouletteWheelSelection(std::vector<Chromosome> population) {
@@ -132,7 +133,7 @@ Chromosome GeneticAlgorithm::rouletteWheelSelection(std::vector<Chromosome> popu
  * to prevent duplications in future selections.
  * 
  * @param selectionHeuristic A pointer to a function that implements the selection heuristic.
- * @return Chromosome* The selected chromosome, or nullptr if no valid selection is made.
+ * @return Chromosome The selected chromosome, or defualt Chromosome object if no valid selection is made.
  */
 
 Chromosome GeneticAlgorithm::selectionMethod(Chromosome(*selectionHeuristic)(std::vector<Chromosome>)) {
@@ -179,10 +180,10 @@ Chromosome GeneticAlgorithm::chooseWorstSolution(const Chromosome& chromosome1, 
  * Combines genes from two parent chromosomes to create a new chromosome with genes 
  * inherited from both parents.
  * 
- * @param chromosome1 Pointer to the first parent chromosome.
- * @param chromosome2 Pointer to the second parent chromosome.
+ * @param chromosome1 Reference to the first parent chromosome.
+ * @param chromosome2 Reference to the second parent chromosome.
  * @param crossOverHeuristic Optional pointer to a function that performs the crossover.
- * @return Chromosome* A new chromosome offspring.
+ * @return Chromosome A new chromosome offspring.
  */
 
 
@@ -267,8 +268,8 @@ std::vector<Chromosome>& GeneticAlgorithm::elitism() {
  * 
  * Adjusts genes based on the adjacency list of the graph, ensuring that constraints of Double Roman Domination are met.
  * 
- * @param chromosome A pointer to the chromosome to be checked.
- * @return Chromosome* The adjusted chromosome.
+ * @param chromosome A reference to the chromosome to be checked.
+ * @return Chromosome The adjusted chromosome.
  */
  
  
@@ -327,7 +328,7 @@ Chromosome GeneticAlgorithm::feasibilityCheck(Chromosome& chromosome) {
  * 
  *  Produces a new genetically superior population.
  * 
- * @return std::vector<Chromosome*> A new population of Chromosomes.
+ * @return std::vector<Chromosome> A new population of Chromosomes.
  */
 
 std::vector<Chromosome>& GeneticAlgorithm::createNewPopulation() {
@@ -349,8 +350,8 @@ std::vector<Chromosome>& GeneticAlgorithm::createNewPopulation() {
  * 
  * @param generations Number of generations to evolve.
  * @param heuristic Pointer to a function that generates initial Chromosomes from a graph.
- * @param graph Pointer to the graph used to generate initial solutions.
- * @return Chromosome* The best solution found after all generations.
+ * @param graph Object to the graph used to generate initial solutions.
+ * @return Chromosome The best solution found after all generations.
  */
 
 void GeneticAlgorithm::run(size_t generations, Chromosome(*heuristic)(Graph)) { 
