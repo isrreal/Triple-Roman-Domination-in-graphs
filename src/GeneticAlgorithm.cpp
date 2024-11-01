@@ -50,7 +50,7 @@ void GeneticAlgorithm::createPopulation(Chromosome(*generateChromosomeHeuristic)
  * If a fitness heuristic is provided, it is used to calculate the fitness score.
  * Otherwise, returns nullptr.
  * 
- * @param chromosome A pointer to the chromosome to evaluate.
+ * @param chromosome Reference to the chromosome to evaluate.
  * @param fitnessHeuristic A pointer to a function that evaluates the fitness of the chromosome.
  * @return Chromosome The chromosome with its fitness score calculated, or nullptr if no heuristic is provided.
  */
