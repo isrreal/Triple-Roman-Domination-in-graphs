@@ -21,7 +21,9 @@ class GeneticAlgorithm {
 		void createPopulation(Chromosome(*heuristic)(Graph), Graph graph);
 		
 		Chromosome chooseBestSolution(const Chromosome& chromosome1, const Chromosome& chromosome2);
-		
+	   
+        Chromosome chooseWorstSolution(const Chromosome& chromosome1, const Chromosome& chromosome2);
+
 		Chromosome crossOver(Chromosome& chromosome1, Chromosome& cromossomo2,
                 	Chromosome(*crossOverHeuristic)(Chromosome&, Chromosome&)); 
                 	

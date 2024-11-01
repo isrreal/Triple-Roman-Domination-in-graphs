@@ -75,19 +75,20 @@ Chromosome GeneticAlgorithm::fitness(Chromosome& chromosome, Chromosome(*fitness
  */
 
 Chromosome GeneticAlgorithm::tournamentSelection(std::vector<Chromosome> population) { 
+    constexpr float parameter = 0.75f; 
     std::random_device randomNumber;
     std::mt19937 seed(randomNumber());
     std::uniform_int_distribution<int> gap(0, population.size() - 1);
-    Chromosome bestSolution = GeneticAlgorithm::fitness(population[gap(seed)], nullptr);
-    Chromosome temp;
+    std::uniform_real_distribution<float> probability(0, 1); 
     
-    for (size_t i = 0; i < population.size(); ++i) {
-        temp = GeneticAlgorithm::fitness(population[i], nullptr);
-        if (temp.fitnessValue > bestSolution.fitnessValue)
-            bestSolution = temp;
-    }
     
-    return bestSolution;
+    Chromosome c1 = GeneticAlgorithm::fitness(population[gap(seed)], nullptr);
+    Chromosome c2 = GeneticAlgorithm::fitness(population[gap(seed)], nullptr);
+   
+    if (probability < parameter) 
+       return chooseBestSolution(c1, c2);
+    else 
+       return chooseWorstSolution(c1, c2); 
 }
 
 /**
@@ -159,6 +160,18 @@ Chromosome GeneticAlgorithm::chooseBestSolution(const Chromosome& chromosome1, c
 	    return (chromosome1.fitnessValue > chromosome2.fitnessValue ? chromosome1 : chromosome2);
 }
 
+/**
+ * @brief Chooses the best Chromosome between two options based on their fitness values.
+ * 
+ * @param chromosome1 Pointer to the first Chromosome.
+ * @param chromosome2 Pointer to the second Chromosome.
+ * @return Chromosome* The Chromosome with the higher fitness value.
+ */
+
+
+Chromosome GeneticAlgorithm::chooseWorstSolution(const Chromosome& chromosome1, const Chromosome& chromosome2) {
+	    return (chromosome1.fitnessValue < chromosome2.fitnessValue ? chromosome1 : chromosome2);
+}
 
 /**
  * @brief Performs a crossover between two chromosomes to create an offspring.
