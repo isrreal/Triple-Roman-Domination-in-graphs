@@ -162,6 +162,7 @@ Chromosome GeneticAlgorithm::chooseBestSolution(const Chromosome& chromosome1, c
 
 /**
 <<<<<<< HEAD
+<<<<<<< HEAD
  * @brief Chooses the worst Chromosome between two options based on their fitness values.
  * 
  * @param chromosome1 constant reference to the first Chromosome.
@@ -174,6 +175,13 @@ Chromosome GeneticAlgorithm::chooseBestSolution(const Chromosome& chromosome1, c
  * @param chromosome2 Pointer to the second Chromosome.
  * @return Chromosome* The Chromosome with the higher fitness value.
 >>>>>>> 5b51efa (tournament selection and chooseWorstSolution were added)
+=======
+ * @brief Chooses the worst Chromosome between two options based on their fitness values.
+ * 
+ * @param chromosome1 constant reference to the first Chromosome.
+ * @param chromosome2 constant reference to the second Chromosome.
+ * @return Chromosome The Chromosome with the lower fitness value.
+>>>>>>> 1472a20 (comments chooseBestSolution and chooseWorstSolution were fixed)
  */
 
 
