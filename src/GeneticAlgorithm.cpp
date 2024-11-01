@@ -151,9 +151,9 @@ Chromosome GeneticAlgorithm::selectionMethod(Chromosome(*selectionHeuristic)(std
 /**
  * @brief Chooses the best Chromosome between two options based on their fitness values.
  * 
- * @param chromosome1 Pointer to the first Chromosome.
- * @param chromosome2 Pointer to the second Chromosome.
- * @return Chromosome* The Chromosome with the higher fitness value.
+ * @param chromosome1 constant reference to the first Chromosome.
+ * @param chromosome2 constant reference  to the second Chromosome.
+ * @return Chromosome The Chromosome with the higher fitness value.
  */
 
 Chromosome GeneticAlgorithm::chooseBestSolution(const Chromosome& chromosome1, const Chromosome& chromosome2) {
@@ -161,11 +161,11 @@ Chromosome GeneticAlgorithm::chooseBestSolution(const Chromosome& chromosome1, c
 }
 
 /**
- * @brief Chooses the best Chromosome between two options based on their fitness values.
+ * @brief Chooses the worst Chromosome between two options based on their fitness values.
  * 
- * @param chromosome1 Pointer to the first Chromosome.
- * @param chromosome2 Pointer to the second Chromosome.
- * @return Chromosome* The Chromosome with the higher fitness value.
+ * @param chromosome1 constant reference to the first Chromosome.
+ * @param chromosome2 constant reference to the second Chromosome.
+ * @return Chromosome The Chromosome with the lower fitness value.
  */
 
 
