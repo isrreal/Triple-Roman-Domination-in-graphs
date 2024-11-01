@@ -86,10 +86,10 @@ Chromosome GeneticAlgorithm::tournamentSelection(std::vector<Chromosome> populat
     Chromosome c1 = GeneticAlgorithm::fitness(population[gap(seed)], nullptr);
     Chromosome c2 = GeneticAlgorithm::fitness(population[gap(seed)], nullptr);
    
-    if (probability < parameter) 
-       return chooseBestSolution(c1, c2);
+    if (probability(seed) < parameter) 
+       return GeneticAlgorithm::chooseBestSolution(c1, c2);
     else 
-       return chooseWorstSolution(c1, c2); 
+       return GeneticAlgorithm::chooseWorstSolution(c1, c2); 
 }
 
 /**
