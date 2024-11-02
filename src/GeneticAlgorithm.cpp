@@ -41,7 +41,7 @@ Chromosome GeneticAlgorithm::getBestChromosome(std::vector<Chromosome> populatio
  * Otherwise, chromosomes are initialized with random genes.
  * 
  * @param heuristic A pointer to a function that generates chromosomes based on a graph.
- * @param graph A pointer to the graph used to initialize the chromosomes.
+ * @param graph Object to the graph used to initialize the chromosomes.
  */
 
 void GeneticAlgorithm::createPopulation(Chromosome(*generateChromosomeHeuristic)(Graph), Graph graph) {
@@ -179,29 +179,12 @@ Chromosome GeneticAlgorithm::chooseBestSolution(const Chromosome& chromosome1, c
 }
 
 /**
-<<<<<<< HEAD
-<<<<<<< HEAD
  * @brief Chooses the worst Chromosome between two options based on their fitness values.
  * 
  * @param chromosome1 constant reference to the first Chromosome.
  * @param chromosome2 constant reference to the second Chromosome.
  * @return Chromosome The Chromosome with the lower fitness value.
-=======
- * @brief Chooses the best Chromosome between two options based on their fitness values.
- * 
- * @param chromosome1 Pointer to the first Chromosome.
- * @param chromosome2 Pointer to the second Chromosome.
- * @return Chromosome* The Chromosome with the higher fitness value.
->>>>>>> 5b51efa (tournament selection and chooseWorstSolution were added)
-=======
- * @brief Chooses the worst Chromosome between two options based on their fitness values.
- * 
- * @param chromosome1 constant reference to the first Chromosome.
- * @param chromosome2 constant reference to the second Chromosome.
- * @return Chromosome The Chromosome with the lower fitness value.
->>>>>>> 1472a20 (comments chooseBestSolution and chooseWorstSolution were fixed)
  */
-
 
 Chromosome GeneticAlgorithm::chooseWorstSolution(const Chromosome& chromosome1, const Chromosome& chromosome2) {
 	    return (chromosome1.fitnessValue < chromosome2.fitnessValue ? chromosome1 : chromosome2);
