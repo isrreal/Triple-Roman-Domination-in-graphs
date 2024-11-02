@@ -1,21 +1,10 @@
 #include "TripleRomanDomination.hpp"
 
-
-/**
- * @brief Destructor for the TripleRomanDomination class.
- * 
- * Frees the memory allocated for the genetic algorithm and graph objects.
- */
 TripleRomanDomination::~TripleRomanDomination() {
     delete this->geneticAlgorithm;
     delete this->ACO;
 }
 
-/**
- * @brief Gets the graph used in the triple Roman domination algorithm.
- * 
- * @return Graph* Pointer to the graph object.
- */
 Graph& TripleRomanDomination::getGraph() {
     return this->graph;
 }
@@ -45,8 +34,16 @@ size_t TripleRomanDomination::getGamma3rACO() {
  * @return size_t The calculated triple Roman domination number.
  */
  
-void TripleRomanDomination::runGeneticAlgorithm(uint8_t heuristic) {                                                                                                                                           
-    auto selectedHeuristic = (heuristic == 2) ? heuristic2 : (heuristic == 3) ? heuristic3 : heuristic1;
+void TripleRomanDomination::runGeneticAlgorithm(short int heuristic) {                                             
+    Chromosome (*selectedHeuristic)(Graph) = nullptr;
+
+    if (heuristic == 2) 
+    	selectedHeuristic = heuristic2;
+    else if (heuristic == 3) 
+        selectedHeuristic = heuristic3;
+    else 
+        selectedHeuristic = heuristic1;
+
     this->geneticAlgorithm->run(geneticAlgorithm->getGenerations(), selectedHeuristic);
 
     solutionGeneticAlgorithm = this->geneticAlgorithm->getBestSolution();
@@ -71,9 +68,10 @@ void TripleRomanDomination::runACO() {
  * This heuristic randomly selects vertices and assigns them a value of 3, while updating their neighbors 
  * with a value of 0. The adjacency list of the choosen vertex is then deleted.
  * 
- * @param  graph used to create the chromosome.
- * @return Chromosome The generated chromosome solution.
+ * @param  graph Object used to create the chromosome.
+ * @return Chromosome Object The generated chromosome solution.
  */
+ 
 Chromosome TripleRomanDomination::heuristic1(Graph graph) {
     Chromosome solution(Chromosome(graph.getOrder()));
     std::random_device randomNumber;
@@ -111,9 +109,10 @@ Chromosome TripleRomanDomination::heuristic1(Graph graph) {
  * This heuristic selects vertices randomly and assigns them values, updating neighbors accordingly and
  * handling vertices with no neighbors by assigning a value of 2.
  * 
- * @param graph Pointer to the graph used to create the chromosome.
- * @return Chromosome* The generated chromosome solution.
+ * @param graph Object to the graph used to create the chromosome.
+ * @return Chromosome Object The generated chromosome solution.
  */
+ 
 Chromosome TripleRomanDomination::heuristic2(Graph graph) {
     Chromosome solution(Chromosome(graph.getOrder()));
     std::random_device randomNumber;
@@ -122,7 +121,9 @@ Chromosome TripleRomanDomination::heuristic2(Graph graph) {
     
     size_t choosenVertex = 0;
     size_t graphOrder = graph.getOrder();
-
+	
+	Graph temp = graph;
+	
     while (graph.getOrder() > 0) {
         choosenVertex = gap(seed);
         while (!graph.vertexExists(choosenVertex))
@@ -145,6 +146,14 @@ Chromosome TripleRomanDomination::heuristic2(Graph graph) {
             }
         }
     }
+    
+    for (size_t i = 0; i < graphOrder; ++i) {
+	    if (solution.genes[i] == 3) {
+	       for (auto& it: temp.getAdjacencyList(i)) 	
+   	          if (solution.genes[it] >= 2) 		              
+          	  		solution.genes[i] = 2; 
+		}
+	}
 
     return solution;
 }
@@ -155,13 +164,16 @@ Chromosome TripleRomanDomination::heuristic2(Graph graph) {
  * This heuristic sorts vertices by degree in descending order, then selects vertices with the highest degree
  * for assignment while updating their neighbors.
  * 
- * @param graph Pointer to the graph used to create the chromosome.
- * @return Chromosome* The generated chromosome solution.
+ * @param graph Object to the graph used to create the chromosome.
+ * @return Chromosome Object The generated chromosome solution.
  */
+ 
 Chromosome TripleRomanDomination::heuristic3(Graph graph) {
     Chromosome solution(Chromosome(graph.getOrder()));
     std::vector<size_t> sortedVertices(graph.getOrder());
     size_t graphOrder = graph.getOrder();
+	
+	Graph temp = graph;
 
     for (size_t i = 0; i < graph.getOrder(); ++i)
         sortedVertices[i] = i;
@@ -201,6 +213,14 @@ Chromosome TripleRomanDomination::heuristic3(Graph graph) {
             }
         }
     }
+    
+    for (size_t i = 0; i < graphOrder; ++i) {
+	    if (solution.genes[i] == 3) {
+	       for (auto& it: temp.getAdjacencyList(i)) 	
+   	          if (solution.genes[it] >= 2) 		              
+          	  		solution.genes[i] = 2; 
+		}
+	}
 
     return solution;
 }

@@ -15,8 +15,8 @@ class GeneticAlgorithm {
         Graph graph;
         std::vector<int> bestSolution;
         
-        double mutationRate;
-        double elitismRate;
+        float mutationRate;
+        float elitismRate;
 
 		void createPopulation(Chromosome(*heuristic)(Graph), Graph graph);
 		
@@ -25,13 +25,15 @@ class GeneticAlgorithm {
                 	
         Chromosome mutation(Chromosome& chromosome);
         
-        std::vector<Chromosome>& elitism();
+        std::vector<Chromosome>& elitism(float elitismRate);
                 
 		Chromosome feasibilityCheck(Chromosome& chromosome);
 		
 		std::vector<Chromosome>& createNewPopulation();
 		
         Chromosome selectionMethod(Chromosome(*selectionHeuristic)(std::vector<Chromosome>)); 
+        
+        Chromosome getBestChromosome(std::vector<Chromosome> population);
         	
         static Chromosome fitness(Chromosome& chromosome, Chromosome(*fitnessHeuristic)(Chromosome&));
 		static Chromosome tournamentSelection(std::vector<Chromosome> population);
@@ -45,7 +47,12 @@ class GeneticAlgorithm {
         				populationSize(populationSize), genesSize(genesSize),
                         generations(generations), population(populationSize),
                         mutationRate(mutationRate), elitismRate(elitismRate),
-                        graph(graph) {}                 
+                        graph(graph) {
+                        	std::cout << "Mutation rate: " << mutationRate << std::endl;
+                        	std::cout << "Elitism rate: " << elitismRate << std::endl;
+                        	
+                        
+                        }                 
 
 		~GeneticAlgorithm() {}
 		
