@@ -32,10 +32,25 @@ void AntColonyOptimization::initializePheromones(std::vector<float>& graphPherom
         graphPheromone[i] = 0.5;
 }
 
+
+
+/**
+ * @brief Constructs a feasible solution for the Triple Roman Domination problem.
+ * 
+ * @details This function selects a random vertex and labels it with a value of 4, setting the labels 
+ * of all its adjacent vertices to 0. These vertices are then removed from the temporary graph.
+ * If any remaining vertices in the temporary graph have a degree of 0, they are labeled with 3 and 
+ * also removed. This process continues until there are no vertices left in the temporary graph.
+ *
+ * @return A vector of integers representing the computed solution for the graph, where each element 
+ * indicates the label assigned to each vertex according to the Triple Roman Domination rules.
+ */
+
 std::vector<int> AntColonyOptimization::constructSolution(std::vector<int> solution) {
     Graph temp(this->graph);
     size_t vertex = 0;
-
+	
+	size_t graphOrder = temp.getOrder();
     while (temp.getOrder() > 0) {
         vertex = chooseVertex(temp);  
         solution[vertex] = 4;
@@ -45,16 +60,37 @@ std::vector<int> AntColonyOptimization::constructSolution(std::vector<int> solut
                 solution[it] = 0;
 
         temp.deleteAdjacencyList(vertex);
+        
+        for (size_t i = 0; i < graphOrder; ++i) {
+            if (graph.vertexExists(i)) {
+                if (graph.getVertexDegree(i) == 0) {
+                    solution[i] = 3;
+                    temp.deleteVertex(i);
+                }
+            }
+        }
     }
 
     return solution;
 }
 
+/**
+ * @brief Increases the labels of selected vertices in the input solution.
+ * 
+ * @details This function iteratively selects random vertices from the input graph that are labeled 
+ * with 0, 2, or 3, and increases their label to 4. The number of vertices to be updated is determined 
+ * by the constant `addVerticesRate` and the count of vertices with labels 0, 2, or 3. This process 
+ * continues until the target number of vertices is updated or there are no more eligible vertices.
+ * 
+ * @return A vector of integers representing the updated solution, where selected labels have been 
+ * increased to 4 based on the specified rate.
+ */
+
 std::vector<int> AntColonyOptimization::extendSolution(std::vector<int> solution) {
     constexpr float addVerticesRate = 0.05f;
     size_t itr = 0;
-
     std::vector<int> twoOrZeroOrThreeLabeledVertices;
+    
     for (size_t i = 0; i < solution.size(); ++i) {
         if ((solution[i] == 0) || (solution[i] == 2) || (solution[i] == 3))
             twoOrZeroOrThreeLabeledVertices.push_back(i);
@@ -73,6 +109,16 @@ std::vector<int> AntColonyOptimization::extendSolution(std::vector<int> solution
 
     return solution;
 }
+
+/**	@brief Tries to reduce the labels of vertices 
+*	@details Sorts the vertices of graph on descendent order based on its respective degree,
+*			and selects its first vertex (that has higher degree value). After this, 
+			tries to reduce the values of vertices in solution that have labels 4 or 3, to 2,
+			if the solution are feasible, then the label is updated to 0, otherwise,
+			the original label is recovered.
+*
+* @return A solution that can have its label values reduced
+*/
 
 std::vector<int> AntColonyOptimization::reduceSolution(std::vector<int> solution) {
     Graph temp = this->graph;
@@ -99,25 +145,36 @@ std::vector<int> AntColonyOptimization::reduceSolution(std::vector<int> solution
        
         if (choosenVertex >= sortedVertices.size()) break;
 
-        if (solution[choosenVertex] == 3 || solution[choosenVertex] == 2) {
-            initLabel = solution[sortedVertices[choosenVertex]];
-            solution[sortedVertices[choosenVertex]] = 0;
+        if (solution[sortedVertices[choosenVertex]] == 4 || solution[sortedVertices[choosenVertex]] == 3) {         
+		        initLabel = solution[sortedVertices[choosenVertex]];
+		        solution[sortedVertices[choosenVertex]] = 0;
         
-            if (!feasible(solution)) {
-                solution[sortedVertices[choosenVertex]] = 2;
+            	if (!feasible(solution)) {
+                	solution[sortedVertices[choosenVertex]] = 2;
             
-                if (!feasible(solution)) 
-                    solution[sortedVertices[choosenVertex]] = initLabel;
-            }
-        }
-
+		            if (!feasible(solution)) 
+		                solution[sortedVertices[choosenVertex]] = initLabel;
+                }
+    	}
+            	
         temp.deleteAdjacencyList(sortedVertices[choosenVertex++]);
     }
     
     return solution;
 }
 
-
+/**
+ * @brief Attempts to reduce the labels of vertices in the solution.
+ * 
+ * @details This function sorts the vertices of the graph in descending order based on their degree 
+ * and selects the vertex with the highest degree. For each selected vertex with a label of 4 or 3 
+ * in the solution, it attempts to reduce the label to 2 and checks if the solution remains feasible.
+ * If the solution remains feasible, the label is updated to 0; otherwise, the original label is restored.
+ * This process continues until all vertices have been processed.
+ * 
+ * @return A vector of integers representing the solution with potentially reduced labels, while 
+ * maintaining feasibility according to the problem's constraints.
+ */
 
 std::vector<int> AntColonyOptimization::destroySolution(std::vector<int> solution) {
     float destructionRate = minDestructionRate + ((currentRVNSnumber - 1) *
@@ -138,6 +195,24 @@ std::vector<int> AntColonyOptimization::destroySolution(std::vector<int> solutio
 
     return solution;
 } 
+
+/**
+ * @brief Attempts to improve the final solution computed by the algorithm.
+ * 
+ * @details This function takes a previously computed solution and applies the following subroutines:
+ * - @subroutine destroySolution
+ * - @subroutine constructSolution
+ * - @subroutine extendSolution
+ * - @subroutine reduceSolution
+ * 
+ * After each iteration, the function compares the weight of the newly generated solution with the original one.
+ * If the new solution has a lower weight, it updates the best solution to this new value.
+ * The process repeats until the maximum number of iterations without improvement is reached.
+ * 
+ * @param solution A vector of integers representing the previously computed by the algorithm.
+ * 
+ * @return A vector of integers representing the solution with the least weight found by the algorithm.
+ */
 
 std::vector<int> AntColonyOptimization::RVNS(std::vector<int> solution) {
     size_t currentNoImprovementIteration = 0;
@@ -191,7 +266,8 @@ size_t AntColonyOptimization::chooseVertex(Graph& temp) {
             if (temp.vertexExists(i)) { 
                 if (value < (temp.getVertexDegree(i) * graphPheromone[i])) {
                     value = temp.getVertexDegree(i) * graphPheromone[i];
-                	vertex = 																																																																											 i;                                                                                                                   
+                	vertex = i;
+																																																																											                                  																																																																											          																																																																					                                                                                               
                 }
             }
         }
@@ -204,15 +280,18 @@ size_t AntColonyOptimization::chooseVertex(Graph& temp) {
 }
 
 /**
- * @brief Chooses the index of a vertex that maximizes the objective function or selects one randomly.
+ * @brief Selects the index of a vertex that maximizes the objective function or selects one at random.
  * 
- * This function randomly selects an index from the `twoOrZeroLabeledVertices` vector.
- * Depending on the selection rate (`selectionVertexRateExtendSolution`), it may opt to choose
- * the vertex that maximizes the product of its degree and pheromone level.
+ * @details This function either chooses a vertex index that maximizes the product of its degree 
+ * and pheromone level (objective function) or randomly selects an index from the 
+ * `twoOrZeroOrThreeLabeledVertices` vector. The choice between these strategies is determined by the 
+ * `selectionVertexRateExtendSolution`, which acts as a threshold probability. If a randomly generated 
+ * number exceeds this rate, the function will maximize the objective function; otherwise, a random 
+ * index is selected.
  * 
- * @param twoOrZeroLabeledVertices Vector containing indices of vertices labeled as 0 or 2.
- * @return The index of the `twoOrZeroLabeledVertices` vector that maximizes the objective function, 
- *         or one selected randomly.
+ * @param twoOrZeroOrThreeLabeledVertices A vector containing indices of vertices labeled as 0, 2, or 3.
+ * @return The index within `twoOrZeroOrThreeLabeledVertices` that either maximizes the objective function
+ *         or is randomly selected.
  */
 
 size_t AntColonyOptimization::chooseVertex(std::vector<int> twoOrZeroOrThreeLabeledVertices) {
@@ -249,7 +328,19 @@ size_t AntColonyOptimization::chooseVertex(std::vector<int> twoOrZeroOrThreeLabe
 
     return choosenIndex;
 }
- 
+
+/**
+ * @brief Evaluates if the given solution is feasible according to the constraints of the Triple Roman Domination Function.
+ * 
+ * @details This function checks if each vertex in the solution meets the required conditions for 
+ * Triple Roman Domination. For each vertex labeled as 0, it verifies if there is at least one adjacent 
+ * vertex labeled as 4, two adjacent vertices labeled as 3 or 2, or three adjacent vertices labeled as 2.
+ * For vertices labeled as 2, it ensures that they have at least one neighboring vertex labeled as 4.
+ * 
+ * @param solution A vector representing the labeled solution of the graph.
+ * @return True if the input solution meets the constraints of the Triple Roman Domination Function; False otherwise.
+ */
+
 bool AntColonyOptimization::feasible(std::vector<int> solution) {	
     bool hasNeighborWith4 = false; 
     bool hasTwoNeighbors3or2[] = {false, false}; 
@@ -310,13 +401,14 @@ size_t AntColonyOptimization::summation(std::vector<int> solution) {
 
 /* @brief checks if the vertex was choosen
  * The critery of selection vertex is that maximize the function degree(v) * pheromone(v)
- * if 3, so the vertex was choosen
+ * if 4, so the vertex was choosen
  * 
  *@return the vertex was choosen or not
  *
  */ 
+ 
 bool AntColonyOptimization::delta(std::vector<int> solution, size_t vertex) {
-    return solution[vertex] == 3 ? true : false; 
+    return solution[vertex] == 4 ? true : false; 
 }
 
 float AntColonyOptimization::getMaxPheromoneValue(std::vector<float> graphPheromone) {

@@ -284,7 +284,7 @@ std::vector<Chromosome>& GeneticAlgorithm::elitism(float elitismRate) {
 /**
  * @brief Checks the feasibility of a chromosome.
  * 
- * Adjusts genes based on the adjacency list of the graph, ensuring that constraints of Double Roman Domination are met.
+ * Adjusts genes based on the adjacency list of the graph, ensuring that constraints of Triple Roman Domination are met.
  * 
  * @param chromosome A reference to the chromosome to be checked.
  * @return Chromosome The adjusted chromosome.
