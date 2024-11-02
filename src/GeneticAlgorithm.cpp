@@ -16,6 +16,23 @@ Graph GeneticAlgorithm::getGraph() { return this->graph; }
 
 std::vector<int> GeneticAlgorithm::getBestSolution() { return this->bestSolution; } 
 
+Chromosome GeneticAlgorithm::getBestChromosome(std::vector<Chromosome> population) {
+	std::random_device randomNumber;
+	std::mt19937 seed(randomNumber());
+	std::uniform_int_distribution<int> gap(0, populationSize - 1);
+	
+	Chromosome bestSolution = GeneticAlgorithm::fitness(population[gap(seed)], nullptr);
+	Chromosome solution;
+	
+	for (size_t i = 0; i < populationSize; ++i) {
+		solution = fitness(population[i], nullptr);
+		if (solution.fitnessValue > bestSolution.fitnessValue)
+			bestSolution = solution;
+	}
+
+	return bestSolution;
+}
+
 
 /**
  * @brief Creates a population of chromosomes with a specific number of genes.
@@ -86,10 +103,10 @@ Chromosome GeneticAlgorithm::tournamentSelection(std::vector<Chromosome> populat
     Chromosome c1 = GeneticAlgorithm::fitness(population[gap(seed)], nullptr);
     Chromosome c2 = GeneticAlgorithm::fitness(population[gap(seed)], nullptr);
    
-    if (probability < parameter) 
-       return chooseBestSolution(c1, c2);
+    if (probability(seed) < parameter) 
+       return GeneticAlgorithm::chooseBestSolution(c1, c2);
     else 
-       return chooseWorstSolution(c1, c2); 
+       return GeneticAlgorithm::chooseWorstSolution(c1, c2); 
 }
 
 /**
@@ -265,17 +282,19 @@ Chromosome GeneticAlgorithm::mutation(Chromosome& chromosome) {
 }
 
 
-std::vector<Chromosome>& GeneticAlgorithm::elitism() {
+std::vector<Chromosome>& GeneticAlgorithm::elitism(float elitismRate) {
+    std::vector<Chromosome> temp;
 
-	Chromosome bestSolution = this->tournamentSelection(this->population);
-	this->population.clear();
+    Chromosome bestSolution = this->getBestChromosome(this->population);
+    
+    size_t iterations = static_cast<size_t>(this->populationSize * elitismRate);
 	
-	size_t iterations = this->populationSize * this->elitismRate;
-
-	for (size_t i = 0; i < iterations; ++i)
-		population.push_back(bestSolution);
-
-	return population;
+    for (size_t i = 0; i < iterations; ++i)
+        temp.push_back(bestSolution);
+		
+	population.swap(temp);
+	
+    return population; 
 }
 
 
@@ -348,16 +367,20 @@ Chromosome GeneticAlgorithm::feasibilityCheck(Chromosome& chromosome) {
  */
 
 std::vector<Chromosome>& GeneticAlgorithm::createNewPopulation() {
-    this->population.swap(this->elitism());
-	
-    while (this->population.size() < populationSize) {
+    this->population = this->elitism(this->elitismRate);
+    
+    std::vector<Chromosome> temp;
+      
+    while (temp.size() < populationSize) {
         Chromosome selected1 = this->selectionMethod(tournamentSelection);
         Chromosome selected2 = this->selectionMethod(rouletteWheelSelection);
         Chromosome offspring = this->crossOver(selected1, selected2, nullptr);
 
-        this->population.push_back(offspring);
+        temp.push_back(offspring);
     }
-
+    
+    population.swap(temp);
+    
     return population;
 }
 
@@ -378,7 +401,9 @@ void GeneticAlgorithm::run(size_t generations, Chromosome(*heuristic)(Graph)) {
    Chromosome bestSolution = currentBestSolution;
 
    for (size_t i = 0; i < generations; ++i) {        
-       	this->population.swap(this->createNewPopulation());
+   
+		this->population.swap(this->createNewPopulation());
+       	
         currentBestSolution = this->tournamentSelection(this->population);                                       
 
         if (bestSolution.fitnessValue > currentBestSolution.fitnessValue)

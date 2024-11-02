@@ -6,10 +6,11 @@
 
 int main(int argc, char** argv) {
     if (argc > 7) {
-        Graph graph("graph.txt", false);
+         Graph graph("graph.txt", false);
+        // Graph graph(100, false, 0.2);
         // graph, populationSize, genesSize, generations, heuristic, mutation rate, elitism rate, numberOfAnts, iterations, 
         TripleRomanDomination* drd = new TripleRomanDomination(graph, std::stoi(argv[1]), graph.getOrder(), std::stoi(argv[2]), std::stoi(argv[3]),
-                std::stoi(argv[4]), std::stoi(argv[5]), std::stof(argv[6]), std::stof(argv[7])); 
+                std::stof(argv[4]), std::stof(argv[5]), std::stoi(argv[6]), std::stoi(argv[7])); 
         std::cout << "Triple Roman Domination Number computed by Genetic Algorithm: " << drd->getGamma3rGeneticAlgorithm() << std::endl;
         std::cout << "Triple Roman Domination Number computed by ACO: " << drd->getGamma3rACO() << std::endl;
 

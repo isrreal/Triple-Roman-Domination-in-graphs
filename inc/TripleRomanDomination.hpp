@@ -18,9 +18,9 @@ class TripleRomanDomination {
         size_t gamma3rGeneticAlgorithm;		
         size_t gamma3rACO;        
 	public:
-		TripleRomanDomination(Graph& graph, size_t populationSize, size_t genesSize, uint8_t heuristic,
-			double mutationRate, double elitismRate, size_t generations,
-		    size_t numberOfAnts, size_t iterations) 
+		TripleRomanDomination(Graph& graph, size_t populationSize, size_t genesSize, size_t generations, 
+			short int heuristic, double mutationRate, double elitismRate,
+			size_t numberOfAnts, size_t iterations) 
     			: graph(graph), gamma3rGeneticAlgorithm(0), gamma3rACO(0),   
                 geneticAlgorithm(new GeneticAlgorithm(graph, populationSize, genesSize, generations, mutationRate, elitismRate)),
     		    ACO(new AntColonyOptimization(graph, iterations, numberOfAnts)) {
@@ -35,7 +35,7 @@ class TripleRomanDomination {
         size_t getGamma3rGeneticAlgorithm();
         size_t getGamma3rACO();
 
-        void runGeneticAlgorithm(uint8_t heuristic);
+        void runGeneticAlgorithm(short int heuristic);
         void runACO();
 
         static Chromosome heuristic1(Graph graph);
