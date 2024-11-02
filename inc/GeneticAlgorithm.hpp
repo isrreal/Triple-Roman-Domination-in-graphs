@@ -15,6 +15,13 @@ class GeneticAlgorithm {
         Graph graph;
         std::vector<int> bestSolution;
         
+        float minDestructionRate;
+        float maxDestructionRate;
+        size_t maxRVNSnoImprovementIterations;
+        size_t maxRVNSiterations;
+        size_t currentRVNSnumber;
+        size_t maxRVNSfunctions;
+        
         float mutationRate;
         float elitismRate;
 
@@ -26,6 +33,8 @@ class GeneticAlgorithm {
         Chromosome mutation(Chromosome& chromosome);
         
         std::vector<Chromosome>& elitism(float elitismRate);
+        
+        bool feasible(Chromosome& chromosome);
                 
 		Chromosome feasibilityCheck(Chromosome& chromosome);
 		
@@ -34,7 +43,21 @@ class GeneticAlgorithm {
         Chromosome selectionMethod(Chromosome(*selectionHeuristic)(std::vector<Chromosome>)); 
         
         Chromosome getBestChromosome(std::vector<Chromosome> population);
-        	
+        
+        Chromosome RVNS(Chromosome& chromosome, Chromosome(*heuristic)(Graph));
+        
+        Chromosome destroySolution(Chromosome& chromosome);
+        
+        Chromosome extendSolution(Chromosome& chromosome);
+        
+        Chromosome reduceSolution(Chromosome& chromosome);
+        
+        size_t chooseVertex(Graph& graph);
+        size_t chooseVertex(std::vector<int> twoOrZeroOrThreeLabeledVertices);
+        
+        size_t rouletteWheelSelection(Graph& graph);
+        size_t rouletteWheelSelection(std::vector<int> twoOrZeroOrThreeLabeledVertices);
+        
         static Chromosome fitness(Chromosome& chromosome, Chromosome(*fitnessHeuristic)(Chromosome&));
 		static Chromosome tournamentSelection(std::vector<Chromosome> population);
 		static Chromosome rouletteWheelSelection(std::vector<Chromosome> population); 
@@ -47,7 +70,10 @@ class GeneticAlgorithm {
         				populationSize(populationSize), genesSize(genesSize),
                         generations(generations), population(populationSize),
                         mutationRate(mutationRate), elitismRate(elitismRate),
-                        graph(graph) {}                 
+                        graph(graph), maxRVNSiterations(150), 
+                        maxRVNSnoImprovementIterations(10),
+                        currentRVNSnumber(1), maxRVNSfunctions(5),
+                        minDestructionRate(0.2), maxDestructionRate(0.5) {}                 
 
 		~GeneticAlgorithm() {}
 		

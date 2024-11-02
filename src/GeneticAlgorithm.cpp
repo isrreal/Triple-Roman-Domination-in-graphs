@@ -33,6 +33,174 @@ Chromosome GeneticAlgorithm::getBestChromosome(std::vector<Chromosome> populatio
 	return bestSolution;
 }
 
+size_t GeneticAlgorithm::chooseVertex(Graph& temp) {
+    float selectionVertexRateConstructSolution = 0.7f;    
+    std::random_device randomNumber;
+    std::mt19937 seed(randomNumber());
+    std::uniform_real_distribution<float> probabilityGap(0.0, 1.0);
+    std::uniform_int_distribution<int> gap(0, this->graph.getOrder() - 1);
+    
+    float number = probabilityGap(seed); 
+    
+    size_t vertex = gap(seed);
+    float value = 0.0;
+    
+    while (!temp.vertexExists(vertex)) 
+        vertex = gap(seed);
+
+    if (selectionVertexRateConstructSolution < number) 
+        vertex = rouletteWheelSelection(temp);
+        
+    return vertex;
+}
+
+// returns a index of vertex randomly selected
+size_t GeneticAlgorithm::chooseVertex(std::vector<int> twoOrZeroOrThreeLabeledVertices) {
+    constexpr float selectionVertexRateExtendSolution = 0.9f;
+
+    std::random_device randomNumber;
+    std::mt19937 seed(randomNumber());
+    std::uniform_real_distribution<float> probabilityGap(0.0, 1.0);
+    std::uniform_int_distribution<int> randomIndex(0, twoOrZeroOrThreeLabeledVertices.size() - 1);                                                               
+
+    float randomNumberGenerated = probabilityGap(seed); 
+
+    size_t choosenIndex = randomIndex(seed);
+
+    if (randomNumberGenerated > selectionVertexRateExtendSolution)
+    	choosenIndex = rouletteWheelSelection(twoOrZeroOrThreeLabeledVertices);
+    	
+    return choosenIndex;
+}
+
+
+Chromosome GeneticAlgorithm::destroySolution(Chromosome& chromosome) {
+    float destructionRate = minDestructionRate + ((currentRVNSnumber - 1) *
+                ((maxDestructionRate - minDestructionRate)) 
+                / (maxRVNSfunctions - 1));
+    Graph temp = this->graph;
+    size_t itr = genesSize * destructionRate; 
+    size_t vertex = 0;
+    
+    while (itr != 0 && (temp.getOrder() > 0)) {
+       vertex = chooseVertex(temp);
+       if ((chromosome.genes[vertex] == 0) || 
+       	  (chromosome.genes[vertex] == 2)||
+       	  (chromosome.genes[vertex] == 3))
+            	chromosome.genes[vertex] = -1;
+       else
+            ++itr;
+       temp.deleteVertex(vertex);
+       --itr;
+    }
+
+    return chromosome;
+}
+
+Chromosome GeneticAlgorithm::extendSolution(Chromosome& chromosome) {
+    constexpr float addVerticesRate = 0.05f;
+    size_t itr = 0;
+    std::vector<int> twoOrZeroOrThreeLabeledVertices;
+    
+    for (size_t i = 0; i < genesSize; ++i) {
+        if ((chromosome.genes[i] == 0) || (chromosome.genes[i] == 2) || (chromosome.genes[i] == 3))
+            twoOrZeroOrThreeLabeledVertices.push_back(i);
+    }
+
+    itr = addVerticesRate * twoOrZeroOrThreeLabeledVertices.size();
+    
+    size_t vertex = 0;
+
+    while (itr != 0 && !twoOrZeroOrThreeLabeledVertices.empty()) {          
+        vertex = chooseVertex(twoOrZeroOrThreeLabeledVertices);         
+        chromosome.genes[vertex] = 4; 
+        twoOrZeroOrThreeLabeledVertices.erase(twoOrZeroOrThreeLabeledVertices.begin() + vertex);                                                                
+        --itr;
+    }
+
+    return chromosome;
+}
+
+
+
+Chromosome GeneticAlgorithm::reduceSolution(Chromosome& chromosome) {
+    Graph temp = this->graph;
+    std::vector<int> sortedVertices;
+    int initLabel = -1;
+
+    for (size_t i = 0; i < temp.getOrder(); ++i)
+        sortedVertices.push_back(i);
+
+    std::sort(sortedVertices.begin(), sortedVertices.end(),
+        [&](size_t a, size_t b) {
+            return temp.getVertexDegree(a) < temp.getVertexDegree(b);                                                                             
+        });
+    
+    size_t choosenVertex = 0;
+    
+    while ((temp.getOrder() > 0) && (choosenVertex < sortedVertices.size())) {
+        if (choosenVertex >= sortedVertices.size()) break;
+        
+        while (choosenVertex < sortedVertices.size() && 
+                (!temp.vertexExists(sortedVertices[choosenVertex]))) {
+            ++choosenVertex;
+        }
+       
+        if (choosenVertex >= sortedVertices.size()) break;
+
+        if (chromosome.genes[sortedVertices[choosenVertex]] == 4 ||
+         	chromosome.genes[sortedVertices[choosenVertex]] == 3) {         
+		        initLabel = chromosome.genes[sortedVertices[choosenVertex]];
+		        chromosome.genes[sortedVertices[choosenVertex]] = 0;
+        
+            	if (!feasible(chromosome)) {
+                	chromosome.genes[sortedVertices[choosenVertex]] = 2;
+            
+		            if (!feasible(chromosome)) 
+		                chromosome.genes[sortedVertices[choosenVertex]] = initLabel;
+                }
+    	}
+            	
+        temp.deleteAdjacencyList(sortedVertices[choosenVertex++]);
+    }
+    
+    return chromosome;
+}
+
+Chromosome GeneticAlgorithm::RVNS(Chromosome& chromosome, Chromosome(*heuristic)(Graph)) {
+	size_t currentNoImprovementIteration = 0;
+	size_t currentRVNSnumber = 1;
+    Chromosome temp = chromosome;
+    
+    while ((currentNoImprovementIteration < maxRVNSnoImprovementIterations) && (maxRVNSiterations > 0)) {
+        destroySolution(temp);
+        
+        temp = (*heuristic)(graph);
+        
+        extendSolution(temp);
+        reduceSolution(temp);
+
+        if (temp.fitnessValue < chromosome.fitnessValue) {
+            chromosome = temp;
+            currentRVNSnumber = 1;
+            currentNoImprovementIteration = 0;
+        }
+
+        else {
+            ++currentRVNSnumber;
+            ++currentNoImprovementIteration;
+
+            if (currentRVNSnumber > maxRVNSiterations)
+                currentRVNSnumber = 1;
+        }
+
+        --maxRVNSiterations;
+    }
+
+
+    return chromosome;
+}
+
 
 /**
  * @brief Creates a population of chromosomes with a specific number of genes.
@@ -140,8 +308,6 @@ Chromosome GeneticAlgorithm::rouletteWheelSelection(std::vector<Chromosome> popu
     
     return population.back();
 }
-
-
 
 /**
  * @brief Selects a chromosome from the population using a specific selection heuristic and removes it.
@@ -280,6 +446,55 @@ std::vector<Chromosome>& GeneticAlgorithm::elitism(float elitismRate) {
     return population; 
 }
 
+bool GeneticAlgorithm::feasible(Chromosome& chromosome) {	
+    bool hasNeighborWith4 = false; 
+    bool hasTwoNeighbors3or2[] = {false, false}; 
+    bool hasThreeNeighbors2[] = {false, false, false};
+    bool hasNeighborAtLeast2 = false;
+
+    for (size_t i = 0; i < genesSize; ++i) {
+        if (chromosome.genes[i] == 0) {
+            for (auto& neighbor : this->graph.getAdjacencyList(i)) {
+                if (chromosome.genes[neighbor] == 4) {
+                    hasNeighborWith4 = true;
+                    break; 
+                }
+
+                else if (chromosome.genes[neighbor] == 2) {
+                    if (chromosome.genes[neighbor] == 3) {
+                        hasTwoNeighbors3or2[0], hasTwoNeighbors3or2[1] = true;
+                        break;
+                    }
+
+                    else if (chromosome.genes[neighbor] == 2) {
+                        if (chromosome.genes[neighbor] == 2) {
+                            hasThreeNeighbors2[0], hasThreeNeighbors2[0], hasThreeNeighbors2[0] = true;
+                            break;
+                        } 
+                    } 
+                }
+                
+                if (!hasNeighborWith4 && !hasTwoNeighbors3or2[0] && !hasTwoNeighbors3or2[1]
+                        && !hasThreeNeighbors2[0] && !hasThreeNeighbors2[1] && !hasThreeNeighbors2[2])
+                    return false;
+            }
+        }
+
+        else if (chromosome.genes[i] == 2) {
+            for (auto& neighbor : this->graph.getAdjacencyList(i)) {
+                if (chromosome.genes[neighbor] == 4) {
+                    hasNeighborAtLeast2 = true;
+                    break; 
+                }
+            }
+
+            if (!hasNeighborAtLeast2) 
+                return false;
+        }
+    }
+
+    return true;	
+}
 
 /**
  * @brief Checks the feasibility of a chromosome.
@@ -388,10 +603,68 @@ void GeneticAlgorithm::run(size_t generations, Chromosome(*heuristic)(Graph)) {
 		this->population.swap(this->createNewPopulation());
        	
         currentBestSolution = this->tournamentSelection(this->population);                                       
-
+		
         if (bestSolution.fitnessValue > currentBestSolution.fitnessValue)
             bestSolution = currentBestSolution; 
+            
+        RVNS(bestSolution, heuristic);
    }
 
     this->bestSolution = bestSolution.genes;
+}
+
+// selects a vertex of graph by roulette wheel selection method embiased by vertex degree and total fitness
+
+size_t GeneticAlgorithm::rouletteWheelSelection(Graph& temp) {
+    float totalFitness = 0.0f;
+    std::vector<std::pair<size_t, float>> probabilities;
+
+    std::random_device randomNumber;
+    std::mt19937 seed(randomNumber());
+    std::uniform_real_distribution<float> gap(0.0, 1.0);
+
+    for (size_t i = 0; i < graph.getOrder(); ++i) 
+        if (temp.vertexExists(i)) 
+            totalFitness += population[i].fitnessValue;
+
+    for (size_t i = 0; i < graph.getOrder(); ++i)
+        if (temp.vertexExists(i))
+            probabilities.push_back({i, (temp.getVertexDegree(i) / totalFitness)});
+    
+    float randomValue = gap(seed);
+
+    float cumulativeSum = 0.0f;
+    for (const auto& prob : probabilities) {
+        cumulativeSum += prob.second;
+        if (randomValue <= cumulativeSum) 
+            return prob.first;
+    }
+
+    return probabilities.back().first;
+}
+
+// selects a vertex of graph that has 0, 2 or 3 label, by roulette wheel selection method embiased by vertex degree and total fitness
+size_t GeneticAlgorithm::rouletteWheelSelection(std::vector<int> twoOrZeroOrThreeLabeledVertices) {
+    float totalFitness = 0.0f;
+    std::vector<std::pair<size_t, float>> probabilities;
+    std::random_device randomNumber;
+    std::mt19937 seed(randomNumber());
+    std::uniform_real_distribution<float> gap(0.0, 1.0);
+
+    for (size_t i = 0; i < twoOrZeroOrThreeLabeledVertices.size(); ++i) 
+        totalFitness += population[i].fitnessValue;
+    
+    for (size_t i = 0; i < twoOrZeroOrThreeLabeledVertices.size(); ++i)
+        probabilities.push_back({i, (graph.getVertexDegree(twoOrZeroOrThreeLabeledVertices[i]) / totalFitness)});
+
+    float randomValue = gap(seed);
+                                             
+    float cumulativeSum = 0.0f;
+    for (const auto& prob : probabilities) {
+        cumulativeSum += prob.second;
+        if (randomValue <= cumulativeSum) 
+            return prob.first;
+    }
+                                             
+    return probabilities.back().first;
 }
