@@ -47,12 +47,7 @@ class GeneticAlgorithm {
         				populationSize(populationSize), genesSize(genesSize),
                         generations(generations), population(populationSize),
                         mutationRate(mutationRate), elitismRate(elitismRate),
-                        graph(graph) {
-                        	std::cout << "Mutation rate: " << mutationRate << std::endl;
-                        	std::cout << "Elitism rate: " << elitismRate << std::endl;
-                        	
-                        
-                        }                 
+                        graph(graph) {}                 
 
 		~GeneticAlgorithm() {}
 		
