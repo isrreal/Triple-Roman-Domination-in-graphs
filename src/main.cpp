@@ -6,7 +6,7 @@
 
 int main(int argc, char** argv) {
     if (argc > 7) {
-         Graph graph("graph.txt", false);
+        Graph graph("graph.txt", false);
         // graph, populationSize, genesSize, generations, heuristic, mutation rate, elitism rate, numberOfAnts, iterations, 
         TripleRomanDomination* drd = new TripleRomanDomination(graph, std::stoi(argv[1]), graph.getOrder(), std::stoi(argv[2]), std::stoi(argv[3]),
                 std::stof(argv[4]), std::stof(argv[5]), std::stoi(argv[6]), std::stoi(argv[7])); 
