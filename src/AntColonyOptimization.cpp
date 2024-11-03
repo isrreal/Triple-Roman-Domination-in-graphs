@@ -62,8 +62,8 @@ std::vector<int> AntColonyOptimization::constructSolution(std::vector<int> solut
         temp.deleteAdjacencyList(vertex);
         
         for (size_t i = 0; i < graphOrder; ++i) {
-            if (graph.vertexExists(i)) {
-                if (graph.getVertexDegree(i) == 0) {
+            if (temp.vertexExists(i)) {
+                if (temp.getVertexDegree(i) == 0) {
                     solution[i] = 3;
                     temp.deleteVertex(i);
                 }
@@ -146,17 +146,21 @@ std::vector<int> AntColonyOptimization::reduceSolution(std::vector<int> solution
         if (choosenVertex >= sortedVertices.size()) break;
 
         if (solution[sortedVertices[choosenVertex]] == 4 || solution[sortedVertices[choosenVertex]] == 3) {         
-		        initLabel = solution[sortedVertices[choosenVertex]];
-		        solution[sortedVertices[choosenVertex]] = 0;
-        
-            	if (!feasible(solution)) {
-                	solution[sortedVertices[choosenVertex]] = 2;
-            
-		            if (!feasible(solution)) 
-		                solution[sortedVertices[choosenVertex]] = initLabel;
-                }
-    	}
-            	
+    		initLabel = solution[sortedVertices[choosenVertex]];
+    		solution[sortedVertices[choosenVertex]] = 0;
+    		
+    		if (!feasible(solution)) {
+        		solution[sortedVertices[choosenVertex]] = 2;
+        		
+        		if (!feasible(solution)) {
+        			solution[sortedVertices[choosenVertex]] = 3;
+            		
+            		if (!feasible(solution)) 
+                		solution[sortedVertices[choosenVertex]] = initLabel;        
+        		}
+    		}
+		}
+         	
         temp.deleteAdjacencyList(sortedVertices[choosenVertex++]);
     }
     
@@ -341,55 +345,61 @@ size_t AntColonyOptimization::chooseVertex(std::vector<int> twoOrZeroOrThreeLabe
  * @return True if the input solution meets the constraints of the Triple Roman Domination Function; False otherwise.
  */
 
-bool AntColonyOptimization::feasible(std::vector<int> solution) {	
-    bool hasNeighborWith4 = false; 
-    bool hasTwoNeighbors3or2[] = {false, false}; 
-    bool hasThreeNeighbors2[] = {false, false, false};
+bool AntColonyOptimization::feasible(std::vector<int> solution) {  
+	bool hasNeighborWith4 = false; 
+    bool hasTwoNeighbors2or3[2] = {false, false}; 
+    size_t countNeighbors2 = 0;
+    bool hasThreeNeighbors2[3] = {false, false, false};
     bool hasNeighborAtLeast2 = false;
-
+    
     for (size_t i = 0; i < solution.size(); ++i) {
-        if (solution[i] == 0) {
+        if (solution[i] == 0) {           
             for (auto& neighbor : this->graph.getAdjacencyList(i)) {
-                if (solution[neighbor] == 4) {
-                    hasNeighborWith4 = true;
-                    break; 
-                }
-
+                if (solution[neighbor] == 4) 
+                    hasNeighborWith4 = true; 
+                                   
                 else if (solution[neighbor] == 2) {
-                    if (solution[neighbor] == 3) {
-                        hasTwoNeighbors3or2[0], hasTwoNeighbors3or2[1] = true;
-                        break;
+                	if (countNeighbors2 == 0) {
+                    	hasTwoNeighbors2or3[0] = true;
+                    	hasThreeNeighbors2[0] = true;               
                     }
-
-                    else if (solution[neighbor] == 2) {
-                        if (solution[neighbor] == 2) {
-                            hasThreeNeighbors2[0], hasThreeNeighbors2[0], hasThreeNeighbors2[0] = true;
-                            break;
-                        } 
-                    } 
+                    	
+                	else if (countNeighbors2 == 1) 
+                    	hasThreeNeighbors2[1] = true;               
+                	
+                	else if (countNeighbors2 == 2) 
+                    	hasThreeNeighbors2[2] = true; 
+                    
+                    ++countNeighbors2;
                 }
                 
-                if (!hasNeighborWith4 && !hasTwoNeighbors3or2[0] && !hasTwoNeighbors3or2[1]
-                        && !hasThreeNeighbors2[0] && !hasThreeNeighbors2[1] && !hasThreeNeighbors2[2])
-                    return false;
+                else if (solution[neighbor] == 3) 
+                    hasTwoNeighbors2or3[1] = true;                
             }
-        }
+
+            if (!(hasNeighborWith4 || 
+               (hasTwoNeighbors2or3[0] && hasTwoNeighbors2or3[1]) || 
+               (hasThreeNeighbors2[0] && hasThreeNeighbors2[1] && hasThreeNeighbors2[2]))) 
+            
+                	return false;            
+        } 
 
         else if (solution[i] == 2) {
             for (auto& neighbor : this->graph.getAdjacencyList(i)) {
-                if (solution[neighbor] == 4) {
+                if (solution[neighbor] >= 2) {
                     hasNeighborAtLeast2 = true;
                     break; 
                 }
             }
 
             if (!hasNeighborAtLeast2) 
-                return false;
+                return false;           
         }
     }
 
-    return true;	
+    return true;    
 }
+
 
 size_t AntColonyOptimization::summation(std::vector<int> solution) {
     size_t temp = 0;
