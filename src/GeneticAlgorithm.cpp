@@ -506,54 +506,63 @@ bool GeneticAlgorithm::feasible(Chromosome& chromosome) {
  */
  
  
-Chromosome GeneticAlgorithm::feasibilityCheck(Chromosome& chromosome) {	
-    bool hasNeighborWith4 = false; 
-    bool hasTwoNeighbors3or2[] = {false, false}; 
-    bool hasThreeNeighbors2[] = {false, false, false};
+bool GeneticAlgorithm::feasible(Chromosome& chromosome) {  
+	bool hasNeighborWith4 = false; 
+    bool hasNeighbors2or3 = false; 
+    bool hasThreeNeighbors2 = false;
     bool hasNeighborAtLeast2 = false;
-
+    
     for (size_t i = 0; i < genesSize; ++i) {
-        if (chromosome.genes[i] == 0) {
-            for (auto& neighbor : this->graph.getAdjacencyList(i)) {
-                if (chromosome.genes[neighbor] == 4) {
-                    hasNeighborWith4 = true;
+    	size_t countNeighbors2 = 0;
+    	size_t countNeighbors3 = 0;
+    	
+        if (chromosome.genes[i] == 0) {           
+            for (auto& neighbor : this->graph.getAdjacencyList(i)) {           
+            	if (countNeighbors2 == 2 && chromosome.genes[neighbor] >= 2) {
+            		hasThreeNeighbors2 = true;
+            		break;
+            	}
+            	
+            	else if ((countNeighbors3 == 1 && chromosome.genes[neighbor] >= 2) ||
+            			(countNeighbors2 == 1 && chromosome.genes[neighbor] >= 3)) {
+            			
+            		hasNeighbors2or3 = true;
+            		break;
+            	}
+            		
+                else if ((chromosome.genes[neighbor] == 4)) { 
+                	hasNeighborWith4 = true;
                     break; 
                 }
-
-                else if (chromosome.genes[neighbor] == 2) {
-                    if (chromosome.genes[neighbor] == 3) {
-                        hasTwoNeighbors3or2[0], hasTwoNeighbors3or2[1] = true;
-                        break;
-                    }
-
-                    else if (chromosome.genes[neighbor] == 2) {
-                        if (chromosome.genes[neighbor] == 2) {
-                            hasThreeNeighbors2[0], hasThreeNeighbors2[0], hasThreeNeighbors2[0] = true;
-                            break;
-                        } 
-                    } 
-                }
-                
-                if (!hasNeighborWith4 && !hasTwoNeighbors3or2[0] && !hasTwoNeighbors3or2[1]
-                        && !hasThreeNeighbors2[0] && !hasThreeNeighbors2[1] && !hasThreeNeighbors2[2])
-                    chromosome.genes[i] = 4;
+                    
+                else if (chromosome.genes[neighbor] == 3) 
+					++countNeighbors3;
+                                   
+                else if (chromosome.genes[neighbor] == 2) 
+                	++countNeighbors2;                                                                
             }
-        }
+
+            if (!((hasNeighborWith4) || 
+               (hasNeighbors2or3) || 
+               (hasThreeNeighbors2))) 
+            
+                	chromosome.genes[i] = 3;            
+        } 
 
         else if (chromosome.genes[i] == 2) {
             for (auto& neighbor : this->graph.getAdjacencyList(i)) {
-                if (chromosome.genes[neighbor] == 4) {
+                if (chromosome.genes[neighbor] >= 2) {
                     hasNeighborAtLeast2 = true;
                     break; 
                 }
             }
 
             if (!hasNeighborAtLeast2) 
-                chromosome.genes[i] = 3;
+                chromosome.genes[neighbor] = 2;           
         }
     }
 
-    return chromosome;	
+    return true;    
 }
 
 /**
