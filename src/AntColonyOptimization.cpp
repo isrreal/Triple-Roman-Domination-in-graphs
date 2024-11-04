@@ -347,39 +347,43 @@ size_t AntColonyOptimization::chooseVertex(std::vector<int> twoOrZeroOrThreeLabe
 
 bool AntColonyOptimization::feasible(std::vector<int> solution) {  
 	bool hasNeighborWith4 = false; 
-    bool hasTwoNeighbors2or3[2] = {false, false}; 
-    size_t countNeighbors2 = 0;
-    bool hasThreeNeighbors2[3] = {false, false, false};
+    bool hasNeighbors2or3 = false; 
+    bool hasThreeNeighbors2 = false;
     bool hasNeighborAtLeast2 = false;
     
     for (size_t i = 0; i < solution.size(); ++i) {
+    	size_t countNeighbors2 = 0;
+    	size_t countNeighbors3 = 0;
+    	
         if (solution[i] == 0) {           
-            for (auto& neighbor : this->graph.getAdjacencyList(i)) {
-                if (solution[neighbor] == 4) 
-                    hasNeighborWith4 = true; 
-                                   
-                else if (solution[neighbor] == 2) {
-                	if (countNeighbors2 == 0) {
-                    	hasTwoNeighbors2or3[0] = true;
-                    	hasThreeNeighbors2[0] = true;               
-                    }
-                    	
-                	else if (countNeighbors2 == 1) 
-                    	hasThreeNeighbors2[1] = true;               
-                	
-                	else if (countNeighbors2 == 2) 
-                    	hasThreeNeighbors2[2] = true; 
-                    
-                    ++countNeighbors2;
+            for (auto& neighbor : this->graph.getAdjacencyList(i)) {           
+            	if (countNeighbors2 == 2 && solution[neighbor] >= 2) {
+            		hasThreeNeighbors2 = true;
+            		break;
+            	}
+            	
+            	else if ((countNeighbors3 == 1 && solution[neighbor] >= 2) ||
+            			(countNeighbors2 == 1 && solution[neighbor] >= 3)) {
+            			
+            		hasNeighbors2or3 = true;
+            		break;
+            	}
+            		
+                else if ((solution[neighbor] == 4)) { 
+                	hasNeighborWith4 = true;
+                    break; 
                 }
-                
+                    
                 else if (solution[neighbor] == 3) 
-                    hasTwoNeighbors2or3[1] = true;                
+					++countNeighbors3;
+                                   
+                else if (solution[neighbor] == 2) 
+                	++countNeighbors2;                                                                
             }
 
-            if (!(hasNeighborWith4 || 
-               (hasTwoNeighbors2or3[0] && hasTwoNeighbors2or3[1]) || 
-               (hasThreeNeighbors2[0] && hasThreeNeighbors2[1] && hasThreeNeighbors2[2]))) 
+            if (!((hasNeighborWith4) || 
+               (hasNeighbors2or3) || 
+               (hasThreeNeighbors2))) 
             
                 	return false;            
         } 
