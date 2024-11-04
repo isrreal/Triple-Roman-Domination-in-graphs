@@ -506,7 +506,7 @@ bool GeneticAlgorithm::feasible(Chromosome& chromosome) {
  */
  
  
-bool GeneticAlgorithm::feasible(Chromosome& chromosome) {  
+Chromosome GeneticAlgorithm::feasibilityCheck(Chromosome& chromosome) {  
 	bool hasNeighborWith4 = false; 
     bool hasNeighbors2or3 = false; 
     bool hasThreeNeighbors2 = false;
@@ -558,7 +558,7 @@ bool GeneticAlgorithm::feasible(Chromosome& chromosome) {
             }
 
             if (!hasNeighborAtLeast2) 
-                chromosome.genes[neighbor] = 2;           
+                chromosome.genes[i] = 2;           
         }
     }
 
