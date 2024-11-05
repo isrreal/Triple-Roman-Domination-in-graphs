@@ -8,9 +8,9 @@ void AntColonyOptimization::run() {
             solution = extendSolution(solution);
             solution = reduceSolution(solution);
             solution = RVNS(solution);
-         if (summation(solution) < summation(currentBestSolution))
+            if (summation(solution) < summation(currentBestSolution))
                 currentBestSolution = solution;
-      }    
+        }    
                                                            
         if (summation(currentBestSolution) < summation(bestSolution))
               bestSolution = currentBestSolution;
@@ -24,7 +24,6 @@ void AntColonyOptimization::run() {
 
         --temp;
     }
-    
 }
 
 void AntColonyOptimization::initializePheromones(std::vector<float>& graphPheromone) {
@@ -70,7 +69,7 @@ std::vector<int> AntColonyOptimization::constructSolution(std::vector<int> solut
             }
         }
     }
-
+   
     return solution;
 }
 
@@ -163,7 +162,6 @@ std::vector<int> AntColonyOptimization::reduceSolution(std::vector<int> solution
          	
         temp.deleteAdjacencyList(sortedVertices[choosenVertex++]);
     }
-    
     return solution;
 }
 
@@ -345,50 +343,48 @@ size_t AntColonyOptimization::chooseVertex(std::vector<int> twoOrZeroOrThreeLabe
  * @return True if the input solution meets the constraints of the Triple Roman Domination Function; False otherwise.
  */
 
-bool AntColonyOptimization::feasible(std::vector<int> solution) {  
-	bool hasNeighborWith4 = false; 
-    bool hasNeighbors2or3 = false; 
-    bool hasThreeNeighbors2 = false;
-    bool hasNeighborAtLeast2 = false;
-    
-    for (size_t i = 0; i < solution.size(); ++i) {
-    	size_t countNeighbors2 = 0;
-    	size_t countNeighbors3 = 0;
-    	
-        if (solution[i] == 0) {           
-            for (auto& neighbor : this->graph.getAdjacencyList(i)) {           
-            	if (countNeighbors2 == 2 && solution[neighbor] >= 2) {
-            		hasThreeNeighbors2 = true;
-            		break;
-            	}
-            	
-            	else if ((countNeighbors3 == 1 && solution[neighbor] >= 2) ||
-            			(countNeighbors2 == 1 && solution[neighbor] >= 3)) {
-            			
-            		hasNeighbors2or3 = true;
-            		break;
-            	}
-            		
-                else if ((solution[neighbor] == 4)) { 
-                	hasNeighborWith4 = true;
-                    break; 
-                }
-                    
-                else if (solution[neighbor] == 3) 
-					++countNeighbors3;
-                                   
-                else if (solution[neighbor] == 2) 
-                	++countNeighbors2;                                                                
-            }
+bool AntColonyOptimization::feasible(std::vector<int> solution) {
+    bool isValid = false;
 
-            if (!((hasNeighborWith4) || 
-               (hasNeighbors2or3) || 
-               (hasThreeNeighbors2))) 
+    for (size_t i = 0; i < solution.size(); ++i) {
+
+        isValid = false;
+
+        if (solution[i] == 0) {                                 
+            size_t countNeighbors2 = 0;
+            size_t countNeighbors3 = 0;
             
-                	return false;            
+            for (auto& neighbor : this->graph.getAdjacencyList(i)) {          
+
+                if ((countNeighbors2 == 1 && solution[neighbor] >= 3) ||
+                    (countNeighbors2 == 2 && solution[neighbor] >= 2)) {
+                    isValid = true;
+                    break;
+                }
+
+                if (countNeighbors3 == 1 && solution[neighbor] >= 2) {
+                     isValid = true;
+                     break;
+                }
+
+                if (solution[neighbor] == 4) {
+                    isValid = true;
+                    break;
+                }
+                
+                if (solution[neighbor] == 3) 
+                    ++countNeighbors3;
+                    
+                if (solution[neighbor] == 2) 
+                    ++countNeighbors2;
+            }
+            
+            if (!isValid)
+                return false;
         } 
 
         else if (solution[i] == 2) {
+            bool hasNeighborAtLeast2 = false;
             for (auto& neighbor : this->graph.getAdjacencyList(i)) {
                 if (solution[neighbor] >= 2) {
                     hasNeighborAtLeast2 = true;
@@ -400,10 +396,9 @@ bool AntColonyOptimization::feasible(std::vector<int> solution) {
                 return false;           
         }
     }
-
+    
     return true;    
 }
-
 
 size_t AntColonyOptimization::summation(std::vector<int> solution) {
     size_t temp = 0;
@@ -497,6 +492,7 @@ size_t AntColonyOptimization::rouletteWheelSelection(Graph& temp) {
     float cumulativeSum = 0.0f;
     for (const auto& prob : probabilities) {
         cumulativeSum += prob.second;
+        
         if (randomValue <= cumulativeSum) 
             return prob.first;
     }

@@ -148,22 +148,25 @@ Chromosome GeneticAlgorithm::reduceSolution(Chromosome& chromosome) {
        
         if (choosenVertex >= sortedVertices.size()) break;
 
-        if (chromosome.genes[sortedVertices[choosenVertex]] == 4 ||
-         	chromosome.genes[sortedVertices[choosenVertex]] == 3) {         
-		        initLabel = chromosome.genes[sortedVertices[choosenVertex]];
-		        chromosome.genes[sortedVertices[choosenVertex]] = 0;
-        
-            	if (!feasible(chromosome)) {
-                	chromosome.genes[sortedVertices[choosenVertex]] = 2;
-            
-		            if (!feasible(chromosome)) 
-		                chromosome.genes[sortedVertices[choosenVertex]] = initLabel;
-                }
-    	}
+        if (chromosome.genes[sortedVertices[choosenVertex]] == 4 || chromosome.genes[sortedVertices[choosenVertex]] == 3) {         
+    		initLabel = chromosome.genes[sortedVertices[choosenVertex]];
+    		chromosome.genes[sortedVertices[choosenVertex]] = 0;
+    		
+    		if (!feasible(chromosome)) {
+        		chromosome.genes[sortedVertices[choosenVertex]] = 2;
+        		
+        		if (!feasible(chromosome)) {
+        			chromosome.genes[sortedVertices[choosenVertex]] = 3;
+            		
+            		if (!feasible(chromosome)) 
+                		chromosome.genes[sortedVertices[choosenVertex]] = initLabel;        
+        		}
+    		}
+		}
             	
         temp.deleteAdjacencyList(sortedVertices[choosenVertex++]);
     }
-    
+
     return chromosome;
 }
 
@@ -195,8 +198,7 @@ Chromosome GeneticAlgorithm::RVNS(Chromosome& chromosome, Chromosome(*heuristic)
         }
 
         --maxRVNSiterations;
-    }
-
+    }	
 
     return chromosome;
 }
@@ -446,58 +448,75 @@ std::vector<Chromosome>& GeneticAlgorithm::elitism(float elitismRate) {
     return population; 
 }
 
-bool GeneticAlgorithm::feasible(Chromosome& chromosome) {	
-    bool hasNeighborWith4 = false; 
-    bool hasTwoNeighbors3or2[] = {false, false}; 
-    bool hasThreeNeighbors2[] = {false, false, false};
-    bool hasNeighborAtLeast2 = false;
+
+/**
+ * @brief Checks the feasibility of a chromosome.
+ * 
+ * Verify if the constraints of Triple Roman Domination are met.
+ * 
+ * @param chromosome A reference to the chromosome to be checked.
+ * @return True if the constraints of Triple Roman Domination are met, otherwise, False 
+ */
+ 
+bool GeneticAlgorithm::feasible(Chromosome& chromosome) {
+    bool isValid = false;
 
     for (size_t i = 0; i < genesSize; ++i) {
-        if (chromosome.genes[i] == 0) {
-            for (auto& neighbor : this->graph.getAdjacencyList(i)) {
-                if (chromosome.genes[neighbor] == 4) {
-                    hasNeighborWith4 = true;
-                    break; 
+
+        isValid = false;
+
+        if (chromosome.genes[i] == 0) {                                 
+            size_t countNeighbors2 = 0;
+            size_t countNeighbors3 = 0;
+            
+            for (auto& neighbor : this->graph.getAdjacencyList(i)) {          
+
+                if ((countNeighbors2 == 1 && chromosome.genes[neighbor] >= 3) ||
+                    (countNeighbors2 == 2 && chromosome.genes[neighbor] >= 2)) {
+                    isValid = true;
+                    break;
                 }
 
-                else if (chromosome.genes[neighbor] == 2) {
-                    if (chromosome.genes[neighbor] == 3) {
-                        hasTwoNeighbors3or2[0], hasTwoNeighbors3or2[1] = true;
-                        break;
-                    }
+                if (countNeighbors3 == 1 && chromosome.genes[neighbor] >= 2) {
+                     isValid = true;
+                     break;
+                }
 
-                    else if (chromosome.genes[neighbor] == 2) {
-                        if (chromosome.genes[neighbor] == 2) {
-                            hasThreeNeighbors2[0], hasThreeNeighbors2[0], hasThreeNeighbors2[0] = true;
-                            break;
-                        } 
-                    } 
+                if (chromosome.genes[neighbor] == 4) {
+                    isValid = true;
+                    break;
                 }
                 
-                if (!hasNeighborWith4 && !hasTwoNeighbors3or2[0] && !hasTwoNeighbors3or2[1]
-                        && !hasThreeNeighbors2[0] && !hasThreeNeighbors2[1] && !hasThreeNeighbors2[2])
-                    return false;
+                if (chromosome.genes[neighbor] == 3) 
+                    ++countNeighbors3;
+                    
+                if (chromosome.genes[neighbor] == 2) 
+                    ++countNeighbors2;
             }
-        }
+            
+            if (!isValid)
+                return false;
+        } 
 
         else if (chromosome.genes[i] == 2) {
+            bool hasNeighborAtLeast2 = false;
             for (auto& neighbor : this->graph.getAdjacencyList(i)) {
-                if (chromosome.genes[neighbor] == 4) {
+                if (chromosome.genes[neighbor] >= 2) {
                     hasNeighborAtLeast2 = true;
                     break; 
                 }
             }
 
             if (!hasNeighborAtLeast2) 
-                return false;
+                return false;           
         }
     }
-
-    return true;	
+    
+    return true;    
 }
 
 /**
- * @brief Checks the feasibility of a chromosome.
+ * @brief Checks the feasibility of a chromosome and adjusts if it isn't feasible.
  * 
  * Adjusts genes based on the adjacency list of the graph, ensuring that constraints of Triple Roman Domination are met.
  * 
@@ -507,68 +526,62 @@ bool GeneticAlgorithm::feasible(Chromosome& chromosome) {
  
  
 Chromosome GeneticAlgorithm::feasibilityCheck(Chromosome& chromosome) {  
-	bool hasNeighborWith4 = false; 
-    bool hasNeighbors2or3 = false; 
-    bool hasThreeNeighbors2 = false;
-    bool hasNeighborAtLeast2 = false;
-    
+    bool isValid = false;
+                                                                                 
     for (size_t i = 0; i < genesSize; ++i) {
-    	size_t countNeighbors2 = 0;
-    	size_t countNeighbors3 = 0;
-    	
-        if (chromosome.genes[i] == 0) {           
-            for (auto& neighbor : this->graph.getAdjacencyList(i)) {           
-            	if (countNeighbors2 == 2 && chromosome.genes[neighbor] >= 2) {
-            		hasThreeNeighbors2 = true;
-            		break;
-            	}
-            	
-            	else if ((countNeighbors3 == 1 && chromosome.genes[neighbor] >= 2) ||
-            			(countNeighbors2 == 1 && chromosome.genes[neighbor] >= 3)) {
-            			
-            		hasNeighbors2or3 = true;
-            		break;
-            	}
-            		
-                else if ((chromosome.genes[neighbor] == 4)) { 
-                	hasNeighborWith4 = true;
-                    break; 
-                }
-                    
-                else if (chromosome.genes[neighbor] == 3) 
-					++countNeighbors3;
-                                   
-                else if (chromosome.genes[neighbor] == 2) 
-                	++countNeighbors2;                                                                
-            }
-
-            if (!((hasNeighborWith4) || 
-               (hasNeighbors2or3) || 
-               (hasThreeNeighbors2))) 
+        if (chromosome.genes[i] == 0) {                                 
+            size_t countNeighbors2 = 0;
+            size_t countNeighbors3 = 0;
             
-                	chromosome.genes[i] = 3;            
+            for (auto& neighbor : this->graph.getAdjacencyList(i)) {          
+                                                                                 
+                if ((countNeighbors2 == 1 && chromosome.genes[neighbor] >= 3) ||
+                    (countNeighbors2 == 2 && chromosome.genes[neighbor] >= 2)) {
+                    isValid = true;
+                    break;
+                }
+                                                                                 
+                if (countNeighbors3 == 1 && chromosome.genes[neighbor] >= 2) {
+                     isValid = true;
+                     break;
+                }
+                                                                                 
+                if (chromosome.genes[neighbor] == 4) {
+                    isValid == true;
+                    break;
+                }
+                
+                if (chromosome.genes[neighbor] == 3) 
+                    ++countNeighbors3;
+                    
+                if (chromosome.genes[neighbor] == 2) 
+                    ++countNeighbors2;
+            }
+            
+            if (!isValid)
+              chromosome.genes[i] = 3; 
         } 
-
+                                                                                 
         else if (chromosome.genes[i] == 2) {
+            bool hasNeighborAtLeast2 = false;
             for (auto& neighbor : this->graph.getAdjacencyList(i)) {
                 if (chromosome.genes[neighbor] >= 2) {
                     hasNeighborAtLeast2 = true;
                     break; 
                 }
             }
-
+                                                                                 
             if (!hasNeighborAtLeast2) 
-                chromosome.genes[i] = 2;           
+                chromosome.genes[i] = 3;           
         }
     }
-
-    return true;    
+    
+    return chromosome;
 }
 
 /**
  * @brief Generates a new population by crossing over Chromosomes from the current population.
- * 
- *  Produces a new genetically superior population.
+ *     
  * 
  * @return std::vector<Chromosome> A new population of Chromosomes.
  */
@@ -615,7 +628,7 @@ void GeneticAlgorithm::run(size_t generations, Chromosome(*heuristic)(Graph)) {
 		
         if (bestSolution.fitnessValue > currentBestSolution.fitnessValue)
             bestSolution = currentBestSolution; 
-            
+        
         RVNS(bestSolution, heuristic);
    }
 
