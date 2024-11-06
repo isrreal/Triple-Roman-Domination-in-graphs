@@ -86,17 +86,17 @@ Chromosome TripleRomanDomination::heuristic1(Graph graph) {
             choosenVertex = gap(seed);
 	    
         solution.genes[choosenVertex] = 4;
+
         for (const auto& it: graph.getAdjacencyList(choosenVertex)) {
             if (solution.genes[it] == -1)
                 solution.genes[it] = 0;
         }
 
         graph.deleteAdjacencyList(choosenVertex);
-
         if (graph.getOrder() == 1) {
             choosenVertex = graph.getAdjacencyList().begin()->first;
-            solution.genes[choosenVertex] = 4;
-            graph.deleteVertex(choosenVertex);
+                solution.genes[choosenVertex] = 4;
+                graph.deleteVertex(choosenVertex);
         }
     }
 
@@ -147,14 +147,15 @@ Chromosome TripleRomanDomination::heuristic2(Graph graph) {
         }
     }
     
-    for (size_t i = 0; i < graphOrder; ++i) {
-	    if (solution.genes[i] == 3) {
-	       for (auto& it: temp.getAdjacencyList(i)) 	
-   	          if (solution.genes[it] >= 2) 		              
-          	  		solution.genes[i] = 2; 
-		}
-	}
-
+//    for (size_t i = 0; i < graphOrder; ++i) {
+//	    if (solution.genes[i] == 3) {
+//	       for (auto& it: temp.getAdjacencyList(i)) 	
+//   	          if (solution.genes[it] >= 2) 		              
+//          	  		solution.genes[i] = 2; 
+//		}
+//	}
+//
+    std::cout << solution << std::endl; 
     return solution;
 }
 

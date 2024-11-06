@@ -12,6 +12,7 @@ int main(int argc, char** argv) {
                 std::stof(argv[4]), std::stof(argv[5]), std::stoi(argv[6]), std::stoi(argv[7])); 
         std::cout << "Triple Roman Domination Number computed by Genetic Algorithm: " << drd->getGamma3rGeneticAlgorithm() << std::endl;
         std::cout << "Triple Roman Domination Number computed by ACO: " << drd->getGamma3rACO() << std::endl;
+        
 
         std::cout << "\nGenetic Algorithm solution: " << std::endl;
         for (const auto& it: drd->getSolutionGeneticAlgorithm())

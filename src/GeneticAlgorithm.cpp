@@ -629,7 +629,7 @@ void GeneticAlgorithm::run(size_t generations, Chromosome(*heuristic)(Graph)) {
         if (bestSolution.fitnessValue > currentBestSolution.fitnessValue)
             bestSolution = currentBestSolution; 
         
-        RVNS(bestSolution, heuristic);
+         RVNS(bestSolution, heuristic);
    }
 
     this->bestSolution = bestSolution.genes;
