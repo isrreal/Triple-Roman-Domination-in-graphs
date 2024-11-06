@@ -69,13 +69,11 @@ The type of Ant Colony Optimization proposed is based on two variants: **MAX-MIN
    git clone https://github.com/isrreal/Double-Roman-Domination-In-Graphs-meta-heuristics.git
 ### 2. Edit the File "graph.txt":
 
-The `graph.txt` file is essential for defining the structure of the graph, specifying both the **order** (the number of vertices) and the **size** (the number of edges). It should be formatted in a way that clearly outlines the relationships between the vertices.
+The `graph.txt` file is essential for defining the structure of the graph, specifying both the **order** (the number of vertices). It should be formatted in a way that clearly outlines the relationships between the vertices.
 
 1. **File Structure**:
-   - The first line should contain two integers:
-     - `order_of_graph`: This represents the total number of vertices in the graph.
-     - `size_of_graph`: This indicates the total number of edges connecting the vertices.
-   
+   - The first line should contain a no negative integer:
+     - `order_of_graph`: This represents the total number of vertices in the graph.   
 2. **Edge List**:
    - Subsequent lines must list pairs of integers, each representing an edge between two vertices. Each pair indicates a direct connection between the specified vertices.
 
@@ -95,10 +93,10 @@ By default, the Roman Empire graph is represented as follows:
 - **Asia Minor** - 6
 - **Egypt** - 7
 
-The content below illustrates the Roman Empire represented as a graph with **8 vertices** and **11 edges**:
+The content below illustrates the Roman Empire represented as a graph with **8 vertices**:
 
 ```plaintext
-8 13
+8
 0 1 0 2
 1 2 1 3
 2 3 2 4 
