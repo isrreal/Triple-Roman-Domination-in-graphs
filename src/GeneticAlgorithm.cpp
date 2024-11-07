@@ -412,21 +412,16 @@ Chromosome GeneticAlgorithm::mutation(Chromosome& chromosome) {
     std::random_device randomNumber;
     std::mt19937 seed(randomNumber()); 
     std::uniform_real_distribution<> gap(0.0, 1.0);
-    
+    std::uniform_int_distribution<> randomLabel(0, 4);
+
 	double probability = 0.0;
 	
     for (size_t i = 0; i < chromosome.genes.size(); ++i) {
         probability = gap(seed);
         if (probability <= this->mutationRate) {
-        	if (chromosome.genes[i] == 0)
-        		chromosome.genes[i] = 2;
-        		
-        	else if (chromosome.genes[i] == 3)
-        		chromosome.genes[i] = 2;
-        	
+            chromosome.genes[i] = randomLabel(seed); 
         	feasibilityCheck(chromosome);
         }
-
     }
 
     return  chromosome;
@@ -558,10 +553,14 @@ Chromosome GeneticAlgorithm::feasibilityCheck(Chromosome& chromosome) {
                     ++countNeighbors2;
             }
             
-            if (!isValid)
-              chromosome.genes[i] = 3; 
-        } 
-                                                                                 
+            if (!isValid) {
+            	if (countNeighbors3 == 0 && countNeighbors2 == 0)
+                	chromosome.genes[i] = 3; 
+                else if (countNeighbors3 == 1 || countNeighbors2 == 2) 
+                    chromosome.genes[i] = 2;
+            }
+        }
+
         else if (chromosome.genes[i] == 2) {
             bool hasNeighborAtLeast2 = false;
             for (auto& neighbor : this->graph.getAdjacencyList(i)) {

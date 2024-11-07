@@ -48,8 +48,12 @@ void AntColonyOptimization::initializePheromones(std::vector<float>& graphPherom
 std::vector<int> AntColonyOptimization::constructSolution(std::vector<int> solution) {
     Graph temp(this->graph);
     size_t vertex = 0;
+    
+    std::random_device randomNumber;
+    std::mt19937 seed(randomNumber());
+    std::uniform_int_distribution<int> gap(0, graph.getOrder() - 1);
 	
-	size_t graphOrder = temp.getOrder();
+	size_t graphOrder = graph.getOrder();
     while (temp.getOrder() > 0) {
         vertex = chooseVertex(temp);  
         solution[vertex] = 4;
@@ -61,15 +65,33 @@ std::vector<int> AntColonyOptimization::constructSolution(std::vector<int> solut
         temp.deleteAdjacencyList(vertex);
         
         for (size_t i = 0; i < graphOrder; ++i) {
-            if (temp.vertexExists(i)) {
-                if (temp.getVertexDegree(i) == 0) {
-                    solution[i] = 3;
+            if (temp.vertexExists(i) && temp.getVertexDegree(i) == 0) {
+                    solution[i] = 2;
                     temp.deleteVertex(i);
-                }
             }
         }
     }
-   
+  
+  	  
+    for (size_t i = 0; i < graphOrder; ++i) {
+        if (solution[i] == 2) {
+            bool onlyLabel0 = true;
+            for (const auto& neighbor: graph.getAdjacencyList(i)) {	
+                if (solution[neighbor] >= 2) {
+                    onlyLabel0 = false;
+                    break;
+                }
+            }
+
+            if (onlyLabel0) {
+                auto neighbors = graph.getAdjacencyList(i);
+                size_t randomNeighbor = gap(seed) % neighbors.size();
+                auto it = std::next(neighbors.begin(), randomNeighbor);
+                solution[*it] = 2;
+            }
+        }
+    }
+    
     return solution;
 }
 
