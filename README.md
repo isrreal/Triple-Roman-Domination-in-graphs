@@ -26,22 +26,87 @@ Optimization problems are often computationally challenging. Complexity theory c
 - **NP-complete**: Problems that are both in NP and NP-hard, representing many real-world problems without known polynomial-time solutions.
 
 # What is a Meta-Heuristic?
-A meta-heuristic is a general exploration method, often stochastic, that applies similarly to various different combinatorial optimization problems. It typically begins with any feasible solution and iteratively improves it over several iterations until a stopping criterion is met. Examples of meta-heuristics include Genetic Algorithms and Ant Colony Optimization.
+A meta-heuristic is a general exploration method, often stochastic, that applies similarly to various different combinatorial optimization problems. It typically begins with any feasible solution and iteratively improves it over several iterations until a stopping criterion is met. Examples of meta-heuristics include Memetic Genetic Algorithms and Ant Colony Optimization.
 
 
-## Genetic Algorithm
+## Memetic Genetic Algorithm
 
-The genetic algorithm proposed by the authors represents solutions, or chromosomes, as vectors of size $|V|$, where each position represents a specific vertex and its label, according to the Double Roman Domination Function (DRDF) constraints. The initial population is generated using three heuristics, producing 1000 chromosomes. Each heuristic uses an auxiliary graph $G$, which is a copy of the original graph. During each iteration, vertices are removed from $G$, with the stopping condition being $V(G) = \emptyset$.
+A **Memetic Genetic Algorithm (MGA)** is an evolutionary algorithm that combines the principles of genetic algorithms (GAs) with local search techniques to refine solutions. In MGAs, after the crossover and mutation processes, each new chromosome (solution) undergoes a local improvement phase (or "meme"). This additional step helps to explore the search space more effectively and improve convergence towards optimal solutions, making MGAs particularly useful for complex optimization problems. The local search, or meme, can vary based on the problem context and may include heuristics, gradient-based optimization, or other methods to improve solution quality. MGAs are widely used in combinatorial optimization, including problems in NP-hard domains.
 
-1. **First Heuristic**: A greedy approach is applied. In each iteration, a vertex $v$ is randomly selected from the auxiliary graph and assigned the label 3. The corresponding position in the solution vector is labeled 3, while vertices in $N(v)$ are labeled 0.
+The MGA proposed by the authors represents solutions, or chromosomes, as vectors of size $|V|$, where each position represents a specific vertex and its label, according to the constraints of the Triple Roman Domination Function (TRDF). The initial population is generated using three heuristics, producing 1000 chromosomes. Each heuristic utilizes an auxiliary graph $G$, a copy of the original graph. During each iteration, vertices are removed from $G$, with the stopping condition being $V(G) = \emptyset$.
+
+### Heuristics for Initial Population
+
+1. **First Heuristic**: A greedy approach is applied. In each iteration, a vertex $v$ is randomly selected from the auxiliary graph and assigned the label 4. The corresponding position in the solution vector is labeled 4, while adjacent vertices are labeled 0. If only one vertex remains in the auxiliary graph, it is labeled 3, ensuring that all vertices adhere to the TRDF constraints.
+
+2. **Second Heuristic**: Similar to the first, but after labeling vertices and removing them from the auxiliary graph, any isolated vertices (degree 0) are labeled 2. These isolated vertices' positions in the solution vector are updated, and the vertices are then removed from $G$. If a vertex labeled 2 has only neighbors labeled 0, one of these neighbors is randomly assigned a label of 2, maintaining connectivity under TRDF requirements.
+
+3. **Third Heuristic**: Vertices are sorted in descending order by degree. The highest-degree vertex is selected and labeled 4, while its neighbors in $N(v)$ are labeled 0. If any remaining vertices in the auxiliary graph have degree 0, they are labeled 2. The auxiliary graph is then checked for any vertices labeled 2 that have only neighbors labeled 0; if such vertices are found, a random neighbor is assigned the label 2.
+
+### Memetic Local Search
+
+After the crossover operation, each offspring undergoes a local search process to improve solution quality. The local search involves:
+
+- **ExtendSolution**: Any vertex currently labeled 0, 2, or 3 may be upgraded to a label of 4 to strengthen domination within the solution.
+- **ReduceSolution**: Redundant vertices are identified and removed from the solution, preserving TRDF constraints. A vertex $v$ is redundant if all vertices in its closed neighborhood $N[v]$ are dominated by other vertices in the solution.
+
+By using these local refinement techniques, the algorithm effectively balances exploration with focused improvements, increasing the chances of finding optimal or near-optimal solutions for the TRDF problem.
+
+This approach leverages both the global exploration of genetic algorithms and the precision of local search, making it highly effective for Triple Roman Domination problems in conex graph structures.
+
+### Mutation Operator
+
+The `mutation` function introduces random variations in the genes of a chromosome, allowing for greater exploration of the solution space and preventing premature convergence. This function operates as follows:
+
+1. **Random Number Generation**: A random seed generator (`std::random_device`) and a pseudo-random number generator (`std::mt19937`) are initialized, along with two distributions: `gap`, which generates a probability between 0 and 1, and `randomLabel`, which selects an integer between 0 and 4 to represent a possible gene value.
+
+2. **Mutation Process**: For each gene in the chromosome:
+   - A random probability is generated using `gap`.
+   - If this probability is less than or equal to the mutation rate (`mutationRate`), the gene is replaced with a randomly selected value from `randomLabel`, representing a new gene label between 0 and 4.
    
-2. **Second Heuristic**: Similar to the first, but after removing labeled vertices, the auxiliary graph is checked for isolated vertices (degree 0). These vertices are labeled 2, and the corresponding positions in the solution vector are updated. The vertices are then removed from the auxiliary graph.
+3. **Feasibility Check**: After each mutation, the `feasibilityCheck` function is called to ensure that the chromosome maintains valid properties, as required by the problem's constraints.
 
-3. **Third Heuristic**: Vertices are sorted in descending order by degree. The highest-degree vertex is selected and labeled 3, while its neighbors in $N(v)$ are labeled 0. If the remaining vertices in the auxiliary graph have degree 0, they are labeled 2.
+This mutation operator, therefore, enhances genetic diversity within the population, helping the algorithm to explore new solutions by occasionally altering gene values.
+
+
+### Elitism Selection Operator
+
+The `elitism` function implements an elitism strategy, ensuring that the best solution in the current population is preserved across generations. This approach prevents the loss of the most optimal solutions and is outlined as follows:
+
+1. **Identifying the Best Solution**: The function identifies the best chromosome in the population using `getBestChromosome`, which helps maintain high-quality solutions.
+
+2. **Elitism Rate and Iterations**: The number of elite individuals to retain is determined by `elitismRate`. Specifically, this rate is multiplied by the population size to calculate the number of copies of the best solution to retain in the next generation.
+
+3. **Population Replacement**: The selected elite chromosomes are copied into a temporary vector, `temp`, and then swapped with the original population, ensuring that the best solutions are propagated forward.
+
+This elitism operator helps maintain strong solutions across generations, balancing exploration and exploitation by retaining top performers, thus enhancing convergence towards an optimal solution.
+
 
 ### Crossover Operator
 
-Two solutions $S_1$ and $S_2$ are selected from the current population of 1000 chromosomes. Random indices $R_1$ and $R_2$ are chosen, and the labels between these indices in $S_1$ and $S_2$ are swapped. The resulting solutions are checked to ensure they satisfy the DRDF constraints. Elitism and mutation rate are not considered in the proposed algorithm.
+The crossover operator combines two solutions, $S_1$ and $S_2$, from the current population of 1000 chromosomes. This is achieved through the following steps:
+
+1. **Selection of Crossover Points**: Random indices, $R_1$ and $R_2$, are chosen within the chromosome length.
+2. **Gene Exchange**: The labels (genes) between indices $R_1$ and $R_2$ in $S_1$ and $S_2$ are swapped, producing two new offspring solutions.
+3. **Feasibility Check**: The resulting offspring solutions are verified to ensure they satisfy the constraints of the Double Roman Domination Function (DRDF). Solutions that violate constraints are discarded or adjusted.
+
+In this proposed algorithm, elitism and mutation rate do not influence the crossover operator directly.
+
+### RVNS (Random Variable Neighborhood Search)
+
+The RVNS method further refines the best solution found by the genetic algorithm, seeking solutions in nearby solution spaces. This neighborhood exploration enhances the chances of finding an improved solution, closer to the optimal. The RVNS process involves the following steps:
+
+1. **DestroySolution Sub-Routine**: A randomly chosen vertex labeled 0, 2, or 3 is selected and "destroyed" by unlabeled it (setting its label to -1). This introduces a controlled disruption in the current solution.
+
+2. **Solution Reconstruction**: After "destroying" part of the solution, the following sub-routines are applied to form a new solution:
+   - **ConstructSolution**: Partially reconstructs the solution, assigning feasible labels to vertices based on DRDF rules.
+   - **ExtendSolution**: Expands the labeling where possible to improve coverage or reduce weights.
+   - **ReduceSolution**: Optimizes the labeling to reduce the overall weight while satisfying DRDF constraints.
+
+3. **Solution Comparison**: The newly formed solution is compared to the original. If the new solution has a lower weight, it replaces the current solution as the best candidate.
+
+This iterative improvement through RVNS allows for fine-tuning of the solution, making it a valuable addition to the genetic algorithm's exploration-exploitation balance.
+
 
 ## Ant Colony Optimization (ACO)
 
@@ -51,7 +116,7 @@ The type of Ant Colony Optimization proposed is based on two variants: **MAX-MIN
 
 ### ACO Sub-routines
 
-1. **ConstructSolution**: A random vertex is selected and labeled as 4, with its neighbors labeled as 0 and removed from the auxiliary graph. This labeling process repeats until the graph is empty.
+1. **ConstructSolution**: A random vertex is selected and labeled as 4, while its neighbors are labeled as 0. These vertices are then removed from the auxiliary graph. If there are any remaining vertices with degree 0, they are labeled as 2. After this, the algorithm checks if there are any vertices labeled 2 that have only neighbors labeled as 0; if so, a random neighbor is assigned the label 2 to ensure the constraints of the TRDF.
 
 2. **ExtendSolution**: A vertex currently labeled 0, 2, or 3 is selected and upgraded to a label of 4 in the current solution.
 
@@ -69,13 +134,11 @@ The type of Ant Colony Optimization proposed is based on two variants: **MAX-MIN
    git clone https://github.com/isrreal/Double-Roman-Domination-In-Graphs-meta-heuristics.git
 ### 2. Edit the File "graph.txt":
 
-The `graph.txt` file is essential for defining the structure of the graph, specifying both the **order** (the number of vertices). It should be formatted in a way that clearly outlines the relationships between the vertices.
+The `graph.txt` file is essential for defining the structure of the graph. It should be formatted in a way that clearly outlines the relationships between the vertices.
 
 1. **File Structure**:
-   - The first line should contain a no negative integer:
-     - `order_of_graph`: This represents the total number of vertices in the graph.   
-2. **Edge List**:
-   - Subsequent lines must list pairs of integers, each representing an edge between two vertices. Each pair indicates a direct connection between the specified vertices.
+   **Edge List**:
+      - Subsequent lines must list pairs of integers, each representing an edge between two vertices. Each pair indicates a direct connection between the specified vertices.
 
 **Example of `graph.txt`**:
 
@@ -96,7 +159,6 @@ By default, the Roman Empire graph is represented as follows:
 The content below illustrates the Roman Empire represented as a graph with **8 vertices**:
 
 ```plaintext
-8
 0 1 0 2
 1 2 1 3
 2 3 2 4 
