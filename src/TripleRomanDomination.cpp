@@ -95,7 +95,7 @@ Chromosome TripleRomanDomination::heuristic1(Graph graph) {
         graph.deleteAdjacencyList(choosenVertex);
         if (graph.getOrder() == 1) {
             choosenVertex = graph.getAdjacencyList().begin()->first;
-            solution.genes[choosenVertex] = 4;
+            solution.genes[choosenVertex] = 3;
             graph.deleteVertex(choosenVertex);
         }
     }
