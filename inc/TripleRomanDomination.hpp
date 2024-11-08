@@ -7,6 +7,7 @@
 #include "AntColonyOptimization.hpp"
 #include <vector>
 #include <random>
+#include <thread>
 
 class TripleRomanDomination {
 	private:
@@ -24,8 +25,12 @@ class TripleRomanDomination {
     			: graph(graph), gamma3rGeneticAlgorithm(0), gamma3rACO(0),   
                 geneticAlgorithm(new GeneticAlgorithm(graph, populationSize, genesSize, generations, mutationRate, elitismRate)),
     		    ACO(new AntColonyOptimization(graph, iterations, numberOfAnts)) {
-                    this->runGeneticAlgorithm(heuristic);                    
-                    this->runACO();
+
+    				std::thread geneticAlgorithmThread(&TripleRomanDomination::runGeneticAlgorithm, this, heuristic);
+    				std::thread acoThread(&TripleRomanDomination::runACO, this);
+
+    				geneticAlgorithmThread.join();
+   	 				acoThread.join();
                 }
 
         ~TripleRomanDomination();
