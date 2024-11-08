@@ -35,8 +35,7 @@ Graph::Graph(size_t order, bool isDirected, float probabilityOfEdge) {
     }
 }
 
-Graph::Graph(const std::string& filename, bool isDirected) { 
-    this->isDirected = isDirected;
+Graph::Graph(const std::string& filename, bool isDirected) : isDirected(isDirected), size(0) {
     std::ifstream file(filename, std::fstream::in);
 
     if (!file) {
@@ -44,22 +43,21 @@ Graph::Graph(const std::string& filename, bool isDirected) {
         throw std::runtime_error("File not found");
     }
 
-    std::string line;
-    size_t source = 0, destination = 0;
-
-    if (std::getline(file, line)) {
-        std::stringstream ss(line);
-        ss >> this->order;
-    }
-
-    for (size_t i = 0; i < order; ++i) 
-        adjList[i] = {};
+    std::string line = "";
+    size_t source, destination = 0;
 
     while (std::getline(file, line)) {
         std::stringstream ssEdges(line);
 
-        while (ssEdges >> source >> destination) 
-            addEdge(source, destination); 
+        while (ssEdges >> source >> destination) {
+        	if (source != destination) {
+        		addVertex(source);
+	    		addVertex(destination);
+	    		
+		    	if ((!edgeExists(source, destination))) 		    		
+		        	addEdge(source, destination);		       	
+		    }
+    	}
     }
 
     file.close();
@@ -74,12 +72,21 @@ Graph::Graph(const Graph& graph) {
 
 Graph::Graph() {}
 
+void Graph::addVertex(size_t source) {
+	if (!vertexExists(source)) {
+        adjList[source] = {};
+        ++order;
+    }
+}
+
 void Graph::addEdge(size_t source, size_t destination) {
     if (this->isDirected == false) {
         this->adjList[source].push_back(destination);
         this->adjList[destination].push_back(source);
-        this->size += 2;
-    } else {
+        this->size += 2;      
+    } 
+    
+    else {
         this->adjList[source].push_back(destination);
         this->size += 1;
     }
