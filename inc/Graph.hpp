@@ -16,6 +16,7 @@ private:
     size_t size;
     bool isDirected;  
     std::unordered_map<size_t, std::list<size_t>> adjList;
+    void addVertex(size_t source);
     void addEdge(size_t source, size_t destination);
     Graph readGraph(const std::string& filename);
 public:	
