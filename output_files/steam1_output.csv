@@ -1,0 +1,11 @@
+graph_name,graph_order,graph_size,graph_max_degree,GA_Fitness_Heuristic1,ACO_Fitness_20_10,lower_bound,upper_bound,elapsed_time_GA(seconds),elapsed_time_ACO(seconds)
+./input_files/steam1.txt,240,1761,20,120,144,46,360,36.6615,5.72034
+./input_files/steam1.txt,240,1761,20,104,144,46,360,22.5044,1.43001
+./input_files/steam1.txt,240,1761,20,108,152,46,360,35.8148,1.46912
+./input_files/steam1.txt,240,1761,20,108,160,46,360,35.3932,1.4784
+./input_files/steam1.txt,240,1761,20,144,148,46,360,21.5986,1.45729
+./input_files/steam1.txt,240,1761,20,100,156,46,360,35.7823,1.46293
+./input_files/steam1.txt,240,1761,20,108,144,46,360,35.2991,1.45635
+./input_files/steam1.txt,240,1761,20,112,144,46,360,16.072,1.43591
+./input_files/steam1.txt,240,1761,20,124,136,46,360,33.6851,1.40971
+./input_files/steam1.txt,240,1761,20,128,128,46,360,34.9027,1.38635

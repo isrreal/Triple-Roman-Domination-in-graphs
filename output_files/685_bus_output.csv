@@ -1,0 +1,11 @@
+graph_name,graph_order,graph_size,graph_max_degree,GA_Fitness_Heuristic1,ACO_Fitness_20_10,lower_bound,upper_bound,elapsed_time_GA(seconds),elapsed_time_ACO(seconds)
+./input_files/685_bus.txt,685,1282,12,940,957,211,1027,75.5863,41.6302
+./input_files/685_bus.txt,685,1282,12,1031,932,211,1027,64.8079,12.0292
+./input_files/685_bus.txt,685,1282,12,1055,908,211,1027,64.6077,12.0493
+./input_files/685_bus.txt,685,1282,12,1071,911,211,1027,64.6371,11.9387
+./input_files/685_bus.txt,685,1282,12,1067,927,211,1027,29.0573,12.0618
+./input_files/685_bus.txt,685,1282,12,1039,927,211,1027,44.5774,11.9973
+./input_files/685_bus.txt,685,1282,12,1023,920,211,1027,64.967,12.0783
+./input_files/685_bus.txt,685,1282,12,1035,894,211,1027,65.1009,12.1238
+./input_files/685_bus.txt,685,1282,12,1031,910,211,1027,64.7134,12.0214
+./input_files/685_bus.txt,685,1282,12,1083,805,211,1027,64.4956,10.5134

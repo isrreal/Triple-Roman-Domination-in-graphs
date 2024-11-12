@@ -1,0 +1,11 @@
+graph_name,graph_order,graph_size,graph_max_degree,GA_Fitness_Heuristic1,ACO_Fitness_20_10,lower_bound,upper_bound,elapsed_time_GA(seconds),elapsed_time_ACO(seconds)
+./input_files/fidap001.txt,216,2079,50,126,151,17,324,33.7248,5.05721
+./input_files/fidap001.txt,216,2079,50,131,118,17,324,31.9261,1.35098
+./input_files/fidap001.txt,216,2079,50,111,117,17,324,32.3336,1.33455
+./input_files/fidap001.txt,216,2079,50,143,120,17,324,31.7671,1.31927
+./input_files/fidap001.txt,216,2079,50,115,112,17,324,32.3024,1.32297
+./input_files/fidap001.txt,216,2079,50,139,118,17,324,31.7922,1.30911
+./input_files/fidap001.txt,216,2079,50,139,114,17,324,31.5802,1.27113
+./input_files/fidap001.txt,216,2079,50,127,112,17,324,31.9016,1.26693
+./input_files/fidap001.txt,216,2079,50,135,108,17,324,32.0282,1.26895
+./input_files/fidap001.txt,216,2079,50,127,92,17,324,31.9829,1.29424

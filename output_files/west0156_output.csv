@@ -1,0 +1,11 @@
+graph_name,graph_order,graph_size,graph_max_degree,GA_Fitness_Heuristic1,ACO_Fitness_20_10,lower_bound,upper_bound,elapsed_time_GA(seconds),elapsed_time_ACO(seconds)
+./input_files/west0156.txt,156,371,10,188,194,57,234,25.2648,3.16217
+./input_files/west0156.txt,156,371,10,207,190,57,234,23.4452,0.856067
+./input_files/west0156.txt,156,371,10,207,179,57,234,18.2726,0.850064
+./input_files/west0156.txt,156,371,10,215,186,57,234,23.909,0.811201
+./input_files/west0156.txt,156,371,10,215,193,57,234,23.2664,0.81235
+./input_files/west0156.txt,156,371,10,203,175,57,234,23.4537,0.815917
+./input_files/west0156.txt,156,371,10,215,164,57,234,23.257,0.820715
+./input_files/west0156.txt,156,371,10,207,172,57,234,19.0583,0.805381
+./input_files/west0156.txt,156,371,10,215,175,57,234,23.812,0.808354
+./input_files/west0156.txt,156,371,10,191,171,57,234,24.2614,0.819265

@@ -1,0 +1,11 @@
+graph_name,graph_order,graph_size,graph_max_degree,GA_Fitness_Heuristic1,ACO_Fitness_20_10,lower_bound,upper_bound,elapsed_time_GA(seconds),elapsed_time_ACO(seconds)
+./input_files/bfw398b.txt,398,1256,12,463,432,123,597,48.7775,14.7408
+./input_files/bfw398b.txt,398,1256,12,447,445,123,597,26.236,3.86438
+./input_files/bfw398b.txt,398,1256,12,451,466,123,597,45.0511,3.93527
+./input_files/bfw398b.txt,398,1256,12,423,455,123,597,45.455,3.98995
+./input_files/bfw398b.txt,398,1256,12,451,465,123,597,44.7259,3.93962
+./input_files/bfw398b.txt,398,1256,12,451,467,123,597,45.1226,3.93572
+./input_files/bfw398b.txt,398,1256,12,459,470,123,597,44.7134,3.91404
+./input_files/bfw398b.txt,398,1256,12,471,450,123,597,18.0238,3.88128
+./input_files/bfw398b.txt,398,1256,12,451,456,123,597,44.9911,3.9267
+./input_files/bfw398b.txt,398,1256,12,435,469,123,597,45.1297,3.89248

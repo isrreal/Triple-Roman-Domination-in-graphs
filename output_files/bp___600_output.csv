@@ -1,0 +1,11 @@
+graph_name,graph_order,graph_size,graph_max_degree,GA_Fitness_Heuristic1,ACO_Fitness_20_10,lower_bound,upper_bound,elapsed_time_GA(seconds),elapsed_time_ACO(seconds)
+./input_files/bp___600.txt,822,4157,301,951,872,11,1233,92.3357,48.0465
+./input_files/bp___600.txt,822,4157,301,1099,857,11,1233,49.2089,10.4647
+./input_files/bp___600.txt,822,4157,301,1075,770,11,1233,78.0973,9.91421
+./input_files/bp___600.txt,822,4157,301,995,750,11,1233,78.9484,9.51758
+./input_files/bp___600.txt,822,4157,301,1027,736,11,1233,77.8114,9.31239
+./input_files/bp___600.txt,822,4157,301,1015,733,11,1233,78.5045,9.57589
+./input_files/bp___600.txt,822,4157,301,991,822,11,1233,79.3496,9.99595
+./input_files/bp___600.txt,822,4157,301,1015,796,11,1233,78.6044,10.0509
+./input_files/bp___600.txt,822,4157,301,1043,773,11,1233,45.9333,9.92087
+./input_files/bp___600.txt,822,4157,301,1011,727,11,1233,78.7332,9.65122

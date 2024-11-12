@@ -1,0 +1,11 @@
+graph_name,graph_order,graph_size,graph_max_degree,GA_Fitness_Heuristic1,ACO_Fitness_20_10,lower_bound,upper_bound,elapsed_time_GA(seconds),elapsed_time_ACO(seconds)
+./input_files/fs_541_4.txt,541,2466,540,477,60,4,811,62.4061,17.3862
+./input_files/fs_541_4.txt,541,2466,540,475,64,4,811,56.6612,2.35874
+./input_files/fs_541_4.txt,541,2466,540,483,408,4,811,57.0938,3.22651
+./input_files/fs_541_4.txt,541,2466,540,471,96,4,811,56.9239,2.86147
+./input_files/fs_541_4.txt,541,2466,540,4,92,4,811,69.7845,2.27309
+./input_files/fs_541_4.txt,541,2466,540,499,92,4,811,56.1936,2.21828
+./input_files/fs_541_4.txt,541,2466,540,487,84,4,811,28.7865,2.15872
+./input_files/fs_541_4.txt,541,2466,540,491,447,4,811,56.6455,3.57876
+./input_files/fs_541_4.txt,541,2466,540,475,452,4,811,57.1805,4.69279
+./input_files/fs_541_4.txt,541,2466,540,499,439,4,811,33.2461,5.60117

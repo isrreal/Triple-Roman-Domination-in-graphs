@@ -1,0 +1,11 @@
+graph_name,graph_order,graph_size,graph_max_degree,GA_Fitness_Heuristic1,ACO_Fitness_20_10,lower_bound,upper_bound,elapsed_time_GA(seconds),elapsed_time_ACO(seconds)
+./input_files/lshp_265.txt,265,744,6,254,262,152,397,36.9926,6.8887
+./input_files/lshp_265.txt,265,744,6,239,268,152,397,35.14,1.84207
+./input_files/lshp_265.txt,265,744,6,260,254,152,397,34.7698,1.84923
+./input_files/lshp_265.txt,265,744,6,259,260,152,397,19.5215,1.86393
+./input_files/lshp_265.txt,265,744,6,251,275,152,397,30.9751,1.88449
+./input_files/lshp_265.txt,265,744,6,267,278,152,397,34.6089,1.90833
+./input_files/lshp_265.txt,265,744,6,255,262,152,397,17.0879,1.8949
+./input_files/lshp_265.txt,265,744,6,259,271,152,397,34.8053,1.90264
+./input_files/lshp_265.txt,265,744,6,255,253,152,397,34.8572,1.79998
+./input_files/lshp_265.txt,265,744,6,255,257,152,397,34.95,1.81749

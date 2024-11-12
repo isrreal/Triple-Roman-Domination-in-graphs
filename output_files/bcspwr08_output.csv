@@ -1,0 +1,11 @@
+graph_name,graph_order,graph_size,graph_max_degree,GA_Fitness_Heuristic1,ACO_Fitness_20_10,lower_bound,upper_bound,elapsed_time_GA(seconds),elapsed_time_ACO(seconds)
+./input_files/bcspwr08.txt,1624,2213,13,2613,2679,464,2436,150.244,206.819
+./input_files/bcspwr08.txt,1624,2213,13,3163,2492,464,2436,134.614,64.595
+./input_files/bcspwr08.txt,1624,2213,13,3071,2441,464,2436,136.513,66.3602
+./input_files/bcspwr08.txt,1624,2213,13,3139,2429,464,2436,133.871,65.1965
+./input_files/bcspwr08.txt,1624,2213,13,3119,2347,464,2436,133.022,58.8106
+./input_files/bcspwr08.txt,1624,2213,13,3187,2307,464,2436,133.17,57.7833
+./input_files/bcspwr08.txt,1624,2213,13,3111,2269,464,2436,132.603,59.5067
+./input_files/bcspwr08.txt,1624,2213,13,3095,2287,464,2436,133.178,60.5152
+./input_files/bcspwr08.txt,1624,2213,13,3215,2325,464,2436,133.252,59.348
+./input_files/bcspwr08.txt,1624,2213,13,2995,2333,464,2436,133.952,58.7656

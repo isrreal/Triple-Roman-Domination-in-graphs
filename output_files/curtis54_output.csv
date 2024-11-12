@@ -1,0 +1,11 @@
+graph_name,graph_order,graph_size,graph_max_degree,GA_Fitness_Heuristic1,ACO_Fitness_20_10,lower_bound,upper_bound,elapsed_time_GA(seconds),elapsed_time_ACO(seconds)
+./rerun/curtis54.txt,54,124,15,56,67,14,81,17.2044,0.742979
+./rerun/curtis54.txt,54,124,15,67,64,14,81,17.0768,0.212928
+./rerun/curtis54.txt,54,124,15,64,66,14,81,17.002,0.216393
+./rerun/curtis54.txt,54,124,15,71,62,14,81,16.9926,0.201603
+./rerun/curtis54.txt,54,124,15,59,58,14,81,17.1647,0.196064
+./rerun/curtis54.txt,54,124,15,71,54,14,81,18.0191,0.191723
+./rerun/curtis54.txt,54,124,15,72,52,14,81,10.117,0.191216
+./rerun/curtis54.txt,54,124,15,71,54,14,81,17.1482,0.187146
+./rerun/curtis54.txt,54,124,15,67,56,14,81,17.0192,0.184995
+./rerun/curtis54.txt,54,124,15,67,52,14,81,17.9254,0.18033

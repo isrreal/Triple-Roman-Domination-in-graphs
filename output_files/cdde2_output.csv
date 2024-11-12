@@ -1,0 +1,11 @@
+graph_name,graph_order,graph_size,graph_max_degree,GA_Fitness_Heuristic1,ACO_Fitness_20_10,lower_bound,upper_bound,elapsed_time_GA(seconds),elapsed_time_ACO(seconds)
+./input_files/cdde2.txt,961,1860,4,1302,1387,769,1441,106.28,84.1511
+./input_files/cdde2.txt,961,1860,4,1423,1328,769,1441,85.0654,24.0596
+./input_files/cdde2.txt,961,1860,4,1407,1308,769,1441,85.741,24.0667
+./input_files/cdde2.txt,961,1860,4,1467,1262,769,1441,84.9536,24.4241
+./input_files/cdde2.txt,961,1860,4,1451,1298,769,1441,85.1154,24.5536
+./input_files/cdde2.txt,961,1860,4,1419,1231,769,1441,85.0482,24.103
+./input_files/cdde2.txt,961,1860,4,1407,1245,769,1441,85.5723,23.6997
+./input_files/cdde2.txt,961,1860,4,1463,1228,769,1441,84.659,23.8444
+./input_files/cdde2.txt,961,1860,4,1427,1278,769,1441,85.4742,24.1316
+./input_files/cdde2.txt,961,1860,4,1407,1270,769,1441,85.2649,24.1433

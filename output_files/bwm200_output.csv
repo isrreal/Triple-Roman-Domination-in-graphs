@@ -1,0 +1,11 @@
+graph_name,graph_order,graph_size,graph_max_degree,GA_Fitness_Heuristic1,ACO_Fitness_20_10,lower_bound,upper_bound,elapsed_time_GA(seconds),elapsed_time_ACO(seconds)
+./input_files/bwm200.txt,200,298,3,314,303,200,300,26.3651,4.94524
+./input_files/bwm200.txt,200,298,3,311,302,200,300,27.0927,1.58854
+./input_files/bwm200.txt,200,298,3,327,306,200,300,26.7294,1.62777
+./input_files/bwm200.txt,200,298,3,311,299,200,300,26.934,1.57198
+./input_files/bwm200.txt,200,298,3,335,286,200,300,26.5379,1.6432
+./input_files/bwm200.txt,200,298,3,319,283,200,300,26.958,1.61987
+./input_files/bwm200.txt,200,298,3,347,276,200,300,12.8863,1.62469
+./input_files/bwm200.txt,200,298,3,339,277,200,300,26.8612,1.57454
+./input_files/bwm200.txt,200,298,3,335,280,200,300,12.8239,1.63933
+./input_files/bwm200.txt,200,298,3,319,273,200,300,27.1022,1.5932

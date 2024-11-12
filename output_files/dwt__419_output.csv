@@ -1,0 +1,11 @@
+graph_name,graph_order,graph_size,graph_max_degree,GA_Fitness_Heuristic1,ACO_Fitness_20_10,lower_bound,upper_bound,elapsed_time_GA(seconds),elapsed_time_ACO(seconds)
+./input_files/dwt__419.txt,419,1572,12,363,383,129,628,52.0688,14.6512
+./input_files/dwt__419.txt,419,1572,12,359,401,129,628,47.6444,3.65989
+./input_files/dwt__419.txt,419,1572,12,363,391,129,628,47.6011,3.6418
+./input_files/dwt__419.txt,419,1572,12,339,388,129,628,47.6922,3.6167
+./input_files/dwt__419.txt,419,1572,12,367,384,129,628,37.837,3.61694
+./input_files/dwt__419.txt,419,1572,12,347,365,129,628,47.7432,3.62901
+./input_files/dwt__419.txt,419,1572,12,327,356,129,628,48.5857,3.62548
+./input_files/dwt__419.txt,419,1572,12,343,364,129,628,47.4556,3.64595
+./input_files/dwt__419.txt,419,1572,12,347,374,129,628,47.8842,3.6859
+./input_files/dwt__419.txt,419,1572,12,339,373,129,628,47.5574,3.65768

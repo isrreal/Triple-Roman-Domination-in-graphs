@@ -1,0 +1,11 @@
+graph_name,graph_order,graph_size,graph_max_degree,GA_Fitness_Heuristic1,ACO_Fitness_20_10,lower_bound,upper_bound,elapsed_time_GA(seconds),elapsed_time_ACO(seconds)
+./input_files/cavity01.txt,317,4237,61,169,176,21,475,49.0723,8.92686
+./input_files/cavity01.txt,317,4237,61,167,94,21,475,46.3398,2.39061
+./input_files/cavity01.txt,317,4237,61,207,108,21,475,49.6573,2.34314
+./input_files/cavity01.txt,317,4237,61,247,98,21,475,45.6382,2.36704
+./input_files/cavity01.txt,317,4237,61,163,106,21,475,42.9668,2.33368
+./input_files/cavity01.txt,317,4237,61,143,108,21,475,47.5058,2.29741
+./input_files/cavity01.txt,317,4237,61,179,92,21,475,45.4097,2.29502
+./input_files/cavity01.txt,317,4237,61,231,92,21,475,46.9556,2.29594
+./input_files/cavity01.txt,317,4237,61,175,124,21,475,44.5489,2.33938
+./input_files/cavity01.txt,317,4237,61,227,126,21,475,48.6453,2.3981
