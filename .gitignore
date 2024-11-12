@@ -33,3 +33,7 @@
 
 *.txt
 app
+
+instance_handler/
+rerun/
+
