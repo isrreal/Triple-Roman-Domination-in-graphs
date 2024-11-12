@@ -2,34 +2,70 @@
 #include "TripleRomanDomination.hpp"
 #include "Graph.hpp"             
 #include "AntColonyOptimization.hpp"
-
+#include <thread>
+#include <chrono>
 
 int main(int argc, char** argv) {
-    if (argc > 7) {
-        Graph graph("graph.txt", false);
+    if (argc > 1) {
+        Graph graph(argv[1], false);
         
         if (graph.getOrder() == 0)
-        	return -1;
-        	
-        // graph, populationSize, genesSize, generations, heuristic, mutation rate, elitism rate, numberOfAnts, iterations, 
-        TripleRomanDomination* drd = new TripleRomanDomination(graph, std::stoi(argv[1]), graph.getOrder(), std::stoi(argv[2]), std::stoi(argv[3]),
-                std::stof(argv[4]), std::stof(argv[5]), std::stoi(argv[6]), std::stoi(argv[7])); 
-        std::cout << "Triple Roman Domination Number computed by Genetic Algorithm: " << drd->getGamma3rGeneticAlgorithm() << std::endl;
-        std::cout << "Triple Roman Domination Number computed by ACO: " << drd->getGamma3rACO() << std::endl;
+            return -1;
+                  
+    	constexpr size_t trial = 10;
+        constexpr size_t populationSize = 1000;
+        constexpr size_t generations = 100;
+        constexpr short int heuristic = 1;
+        constexpr float mutationRate = 0.05;
+        constexpr float elitismRate = 0.15;
+        constexpr size_t numberOfAnts = 20;
+        constexpr size_t iterations = 10;
         
-        std::cout << "\nGenetic Algorithm solution: " << std::endl;
-        for (const auto& it: drd->getSolutionGeneticAlgorithm())
-           std::cout << it << " ";
-        std::cout << std::endl;
+        size_t Delta = graph.getMaxDegree();
+        
+        // graph, populationSize, genesSize, generations, heuristic, mutation rate, elitism rate, numberOfAnts, iterations
+        TripleRomanDomination* trd = new TripleRomanDomination(graph, populationSize, graph.getOrder(), generations, heuristic,
+                mutationRate, elitismRate, numberOfAnts, iterations); 
+        std::cout << "graph_name,graph_order,graph_size,graph_max_degree,GA_Fitness_Heuristic" << heuristic << ",";
+        std::cout << "ACO_Fitness_" << numberOfAnts << "_" << iterations << ",lower_bound,upper_bound,elapsed_time_GA(seconds),elapsed_time_ACO(seconds)" << std::endl;
+              
+        for (size_t i = 0; i < trial; ++i) {
+		    std::cout << argv[1] << ",";
+		    std::cout << graph.getOrder() << ",";
+		    std::cout << graph.getSize() << ",";
+		    std::cout << Delta << ",";
+		    
+		    std::chrono::duration<double> elapsedGA;
+			std::chrono::duration<double> elapsedACO;
+		
+			std::thread gaThread([&]() {
+				auto startGA = std::chrono::high_resolution_clock::now();
+				trd->runGeneticAlgorithm(heuristic);
+				auto endGA = std::chrono::high_resolution_clock::now();
+				elapsedGA = endGA - startGA;
+			});			
 
-        std::cout << "\nTriple Roman Domination Function: \n" << std::endl;
-        std::cout << "ACO solution: " << std::endl;
-        for (const auto& it: drd->getSolutionACO())
-           std::cout << it << " ";
-        std::cout << std::endl;
+			std::thread acoThread([&]() {
+				auto startACO = std::chrono::high_resolution_clock::now();
+				trd->runACO();
+				auto endACO = std::chrono::high_resolution_clock::now();
+				elapsedACO = endACO - startACO;
+			});
+			
+			gaThread.join();
+			acoThread.join();
+	
+			std::cout << trd->getGeneticAlgorithmBestFitness() << ",";
+			std::cout << trd->getACOBestFitness() << ",";
+			std::cout << std::ceil(static_cast<double>(4 * graph.getOrder()) / (Delta + 1)) << ",";
+			std::cout << static_cast<size_t>((3 * graph.getOrder()) / 2) << ",";
 
-        delete drd;
+			std::cout << elapsedGA.count() << ",";
+			std::cout << elapsedACO.count() << std::endl;	
+ 	
+    	}
+    	
+		delete trd;
+		return EXIT_SUCCESS;
     }
-
-	return 0;
 }

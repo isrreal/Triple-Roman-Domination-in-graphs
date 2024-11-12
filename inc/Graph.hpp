@@ -31,6 +31,7 @@ public:
     size_t getSize() const;
     size_t getOrder() const;
     size_t getVertexDegree(size_t vertex) const;
+    size_t getMaxDegree() const;
     
     std::unordered_map<size_t, std::list<size_t>> getAdjacencyList() const;
     

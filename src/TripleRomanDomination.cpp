@@ -17,12 +17,12 @@ std::vector<int> TripleRomanDomination::getSolutionGeneticAlgorithm() {
 	return this->solutionGeneticAlgorithm;
 }
 
-size_t TripleRomanDomination::getGamma3rGeneticAlgorithm() {
-    return this->gamma3rGeneticAlgorithm;
+size_t TripleRomanDomination::getGeneticAlgorithmBestFitness() {
+    return this->geneticAlgorithmBestFitness;
 }
 
-size_t TripleRomanDomination::getGamma3rACO() {
-    return this->gamma3rACO;
+size_t TripleRomanDomination::getACOBestFitness() {
+    return this->ACOBestFitness;
 }
 
 /**
@@ -34,7 +34,9 @@ size_t TripleRomanDomination::getGamma3rACO() {
  * @return size_t The calculated triple Roman domination number.
  */
  
-void TripleRomanDomination::runGeneticAlgorithm(short int heuristic) {                                             
+void TripleRomanDomination::runGeneticAlgorithm(short int heuristic) {  
+	this->geneticAlgorithmBestFitness = 0;
+	                                           
     Chromosome (*selectedHeuristic)(Graph) = nullptr;
 
     if (heuristic == 2) 
@@ -48,18 +50,77 @@ void TripleRomanDomination::runGeneticAlgorithm(short int heuristic) {
 
     solutionGeneticAlgorithm = this->geneticAlgorithm->getBestSolution();
     std::for_each(solutionGeneticAlgorithm.begin(), solutionGeneticAlgorithm.end(), [&](int element) {
-        this->gamma3rGeneticAlgorithm += element;
+        this->geneticAlgorithmBestFitness += element;
     });
 }
 
 void TripleRomanDomination::runACO() {
+   this->ACOBestFitness = 0;
+   
    this->ACO->run();
    
    solutionACO = this->ACO->getBestSolution();
 
    std::for_each(solutionACO.begin(), solutionACO.end(), [&](int element) {
-      this->gamma3rACO += element;
+      this->ACOBestFitness += element;
    });
+}
+
+bool TripleRomanDomination::feasible(std::vector<int> solution) {
+    bool isValid = false;
+
+    for (size_t i = 0; i < solution.size(); ++i) {
+
+        isValid = false;
+
+        if (solution[i] == 0) {                                 
+            size_t countNeighbors2 = 0;
+            size_t countNeighbors3 = 0;
+            
+            for (auto& neighbor : this->graph.getAdjacencyList(i)) {          
+
+                if ((countNeighbors2 == 1 && solution[neighbor] >= 3) ||
+                    (countNeighbors2 == 2 && solution[neighbor] >= 2)) {
+                    isValid = true;
+                    break;
+                }
+
+                if (countNeighbors3 == 1 && solution[neighbor] >= 2) {
+                     isValid = true;
+                     break;
+                }
+
+                if (solution[neighbor] == 4) {
+                    isValid = true;
+                    break;
+                }
+                
+                if (solution[neighbor] == 3) 
+                    ++countNeighbors3;
+                    
+                if (solution[neighbor] == 2) 
+                    ++countNeighbors2;
+            }
+            
+            if (!isValid)
+                return false;
+        } 
+
+        else if (solution[i] == 2) {
+            bool hasNeighborAtLeast2 = false;
+            for (auto& neighbor : this->graph.getAdjacencyList(i)) {
+                if (solution[neighbor] >= 2) {
+                    hasNeighborAtLeast2 = true;
+                    break; 
+                }
+            }
+
+            if (!hasNeighborAtLeast2) 
+                return false;           
+        }
+    }
+    
+    return true;    
 }
 
 /**

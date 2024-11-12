@@ -37,6 +37,8 @@ Graph::Graph(size_t order, bool isDirected, float probabilityOfEdge) {
 
 Graph::Graph(const std::string& filename, bool isDirected) : isDirected(isDirected), size(0) {
     std::ifstream file(filename, std::fstream::in);
+    this->order = 0;
+    this->size = 0;
 
     if (!file) {
         std::cerr << "Error opening the file!" << std::endl;
@@ -82,14 +84,13 @@ void Graph::addVertex(size_t source) {
 void Graph::addEdge(size_t source, size_t destination) {
     if (this->isDirected == false) {
         this->adjList[source].push_back(destination);
-        this->adjList[destination].push_back(source);
-        this->size += 2;      
-    } 
-    
-    else {
-        this->adjList[source].push_back(destination);
-        this->size += 1;
+        this->adjList[destination].push_back(source);            
     }
+    
+    else 
+        this->adjList[source].push_back(destination);
+ 
+    this->size += 1;
 }
 
 bool Graph::edgeExists(size_t u, size_t v) const {
@@ -97,7 +98,20 @@ bool Graph::edgeExists(size_t u, size_t v) const {
 }
 
 size_t Graph::getVertexDegree(size_t vertex) const {
-    return const_cast<const std::unordered_map<size_t, std::list<size_t>>&>(adjList).at(vertex).size();
+    return !vertexExists(vertex) ? 0 : const_cast<const std::unordered_map<size_t, std::list<size_t>>&>(adjList).at(vertex).size();
+}
+
+size_t Graph::getMaxDegree() const {
+    size_t maxDegree = getVertexDegree(getAdjacencyList().begin()->first);
+    size_t temp = 0;
+    
+    for (const auto& it : getAdjacencyList()) {
+        temp = getVertexDegree(it.first);
+        if (maxDegree < temp)
+            maxDegree = temp;
+    }
+            
+    return maxDegree;
 }
 
 size_t Graph::getSize() const { return this->size; }

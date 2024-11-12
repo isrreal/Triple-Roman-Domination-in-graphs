@@ -8,11 +8,9 @@ class AntColonyOptimization {
     private:
         Graph graph;
         std::vector<float> graphPheromone;
-        std::vector<int> solution;
         size_t numberOfAnts;
         size_t iterations;
-
-        std::vector<int> currentBestSolution;
+    
         std::vector<int> bestSolution;
          
         float convergenceFactor;
@@ -24,7 +22,6 @@ class AntColonyOptimization {
         size_t maxRVNSfunctions;
         size_t maxRVNSiterations;
         size_t maxRVNSnoImprovementIterations;
-
 
         void initializePheromones(std::vector<float>& graphPheromone);
         std::vector<int> constructSolution(std::vector<int> solution);
@@ -59,14 +56,12 @@ class AntColonyOptimization {
     public:
 
         AntColonyOptimization(Graph& graph, size_t iterations, size_t numberOfAnts):
-             graph(graph), solution(graph.getOrder(), -1),
-             graphPheromone(graph.getOrder(), 0.0),
+             graph(graph), graphPheromone(graph.getOrder(), 0.0),
              numberOfAnts(numberOfAnts), iterations(iterations),
              convergenceFactor(0), evaporationRate(0.2),
              minDestructionRate(0.2), maxDestructionRate(0.5),
              currentRVNSnumber(1), maxRVNSfunctions(5), maxRVNSiterations(150),
-             maxRVNSnoImprovementIterations(10), 
-             currentBestSolution(graph.getOrder(), 3), bestSolution(graph.getOrder(), 3) {}
+             maxRVNSnoImprovementIterations(10) {}
 
         ~AntColonyOptimization() {} 
         std::vector<int> getBestSolution();

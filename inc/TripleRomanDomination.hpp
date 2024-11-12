@@ -7,7 +7,6 @@
 #include "AntColonyOptimization.hpp"
 #include <vector>
 #include <random>
-#include <thread>
 
 class TripleRomanDomination {
 	private:
@@ -16,29 +15,24 @@ class TripleRomanDomination {
     	AntColonyOptimization* ACO;
 		std::vector<int> solutionACO;
         std::vector<int> solutionGeneticAlgorithm;
-        size_t gamma3rGeneticAlgorithm;		
-        size_t gamma3rACO;        
+        size_t geneticAlgorithmBestFitness;		
+        size_t ACOBestFitness;        
 	public:
 		TripleRomanDomination(Graph& graph, size_t populationSize, size_t genesSize, size_t generations, 
 			short int heuristic, double mutationRate, double elitismRate,
 			size_t numberOfAnts, size_t iterations) 
-    			: graph(graph), gamma3rGeneticAlgorithm(0), gamma3rACO(0),   
+    			: graph(graph), geneticAlgorithmBestFitness(0), ACOBestFitness(0),   
                 geneticAlgorithm(new GeneticAlgorithm(graph, populationSize, genesSize, generations, mutationRate, elitismRate)),
-    		    ACO(new AntColonyOptimization(graph, iterations, numberOfAnts)) {
-
-    				std::thread geneticAlgorithmThread(&TripleRomanDomination::runGeneticAlgorithm, this, heuristic);
-    				std::thread acoThread(&TripleRomanDomination::runACO, this);
-
-    				geneticAlgorithmThread.join();
-   	 				acoThread.join();
-                }
+    		    ACO(new AntColonyOptimization(graph, iterations, numberOfAnts)) {}
 
         ~TripleRomanDomination();
         Graph& getGraph();
         std::vector<int> getSolutionACO();
         std::vector<int> getSolutionGeneticAlgorithm();
-        size_t getGamma3rGeneticAlgorithm();
-        size_t getGamma3rACO();
+        bool feasible(std::vector<int> solution);
+        
+        size_t getGeneticAlgorithmBestFitness();
+        size_t getACOBestFitness();
 
         void runGeneticAlgorithm(short int heuristic);
         void runACO();

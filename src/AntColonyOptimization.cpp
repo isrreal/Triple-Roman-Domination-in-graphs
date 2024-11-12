@@ -2,6 +2,11 @@
 
 void AntColonyOptimization::run() {
     size_t temp = iterations;
+    
+    std::vector<int> currentBestSolution(graph.getOrder(), 4);
+    std::vector<int> bestSolution(graph.getOrder(), 4);
+    std::vector<int> solution(graph.getOrder(), -1);
+       
     while (temp > 0) {
         for (size_t i = 0; i < numberOfAnts; ++i) {
             solution = constructSolution(solution);
@@ -24,6 +29,8 @@ void AntColonyOptimization::run() {
 
         --temp;
     }
+    
+    this->bestSolution = bestSolution;
 }
 
 void AntColonyOptimization::initializePheromones(std::vector<float>& graphPheromone) {
@@ -71,7 +78,6 @@ std::vector<int> AntColonyOptimization::constructSolution(std::vector<int> solut
             }
         }
     }
-  
   	  
     for (size_t i = 0; i < graphOrder; ++i) {
         if (solution[i] == 2) {
@@ -166,7 +172,9 @@ std::vector<int> AntColonyOptimization::reduceSolution(std::vector<int> solution
        
         if (choosenVertex >= sortedVertices.size()) break;
 
-        if (solution[sortedVertices[choosenVertex]] == 4 || solution[sortedVertices[choosenVertex]] == 3) {         
+        if (solution[sortedVertices[choosenVertex]] == 4 || solution[sortedVertices[choosenVertex]] == 3 
+        	|| solution[sortedVertices[choosenVertex]] == 2) { 
+        	        
     		initLabel = solution[sortedVertices[choosenVertex]];
     		solution[sortedVertices[choosenVertex]] = 0;
     		
