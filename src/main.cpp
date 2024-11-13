@@ -28,8 +28,9 @@ int main(int argc, char** argv) {
                 mutationRate, elitismRate, numberOfAnts, iterations); 
         std::cout << "graph_name,graph_order,graph_size,graph_max_degree,GA_Fitness_Heuristic" << heuristic << ",";
         std::cout << "ACO_Fitness_" << numberOfAnts << "_" << iterations << ",lower_bound,upper_bound,elapsed_time_GA(seconds),elapsed_time_ACO(seconds)" << std::endl;
-              
+             
         for (size_t i = 0; i < trial; ++i) {
+               	
 		    std::cout << argv[1] << ",";
 		    std::cout << graph.getOrder() << ",";
 		    std::cout << graph.getSize() << ",";
@@ -62,7 +63,6 @@ int main(int argc, char** argv) {
 
 			std::cout << elapsedGA.count() << ",";
 			std::cout << elapsedACO.count() << std::endl;	
- 	
     	}
     	
 		delete trd;

@@ -615,7 +615,8 @@ std::vector<Chromosome>& GeneticAlgorithm::createNewPopulation() {
 void GeneticAlgorithm::run(size_t generations, Chromosome(*heuristic)(Graph)) { 
 
    this->createPopulation(heuristic, graph);
-
+	
+    
    Chromosome currentBestSolution = this->tournamentSelection(this->population);                                         
    Chromosome bestSolution = currentBestSolution;
 

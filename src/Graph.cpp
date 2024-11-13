@@ -34,7 +34,6 @@ Graph::Graph(size_t order, bool isDirected, float probabilityOfEdge) {
         }
     }
 }
-
 Graph::Graph(const std::string& filename, bool isDirected) : isDirected(isDirected), size(0) {
     std::ifstream file(filename, std::fstream::in);
     this->order = 0;
@@ -45,6 +44,8 @@ Graph::Graph(const std::string& filename, bool isDirected) : isDirected(isDirect
         throw std::runtime_error("File not found");
     }
 
+    std::unordered_map<size_t, size_t> vertexMap;  // Mapeia cada vértice para um índice sequencial
+    size_t nextVertex = 0;
     std::string line = "";
     size_t source, destination = 0;
 
@@ -52,18 +53,33 @@ Graph::Graph(const std::string& filename, bool isDirected) : isDirected(isDirect
         std::stringstream ssEdges(line);
 
         while (ssEdges >> source >> destination) {
-        	if (source != destination) {
-        		addVertex(source);
-	    		addVertex(destination);
-	    		
-		    	if ((!edgeExists(source, destination))) 		    		
-		        	addEdge(source, destination);		       	
-		    }
-    	}
+            // Ignora loops
+            if (source == destination) continue;
+
+            // Mapeia o vértice `source` para o próximo índice sequencial, se ainda não mapeado
+            if (vertexMap.find(source) == vertexMap.end()) 
+                vertexMap[source] = ++nextVertex;
+            
+            // Mapeia o vértice `destination` para o próximo índice sequencial, se ainda não mapeado
+            if (vertexMap.find(destination) == vertexMap.end()) 
+                vertexMap[destination] = ++nextVertex;
+            
+            size_t mappedSource = vertexMap[source];
+            size_t mappedDestination = vertexMap[destination];
+
+            addVertex(mappedSource);
+            addVertex(mappedDestination);
+
+            if (!edgeExists(mappedSource, mappedDestination))
+                addEdge(mappedSource, mappedDestination);
+        }
     }
 
     file.close();
 }
+
+
+
 
 Graph::Graph(const Graph& graph) {
     this->adjList = graph.adjList;
@@ -112,6 +128,20 @@ size_t Graph::getMaxDegree() const {
     }
             
     return maxDegree;
+}
+
+
+size_t Graph::getMinDegree() const {
+    size_t minDegree = getVertexDegree(getAdjacencyList().begin()->first);
+    size_t temp = 0;
+    
+    for (const auto& it : getAdjacencyList()) {
+        temp = getVertexDegree(it.first);
+        if (minDegree > temp)
+            minDegree = temp;
+    }
+            
+    return minDegree;
 }
 
 size_t Graph::getSize() const { return this->size; }
