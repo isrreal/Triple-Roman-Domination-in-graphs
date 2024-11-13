@@ -1,0 +1,11 @@
+graph_name,graph_order,graph_size,graph_max_degree,GA_Fitness_Heuristic1,ACO_Fitness_20_10,lower_bound,upper_bound,elapsed_time_GA(seconds),elapsed_time_ACO(seconds)
+./rerun/jagmesh2.txt,1009,2928,6,1005,1014,577,1513,118.464,99.037
+./rerun/jagmesh2.txt,1009,2928,6,955,963,577,1513,87.6541,24.4915
+./rerun/jagmesh2.txt,1009,2928,6,951,963,577,1513,96.565,25.0091
+./rerun/jagmesh2.txt,1009,2928,6,943,986,577,1513,96.2128,25.1289
+./rerun/jagmesh2.txt,1009,2928,6,991,981,577,1513,95.5379,25.0979
+./rerun/jagmesh2.txt,1009,2928,6,928,975,577,1513,96.5629,25.2143
+./rerun/jagmesh2.txt,1009,2928,6,955,984,577,1513,96.0284,25.6896
+./rerun/jagmesh2.txt,1009,2928,6,956,979,577,1513,96.7718,25.6409
+./rerun/jagmesh2.txt,1009,2928,6,971,948,577,1513,95.7519,24.0494
+./rerun/jagmesh2.txt,1009,2928,6,955,916,577,1513,96.5722,24.1424

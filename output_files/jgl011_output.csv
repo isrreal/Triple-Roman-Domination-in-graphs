@@ -1,0 +1,11 @@
+graph_name,graph_order,graph_size,graph_max_degree,GA_Fitness_Heuristic1,ACO_Fitness_20_10,lower_bound,upper_bound,elapsed_time_GA(seconds),elapsed_time_ACO(seconds)
+./rerun/jgl011.txt,11,49,10,7,4,4,16,9.05406,0.0833129
+./rerun/jgl011.txt,11,49,10,4,4,4,16,13.5432,0.0264571
+./rerun/jgl011.txt,11,49,10,4,4,4,16,13.5326,0.0266679
+./rerun/jgl011.txt,11,49,10,7,4,4,16,13.2884,0.0265843
+./rerun/jgl011.txt,11,49,10,7,4,4,16,13.3457,0.0264183
+./rerun/jgl011.txt,11,49,10,7,4,4,16,13.4579,0.0264235
+./rerun/jgl011.txt,11,49,10,7,4,4,16,11.2551,0.0267006
+./rerun/jgl011.txt,11,49,10,7,4,4,16,13.238,0.0261902
+./rerun/jgl011.txt,11,49,10,4,4,4,16,13.5121,0.0263552
+./rerun/jgl011.txt,11,49,10,4,4,4,16,13.5526,0.0266479

@@ -1,0 +1,11 @@
+graph_name,graph_order,graph_size,graph_max_degree,GA_Fitness_Heuristic1,ACO_Fitness_20_10,lower_bound,upper_bound,elapsed_time_GA(seconds),elapsed_time_ACO(seconds)
+./rerun/impcol_d.txt,425,1267,15,503,498,107,637,52.4088,20.8545
+./rerun/impcol_d.txt,425,1267,15,539,474,107,637,46.6604,5.16049
+./rerun/impcol_d.txt,425,1267,15,524,480,107,637,46.8269,5.13386
+./rerun/impcol_d.txt,425,1267,15,567,478,107,637,46.3235,5.22412
+./rerun/impcol_d.txt,425,1267,15,527,484,107,637,33.2183,5.36125
+./rerun/impcol_d.txt,425,1267,15,527,471,107,637,46.9851,5.48037
+./rerun/impcol_d.txt,425,1267,15,551,455,107,637,46.5989,5.49209
+./rerun/impcol_d.txt,425,1267,15,563,476,107,637,24.024,5.51012
+./rerun/impcol_d.txt,425,1267,15,563,478,107,637,46.4642,5.65374
+./rerun/impcol_d.txt,425,1267,15,575,459,107,637,46.4842,5.40107
