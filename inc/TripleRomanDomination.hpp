@@ -16,7 +16,9 @@ class TripleRomanDomination {
 		std::vector<int> solutionACO;
         std::vector<int> solutionGeneticAlgorithm;
         size_t geneticAlgorithmBestFitness;		
-        size_t ACOBestFitness;        
+        size_t ACOBestFitness;   
+        static void setNeighbor2(const Graph& graph, Chromosome& solution);     
+        static void toggleLabels(const Graph& graph, Chromosome& solution);
 	public:
 		TripleRomanDomination(Graph& graph, size_t populationSize, size_t genesSize, size_t generations, 
 			short int heuristic, double mutationRate, double elitismRate,
@@ -29,16 +31,19 @@ class TripleRomanDomination {
         Graph& getGraph();
         std::vector<int> getSolutionACO();
         std::vector<int> getSolutionGeneticAlgorithm();
-        bool feasible(std::vector<int> solution);
+        
         
         size_t getGeneticAlgorithmBestFitness();
         size_t getACOBestFitness();
 
-        void runGeneticAlgorithm(short int heuristic);
+        void runGeneticAlgorithm(short int heuristic, bool hasRVNS);
         void runACO();
-
+		
+		static bool feasible(const Graph& graph, std::vector<int> solution);
+		
         static Chromosome heuristic1(Graph graph);
         static Chromosome heuristic2(Graph graph);
         static Chromosome heuristic3(Graph graph);   
+        static Chromosome heuristic4(Graph graph);   
 };
 #endif

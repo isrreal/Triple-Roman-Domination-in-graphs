@@ -585,9 +585,34 @@ Chromosome GeneticAlgorithm::feasibilityCheck(Chromosome& chromosome) {
  * @return std::vector<Chromosome> A new population of Chromosomes.
  */
 
-std::vector<Chromosome>& GeneticAlgorithm::createNewPopulation() {
+std::vector<Chromosome>& GeneticAlgorithm::createNewPopulation1() {
     this->population = this->elitism(this->elitismRate);
     
+    std::vector<Chromosome> temp;
+      
+    while (temp.size() < populationSize) {
+        Chromosome selected1 = this->selectionMethod(tournamentSelection);
+        Chromosome selected2 = this->selectionMethod(rouletteWheelSelection);
+        Chromosome offspring = this->crossOver(selected1, selected2, nullptr);
+        
+		mutation(offspring);
+		
+        temp.push_back(offspring);       
+    }
+    
+    population.swap(temp);
+    
+    return population;
+}
+
+/**
+ * @brief Generates a new population by crossing over Chromosomes from the current population.
+ *     
+ * 
+ * @return std::vector<Chromosome> A new population of Chromosomes.
+ */
+
+std::vector<Chromosome>& GeneticAlgorithm::createNewPopulation2() {
     std::vector<Chromosome> temp;
       
     while (temp.size() < populationSize) {
@@ -612,7 +637,7 @@ std::vector<Chromosome>& GeneticAlgorithm::createNewPopulation() {
  * @return Chromosome The best solution found after all generations.
  */
 
-void GeneticAlgorithm::run(size_t generations, Chromosome(*heuristic)(Graph)) { 
+void GeneticAlgorithm::run1(size_t generations, Chromosome(*heuristic)(Graph)) { 
 
    this->createPopulation(heuristic, graph);
 	
@@ -622,7 +647,7 @@ void GeneticAlgorithm::run(size_t generations, Chromosome(*heuristic)(Graph)) {
 
    for (size_t i = 0; i < generations; ++i) {        
    
-		this->population.swap(this->createNewPopulation());
+		this->population.swap(this->createNewPopulation1());
        	
         currentBestSolution = this->tournamentSelection(this->population);                                       
 		
@@ -630,6 +655,28 @@ void GeneticAlgorithm::run(size_t generations, Chromosome(*heuristic)(Graph)) {
             bestSolution = currentBestSolution; 
         
          RVNS(bestSolution, heuristic);
+   }
+
+    this->bestSolution = bestSolution.genes;
+}
+
+
+void GeneticAlgorithm::run2(size_t generations, Chromosome(*heuristic)(Graph)) { 
+
+   this->createPopulation(heuristic, graph);
+	
+    
+   Chromosome currentBestSolution = this->tournamentSelection(this->population);                                         
+   Chromosome bestSolution = currentBestSolution;
+
+   for (size_t i = 0; i < generations; ++i) {        
+   
+		this->population.swap(this->createNewPopulation2());
+       	
+        currentBestSolution = this->tournamentSelection(this->population);                                       
+		
+        if (bestSolution.fitnessValue > currentBestSolution.fitnessValue)
+            bestSolution = currentBestSolution;       
    }
 
     this->bestSolution = bestSolution.genes;

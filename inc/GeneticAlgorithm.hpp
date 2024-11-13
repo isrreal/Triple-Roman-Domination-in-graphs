@@ -38,7 +38,8 @@ class GeneticAlgorithm {
                 
 		Chromosome feasibilityCheck(Chromosome& chromosome);
 		
-		std::vector<Chromosome>& createNewPopulation();
+		std::vector<Chromosome>& createNewPopulation1();
+		std::vector<Chromosome>& createNewPopulation2();
 		
         Chromosome selectionMethod(Chromosome(*selectionHeuristic)(std::vector<Chromosome>)); 
         
@@ -86,7 +87,8 @@ class GeneticAlgorithm {
 		double getElitismRate();
         std::vector<int> getBestSolution();		      
 
-		void run(size_t generations, Chromosome(*heuristic)(Graph));
+		void run1(size_t generations, Chromosome(*heuristic)(Graph));
+		void run2(size_t generations, Chromosome(*heuristic)(Graph));
 };	
 
 #endif
