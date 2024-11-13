@@ -1,0 +1,11 @@
+graph_name,graph_order,graph_size,graph_max_degree,GA_Fitness_Heuristic1,ACO_Fitness_20_10,lower_bound,upper_bound,elapsed_time_GA(seconds),elapsed_time_ACO(seconds)
+./rerun/blckhole.txt,2121,6370,19,2081,2182,425,3181,353.046,498.707
+./rerun/blckhole.txt,2121,6370,19,2003,2153,425,3181,213.116,106.582
+./rerun/blckhole.txt,2121,6370,19,1991,2082,425,3181,211.807,107.951
+./rerun/blckhole.txt,2121,6370,19,1955,2072,425,3181,219.377,109.925
+./rerun/blckhole.txt,2121,6370,19,1995,2134,425,3181,206.4,108.253
+./rerun/blckhole.txt,2121,6370,19,2011,2069,425,3181,192.561,100.519
+./rerun/blckhole.txt,2121,6370,19,1979,2074,425,3181,193.108,100.887
+./rerun/blckhole.txt,2121,6370,19,1939,2089,425,3181,193.748,101.495
+./rerun/blckhole.txt,2121,6370,19,2011,2103,425,3181,192.282,101.557
+./rerun/blckhole.txt,2121,6370,19,1991,2097,425,3181,193.215,101.624

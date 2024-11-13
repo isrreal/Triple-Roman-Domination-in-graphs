@@ -1,0 +1,11 @@
+graph_name,graph_order,graph_size,graph_max_degree,GA_Fitness_Heuristic1,ACO_Fitness_20_10,lower_bound,upper_bound,elapsed_time_GA(seconds),elapsed_time_ACO(seconds)
+./rerun/gent113.txt,104,549,26,112,120,16,156,45.8251,3.82598
+./rerun/gent113.txt,104,549,26,131,110,16,156,11.0949,0.691762
+./rerun/gent113.txt,104,549,26,127,116,16,156,29.611,0.662986
+./rerun/gent113.txt,104,549,26,119,112,16,156,11.8518,0.801152
+./rerun/gent113.txt,104,549,26,111,114,16,156,25.5848,0.898267
+./rerun/gent113.txt,104,549,26,111,112,16,156,28.2552,0.69461
+./rerun/gent113.txt,104,549,26,127,120,16,156,27.6552,0.899365
+./rerun/gent113.txt,104,549,26,131,93,16,156,27.0183,0.743558
+./rerun/gent113.txt,104,549,26,123,98,16,156,28.6977,0.66373
+./rerun/gent113.txt,104,549,26,132,97,16,156,17.5121,0.663647
