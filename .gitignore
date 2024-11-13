@@ -35,5 +35,5 @@
 app
 
 instance_handler/
-rerun/
-
+graph.txt
+obj/
