@@ -300,26 +300,6 @@ Chromosome TripleRomanDomination::heuristic3(Graph graph) {
     }
     
     toggleLabels(temp, solution);
-	
-	/*
-    for (size_t i = 0; i < graphOrder; ++i) {
-        if (solution.genes[i] == 2) {
-            bool onlyLabel0 = true;
-            for (const auto& neighbor : temp.getAdjacencyList(i)) {	
-                if (solution.genes[neighbor] >= 2) {
-                    onlyLabel0 = false;
-                    break;
-                }
-            }
-
-            if (onlyLabel0) {
-                auto neighbors = temp.getAdjacencyList(i);
-                size_t randomNeighbor = gap(seed) % neighbors.size();
-                auto it = std::next(neighbors.begin(), randomNeighbor);
-                solution.genes[*it] = 2;
-            }
-        }
-    }*/
 
     return solution;
 }
