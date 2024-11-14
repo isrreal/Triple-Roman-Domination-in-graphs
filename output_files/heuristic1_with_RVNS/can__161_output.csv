@@ -1,0 +1,11 @@
+graph_name,graph_order,graph_size,graph_min_degree,graph_max_degree,GA_fitness_heuristic1,ACO_fitness_20_10,lower_bound,upper_bound,elapsed_time_GA(seconds),elapsed_time_ACO(seconds)
+./representative_set/can__161.txt,161,608,5,16,122,154,38,241,32.3372,3.20734
+./representative_set/can__161.txt,161,608,5,16,123,146,38,241,40.3437,1.15378
+./representative_set/can__161.txt,161,608,5,16,123,135,38,241,43.8767,1.72463
+./representative_set/can__161.txt,161,608,5,16,126,140,38,241,48.0255,1.90134
+./representative_set/can__161.txt,161,608,5,16,126,135,38,241,53.8303,2.02782
+./representative_set/can__161.txt,161,608,5,16,124,139,38,241,60.8108,1.99255
+./representative_set/can__161.txt,161,608,5,16,117,135,38,241,65.2333,1.97369
+./representative_set/can__161.txt,161,608,5,16,117,134,38,241,40.6835,2.0042
+./representative_set/can__161.txt,161,608,5,16,130,118,38,241,50.2435,1.77946
+./representative_set/can__161.txt,161,608,5,16,133,128,38,241,59.8907,1.80314

@@ -1,0 +1,11 @@
+graph_name,graph_order,graph_size,graph_min_degree,graph_max_degree,GA_fitness_heuristic2,ACO_fitness_20_10,lower_bound,upper_bound,elapsed_time_GA(seconds),elapsed_time_ACO(seconds)
+./representative_set/sherman4.txt,546,1341,2,6,682,754,312,819,597.12,46.8124
+./representative_set/sherman4.txt,546,1341,2,6,652,652,312,819,1028.89,12.4806
+./representative_set/sherman4.txt,546,1341,2,6,726,599,312,819,720.396,14.0894
+./representative_set/sherman4.txt,546,1341,2,6,708,622,312,819,744.439,13.3037
+./representative_set/sherman4.txt,546,1341,2,6,722,597,312,819,711.607,11.2734
+./representative_set/sherman4.txt,546,1341,2,6,670,633,312,819,5368.27,9.55673
+./representative_set/sherman4.txt,546,1341,2,6,730,624,312,819,601.835,9.06463
+./representative_set/sherman4.txt,546,1341,2,6,692,626,312,819,404.574,9.2321
+./representative_set/sherman4.txt,546,1341,2,6,706,597,312,819,258.699,8.87443
+./representative_set/sherman4.txt,546,1341,2,6,694,618,312,819,464.614,8.78687

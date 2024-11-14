@@ -1,0 +1,11 @@
+graph_name,graph_order,graph_size,graph_min_degree,graph_max_degree,GA_fitness_heuristic1,ACO_fitness_20_10,lower_bound,upper_bound,elapsed_time_GA(seconds),elapsed_time_ACO(seconds)
+./representative_set/lund_b.txt,147,1147,4,20,81,82,28,220,47.7753,6.11331
+./representative_set/lund_b.txt,147,1147,4,20,59,85,28,220,58.8405,1.72189
+./representative_set/lund_b.txt,147,1147,4,20,55,87,28,220,45.7327,1.71632
+./representative_set/lund_b.txt,147,1147,4,20,66,87,28,220,42.4598,1.75248
+./representative_set/lund_b.txt,147,1147,4,20,63,79,28,220,28.2094,1.70671
+./representative_set/lund_b.txt,147,1147,4,20,60,79,28,220,43.1813,1.73493
+./representative_set/lund_b.txt,147,1147,4,20,69,72,28,220,40.7857,1.73065
+./representative_set/lund_b.txt,147,1147,4,20,72,82,28,220,48.0753,1.82
+./representative_set/lund_b.txt,147,1147,4,20,66,83,28,220,58.9271,1.81427
+./representative_set/lund_b.txt,147,1147,4,20,63,83,28,220,57.0651,1.80576
