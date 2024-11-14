@@ -6,7 +6,7 @@
 #include <chrono>
 
 int main(int argc, char** argv) {
-    if (argc > 1) {
+    if (argc > 4) {
         Graph graph(argv[1], false);
         
         if (graph.getOrder() == 0)
@@ -15,8 +15,8 @@ int main(int argc, char** argv) {
     	constexpr size_t trial = 10;
         constexpr size_t populationSize = 1000;
         size_t generations = graph.getOrder() / 2;
-        constexpr short int heuristic = 1;
-        constexpr bool hasRVNS  = false;
+        short int heuristic = std::stoi(argv[3]);
+        bool hasRVNS = std::stoi(argv[4]);
         constexpr float mutationRate = 0.05;
         constexpr float elitismRate = 0.15;
         constexpr size_t numberOfAnts = 20;
@@ -32,7 +32,7 @@ int main(int argc, char** argv) {
         std::cout << "ACO_fitness_" << numberOfAnts << "_" << iterations << ",lower_bound,upper_bound,elapsed_time_GA(seconds),elapsed_time_ACO(seconds)" << std::endl;
              
         for (size_t i = 0; i < trial; ++i) {         	
-		    std::cout << argv[1] << ",";
+		    std::cout << argv[2] << ",";
 		    std::cout << graph.getOrder() << ",";
 		    std::cout << graph.getSize() << ",";
 		    std::cout << delta << ",";
