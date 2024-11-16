@@ -1,0 +1,11 @@
+graph_name,graph_order,graph_size,graph_min_degree,graph_max_degree,GA_fitness_heuristic1,lower_bound,upper_bound,elapsed_time_GA(seconds)
+cycle14,14,14,2,2,23,-1,21,1.06251
+cycle14,14,14,2,2,21,-1,21,1.05705
+cycle14,14,14,2,2,21,-1,21,1.04871
+cycle14,14,14,2,2,23,-1,21,1.05234
+cycle14,14,14,2,2,24,-1,21,1.04651
+cycle14,14,14,2,2,22,-1,21,1.07284
+cycle14,14,14,2,2,23,-1,21,1.0507
+cycle14,14,14,2,2,25,-1,21,1.06839
+cycle14,14,14,2,2,23,-1,21,1.03752
+cycle14,14,14,2,2,22,-1,21,0.624919

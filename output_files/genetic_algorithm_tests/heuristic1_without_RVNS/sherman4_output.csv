@@ -1,0 +1,11 @@
+graph_name,graph_order,graph_size,graph_min_degree,graph_max_degree,GA_fitness_heuristic1,lower_bound,upper_bound,elapsed_time_GA(seconds)
+sherman4,546,1341,2,6,674,312,819,743.541
+sherman4,546,1341,2,6,718,312,819,318.641
+sherman4,546,1341,2,6,670,312,819,452.658
+sherman4,546,1341,2,6,677,312,819,254.683
+sherman4,546,1341,2,6,699,312,819,467.911
+sherman4,546,1341,2,6,677,312,819,257.015
+sherman4,546,1341,2,6,704,312,819,358.675
+sherman4,546,1341,2,6,673,312,819,391.489
+sherman4,546,1341,2,6,646,312,819,338.994
+sherman4,546,1341,2,6,671,312,819,455.925
