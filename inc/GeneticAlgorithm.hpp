@@ -45,7 +45,7 @@ class GeneticAlgorithm {
         
         Chromosome getBestChromosome(std::vector<Chromosome> population);
         
-        Chromosome RVNS(Chromosome& chromosome, Chromosome(*heuristic)(Graph));
+        Chromosome RVNS(Chromosome& chromosome, Chromosome(*heuristicRVNS)(Graph, Chromosome&));
         
         Chromosome destroySolution(Chromosome& chromosome);
         
@@ -87,7 +87,7 @@ class GeneticAlgorithm {
 		double getElitismRate();
         std::vector<int> getBestSolution();		      
 
-		void run1(size_t generations, Chromosome(*heuristic)(Graph));
+		void run1(size_t generations, Chromosome(*heuristic)(Graph), Chromosome(*heuristicRVNS)(Graph, Chromosome&));
 		void run2(size_t generations, Chromosome(*heuristic)(Graph));
 };	
 

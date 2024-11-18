@@ -35,44 +35,28 @@ Graph::Graph(size_t order, bool isDirected, float probabilityOfEdge) {
     }
 }
 
-Graph::Graph(const std::string& filename, bool isDirected) : isDirected(isDirected), size(0) {
-    std::ifstream file(filename, std::fstream::in);
-    this->order = 0;
-    this->size = 0;
-
-    if (!file) {
-        std::cerr << "Error opening the file!" << std::endl;
-        throw std::runtime_error("File not found");
-    }
-
-    std::unordered_map<size_t, size_t> vertexMap; 
-    size_t nextVertex = 0;
-    std::string line;
+Graph::Graph(const std::string& filename, bool isDirected) 
+    : isDirected(isDirected), size(0), order(0) {
+    std::ifstream file(filename);
+    if (!file) 
+        throw std::runtime_error("Error opening the file!");
+    
     size_t source, destination = 0;
-
+    std::string line = "";
+    
     while (std::getline(file, line)) {
         std::stringstream ssEdges(line);
 
-        while (ssEdges >> source >> destination) {
-            if (source == destination) continue;
-
-            if (vertexMap.find(source) == vertexMap.end()) 
-                vertexMap[source] = nextVertex++;
-            
-            if (vertexMap.find(destination) == vertexMap.end()) 
-                vertexMap[destination] = nextVertex++;
-           
-            size_t mappedSource = vertexMap[source];
-            size_t mappedDestination = vertexMap[destination];
-
-            addVertex(mappedSource);
-            addVertex(mappedDestination);
-
-            if (!edgeExists(mappedSource, mappedDestination))
-                addEdge(mappedSource, mappedDestination);
+        if (ssEdges >> source >> destination) {
+            addVertex(source);
+            addVertex(destination);
+            addEdge(source, destination);
         }
+        
+        else 
+        	std::cerr << "Error reading line: " << line << std::endl;
     }
-
+    
     file.close();
 }
 
@@ -94,6 +78,8 @@ void Graph::addVertex(size_t source) {
 }
 
 void Graph::addEdge(size_t source, size_t destination) {
+	if (source == destination)
+		return;
     if (this->isDirected == false) {
         this->adjList[source].push_back(destination);
         this->adjList[destination].push_back(source);            
@@ -170,29 +156,40 @@ void Graph::breadthFirstSearch() {
         }
     }
 }
+*/
 
-void Graph::depthFirstSearch() {
-    std::vector<bool> visited(this->order, false);
-    std::stack<int> stack;
-    stack.push(vertices[0]->identificator);
+void Graph::DFSVisit(size_t u, std::vector<bool>& discovered, int& numberOfVertices, int& minDegree) {
+    discovered[u] = true;
 
-    while (!stack.empty()) {
-        int temp = stack.top();
-        stack.pop();
+    if (getVertexDegree(u) < static_cast<size_t>(minDegree)) 
+        minDegree = getVertexDegree(u);
 
-        if (!visited[temp]) {
-            visited[temp] = true;
-            std::cout << temp << std::endl;
-
-            for (const auto& neighbor : edges[temp]) {
-                if (!visited[neighbor])
-                    stack.push(neighbor);
-            }
+    for (const size_t& v : getAdjacencyList(u)) {
+        if (!discovered[v]) {
+            numberOfVertices++;
+            if (getVertexDegree(v) < static_cast<size_t>(minDegree)) 
+                minDegree = getVertexDegree(v);
+            DFSVisit(v, discovered, numberOfVertices, minDegree);
         }
     }
 }
 
-*/
+std::vector<std::pair<int, int>> Graph::connectedComponents() {
+    std::vector<bool> discovered(getOrder(), false);
+    std::vector<std::pair<int, int>> components;
+
+    for (const auto& pair : adjList) {
+        size_t vertex = pair.first;
+        if (!discovered[vertex]) {
+            int numberOfVertices = 1;
+            int minDegree = std::numeric_limits<int>::max();
+            DFSVisit(vertex, discovered, numberOfVertices, minDegree);
+            components.push_back({numberOfVertices, minDegree});
+        }
+    }
+    return components;
+}
+
 
 void Graph::deleteAdjacencyList(size_t vertex) {
     if (adjList.find(vertex) == adjList.end())

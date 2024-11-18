@@ -119,6 +119,29 @@ std::vector<int> AntColonyOptimization::extendSolution(std::vector<int> solution
     return solution;
 }
 
+void AntColonyOptimization::toggleLabels(std::vector<int> solution) {
+	size_t initLabel = 0;
+	
+	for (size_t i = 0; i < graph.getOrder(); ++i) {
+	    if (solution[i] == 4 || solution[i] == 3) { 
+			initLabel = solution[i];
+			solution[i] = 0;
+				
+			if (!feasible(solution)) {
+	    		solution[i] = 2;
+	    		
+	    		if (!feasible(solution)) {
+	    			solution[i] = 3;
+	        		
+	        		if (!feasible(solution)) 
+	            		solution[i] = initLabel;        
+	    		}
+			}
+		}
+	}
+}
+
+
 /**	@brief Tries to reduce the labels of vertices 
 *	@details Sorts the vertices of graph on descendent order based on its respective degree,
 *			and selects its first vertex (that has higher degree value). After this, 
@@ -155,25 +178,13 @@ std::vector<int> AntColonyOptimization::reduceSolution(std::vector<int> solution
         if (choosenVertex >= sortedVertices.size()) break;
 
         if (solution[sortedVertices[choosenVertex]] == 4 || solution[sortedVertices[choosenVertex]] == 3 
-        	|| solution[sortedVertices[choosenVertex]] == 2) { 
-        	        
-    		initLabel = solution[sortedVertices[choosenVertex]];
-    		solution[sortedVertices[choosenVertex]] = 0;
-    		
-    		if (!feasible(solution)) {
-        		solution[sortedVertices[choosenVertex]] = 2;
-        		
-        		if (!feasible(solution)) {
-        			solution[sortedVertices[choosenVertex]] = 3;
-            		
-            		if (!feasible(solution)) 
-                		solution[sortedVertices[choosenVertex]] = initLabel;        
-        		}
-    		}
-		}
-         	
+        	|| solution[sortedVertices[choosenVertex]] == 2) 
+        	
+			toggleLabels(solution);
+		        	
         temp.deleteAdjacencyList(sortedVertices[choosenVertex++]);
     }
+    
     return solution;
 }
 
@@ -281,7 +292,7 @@ size_t AntColonyOptimization::chooseVertex(Graph& temp) {
                 if (value < (temp.getVertexDegree(i) * graphPheromone[i])) {
                     value = temp.getVertexDegree(i) * graphPheromone[i];
                 	vertex = i;
-																																																																											                                  																																																																											          																																																																					                                                                                               
+																																																																						                                  																																																																											          																																																																					                                                                                               
                 }
             }
         }
@@ -367,7 +378,6 @@ bool AntColonyOptimization::feasible(std::vector<int> solution) {
             size_t countNeighbors3 = 0;
             
             for (auto& neighbor : this->graph.getAdjacencyList(i)) {          
-
                 if ((countNeighbors2 == 1 && solution[neighbor] >= 3) ||
                     (countNeighbors2 == 2 && solution[neighbor] >= 2)) {
                     isValid = true;

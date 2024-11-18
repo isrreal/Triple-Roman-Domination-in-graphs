@@ -73,7 +73,6 @@ size_t GeneticAlgorithm::chooseVertex(std::vector<int> twoOrZeroOrThreeLabeledVe
     return choosenIndex;
 }
 
-
 Chromosome GeneticAlgorithm::destroySolution(Chromosome& chromosome) {
     float destructionRate = minDestructionRate + ((currentRVNSnumber - 1) *
                 ((maxDestructionRate - minDestructionRate)) 
@@ -170,7 +169,7 @@ Chromosome GeneticAlgorithm::reduceSolution(Chromosome& chromosome) {
     return chromosome;
 }
 
-Chromosome GeneticAlgorithm::RVNS(Chromosome& chromosome, Chromosome(*heuristic)(Graph)) {
+Chromosome GeneticAlgorithm::RVNS(Chromosome& chromosome, Chromosome(*heuristicRVNS)(Graph, Chromosome&)) {
 	size_t currentNoImprovementIteration = 0;
 	size_t currentRVNSnumber = 1;
     Chromosome temp = chromosome;
@@ -178,7 +177,7 @@ Chromosome GeneticAlgorithm::RVNS(Chromosome& chromosome, Chromosome(*heuristic)
     while ((currentNoImprovementIteration < maxRVNSnoImprovementIterations) && (maxRVNSiterations > 0)) {
         destroySolution(temp);
         
-        temp = (*heuristic)(graph);
+        (*heuristicRVNS)(graph, temp);
         
         extendSolution(temp);
         reduceSolution(temp);
@@ -637,11 +636,10 @@ std::vector<Chromosome>& GeneticAlgorithm::createNewPopulation2() {
  * @return Chromosome The best solution found after all generations.
  */
 
-void GeneticAlgorithm::run1(size_t generations, Chromosome(*heuristic)(Graph)) { 
+void GeneticAlgorithm::run1(size_t generations, Chromosome(*heuristic)(Graph), Chromosome(*heuristicRVNS)(Graph, Chromosome&)) { 
 
    this->createPopulation(heuristic, graph);
 	
-    
    Chromosome currentBestSolution = this->tournamentSelection(this->population);                                         
    Chromosome bestSolution = currentBestSolution;
 
@@ -654,7 +652,7 @@ void GeneticAlgorithm::run1(size_t generations, Chromosome(*heuristic)(Graph)) {
         if (bestSolution.fitnessValue > currentBestSolution.fitnessValue)
             bestSolution = currentBestSolution; 
         
-         RVNS(bestSolution, heuristic);
+        RVNS(bestSolution, heuristicRVNS);
    }
 
     this->bestSolution = bestSolution.genes;
@@ -665,7 +663,6 @@ void GeneticAlgorithm::run2(size_t generations, Chromosome(*heuristic)(Graph)) {
 
    this->createPopulation(heuristic, graph);
 	
-    
    Chromosome currentBestSolution = this->tournamentSelection(this->population);                                         
    Chromosome bestSolution = currentBestSolution;
 

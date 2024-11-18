@@ -7,6 +7,7 @@
 #include <list>
 #include <unordered_map>
 #include <queue>
+#include <stack>
 #include <sstream>
 #include <fstream>
 
@@ -48,7 +49,9 @@ public:
     
     void setAdjacenciesLabel(size_t vertex, int label);
     
-    void depthFirstSearch();
+    void DFSVisit(size_t u, std::vector<bool>& discovered, int& numberOfVertices, int& minDegree);
+
+    std::vector<std::pair<int, int>> connectedComponents();
     
     void deleteAdjacencyList(size_t vertex);
     

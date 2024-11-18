@@ -38,6 +38,8 @@ class AntColonyOptimization {
 
         size_t summation(std::vector<int> solution);
         
+        void toggleLabels(std::vector<int> solution);
+        
         float getMaxPheromoneValue(std::vector<float> graphPheromone);
         
         float getMinPheromoneValue(std::vector<float> graphPheromone);
