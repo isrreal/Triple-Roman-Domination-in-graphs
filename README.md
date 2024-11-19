@@ -37,11 +37,11 @@ The MGA proposed by the authors represents solutions, or chromosomes, as vectors
 
 ### Heuristics for Initial Population
 
-1. **First Heuristic**: A greedy approach is applied. In each iteration, a vertex $v$ is randomly selected from the auxiliary graph and assigned the label 4. The corresponding position in the solution vector is labeled 4, while adjacent vertices are labeled 0. If only one vertex remains in the auxiliary graph, it is labeled 3, ensuring that all vertices adhere to the TRDF constraints.
+1. **First Heuristic**: A greedy approach is applied. In each iteration, a vertex $v$ is randomly selected from the auxiliary graph and assigned the label 2 (3 if it has degree 0). The adjacent vertices are labeled 0. If remains isolated vertices in the auxiliary graph, it is labeled 3; after this, feability check routine is called for fix eventuals errors in TRDF, ensuring that all vertices adhere its constraints.
 
-2. **Second Heuristic**: Similar to the first, but after labeling vertices and removing them from the auxiliary graph, any isolated vertices (degree 0) are labeled 2. These isolated vertices' positions in the solution vector are updated, and the vertices are then removed from $G$. If a vertex labeled 2 has only neighbors labeled 0, one of these neighbors is randomly assigned a label of 2, maintaining connectivity under TRDF requirements.
+2. **Second Heuristic**:  A greedy approach is applied. In each iteration, a vertex $v$ is randomly selected from the auxiliary graph and assigned the label 4 (3 if it has degree 0). The adjacent vertices are labeled 0. If remains isolated vertices in the auxiliary graph, it is labeled 3; after this, toggle vertices routine is called to try minimize the labels assigned in TRDF, trying improve the *triple roman domination number*.
 
-3. **Third Heuristic**: Vertices are sorted in descending order by degree. The highest-degree vertex is selected and labeled 4, while its neighbors in $N(v)$ are labeled 0. If any remaining vertices in the auxiliary graph have degree 0, they are labeled 2. The auxiliary graph is then checked for any vertices labeled 2 that have only neighbors labeled 0; if such vertices are found, a random neighbor is assigned the label 2.
+3. **Third Heuristic**: Vertices are sorted in descending order by degree. The highest-degree vertexs are selected and labeled 4 (3 if it has degree 0), while its neighbors in $N(v)$ are labeled 0. If any remaining vertices in the auxiliary graph have degree 0, they are labeled 3.
 
 ### Memetic Local Search
 
@@ -88,7 +88,7 @@ The crossover operator combines two solutions, $S_1$ and $S_2$, from the current
 
 1. **Selection of Crossover Points**: Random indices, $R_1$ and $R_2$, are chosen within the chromosome length.
 2. **Gene Exchange**: The labels (genes) between indices $R_1$ and $R_2$ in $S_1$ and $S_2$ are swapped, producing two new offspring solutions.
-3. **Feasibility Check**: The resulting offspring solutions are verified to ensure they satisfy the constraints of the Double Roman Domination Function (DRDF). Solutions that violate constraints are discarded or adjusted.
+3. **Feasibility Check**: The resulting offspring solutions are verified to ensure they satisfy the constraints of the Triple Roman Domination Function (TRDF). Solutions that violate constraints are discarded or adjusted.
 
 In this proposed algorithm, elitism and mutation rate do not influence the crossover operator directly.
 
@@ -99,9 +99,9 @@ The RVNS method further refines the best solution found by the genetic algorithm
 1. **DestroySolution Sub-Routine**: A randomly chosen vertex labeled 0, 2, or 3 is selected and "destroyed" by unlabeled it (setting its label to -1). This introduces a controlled disruption in the current solution.
 
 2. **Solution Reconstruction**: After "destroying" part of the solution, the following sub-routines are applied to form a new solution:
-   - **ConstructSolution**: Partially reconstructs the solution, assigning feasible labels to vertices based on DRDF rules.
+   - **ConstructSolution**: Partially reconstructs the solution, assigning feasible labels to vertices based on TRDF rules.
    - **ExtendSolution**: Expands the labeling where possible to improve coverage or reduce weights.
-   - **ReduceSolution**: Optimizes the labeling to reduce the overall weight while satisfying DRDF constraints.
+   - **ReduceSolution**: Optimizes the labeling to reduce the overall weight while satisfying TRDF constraints.
 
 3. **Solution Comparison**: The newly formed solution is compared to the original. If the new solution has a lower weight, it replaces the current solution as the best candidate.
 
@@ -125,7 +125,6 @@ The type of Ant Colony Optimization proposed is based on two variants: **MAX-MIN
 4. **RVNS (Random Variable Neighborhood Search)**: This function enhances the best result obtained from the ACO algorithm by exploring nearby solution spaces. RVNS increases the likelihood of finding a solution closer to the optimal one by modifying the solution in the following steps:
     - The **DestroySolution** sub-routine randomly selects a vertex labeled 0, 2, or 3 and also unlabeled it, setting its value to -1.
     - **ConstructSolution**, **ExtendSolution**, and **ReduceSolution** are then reapplied to form a new solution, which is compared with the previous one. If the new solution has a lower weight, it replaces the current solution.
-
 
 ## How to Use
 
