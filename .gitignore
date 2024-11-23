@@ -36,4 +36,6 @@ app
 instance_handler/
 graph.txt
 obj/
-input_files/
+input_files/*.txt
+output_files/fail_tests
+automate_run_program.sh
