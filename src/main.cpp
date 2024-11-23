@@ -47,7 +47,7 @@ int main(int argc, char** argv) {
         if (graph.getOrder() == 0)
             return -1;
         
-    	constexpr size_t trial = 100;
+    	constexpr size_t trial = 10;
         constexpr size_t populationSize = 1000;
         size_t generations = graph.getOrder() / 2;
         short int heuristic = std::stoi(argv[3]);
