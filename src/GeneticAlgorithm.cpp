@@ -557,10 +557,16 @@ Chromosome GeneticAlgorithm::feasibilityCheck(Chromosome& chromosome) {
             }
             
             if (!isValid) {
-            	if (countNeighbors3 == 0 && countNeighbors2 == 0)
-                	chromosome.genes[i] = 3; 
-                else if (countNeighbors3 == 1 || countNeighbors2 == 2) 
-                    chromosome.genes[i] = 2;
+            	if (countNeighbors3 == 0) {
+            		if (countNeighbors2 == 0) 
+            			chromosome.genes[i] = 3;
+            			
+            		else if (countNeighbors2 > 0)
+            			chromosome.genes[i] = 2;
+            	} 
+            	
+            	else if (countNeighbors3 == 1)
+            		chromosome.genes[i] = 2;
             }
         }
 

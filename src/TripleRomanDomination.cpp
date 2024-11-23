@@ -225,7 +225,7 @@ std::vector<int> TripleRomanDomination::feasibilityCheck(const Graph& graph, std
             if (!isValid) {
             	if (countNeighbors3 == 0) {
             		if (countNeighbors2 == 0) 
-            			solution[i] = 4;
+            			solution[i] = 3;
             			
             		else if (countNeighbors2 > 0)
             			solution[i] = 2;
