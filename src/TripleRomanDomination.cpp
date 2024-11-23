@@ -25,29 +25,12 @@ size_t TripleRomanDomination::getACOBestFitness() {
     return this->ACOBestFitness;
 }
 
-void TripleRomanDomination::setNeighbor2(const Graph& graph, Chromosome& solution) {
-	std::random_device randomNumber;
-    std::mt19937 seed(randomNumber());
-    std::uniform_int_distribution<int> gap(0, graph.getOrder() - 1);
+int TripleRomanDomination::getRandomInt(int start, int end) {
+	std::random_device randomNumber; 
+    std::mt19937 seed(randomNumber()); 
+    std::uniform_int_distribution<> gap(start, end); 
     
-	for (size_t i = 0; i < graph.getOrder(); ++i) {
-	    if (solution.genes[i] == 2) {
-	        bool onlyLabel0 = true;
-	        for (const auto& neighbor : graph.getAdjacencyList(i)) {	
-	            if (solution.genes[neighbor] >= 2) {
-	                onlyLabel0 = false;
-	                break;
-	            }
-	        }
-
-	        if (onlyLabel0) {
-	            auto neighbors = graph.getAdjacencyList(i);
-	            size_t randomNeighbor = gap(seed) % neighbors.size();
-	            auto it = std::next(neighbors.begin(), randomNeighbor);
-	            solution.genes[*it] = 2;
-	        }
-	    }
-	}
+    return gap(seed);
 }
 
 void TripleRomanDomination::toggleLabels(const Graph& graph, Chromosome& solution) {
@@ -266,8 +249,6 @@ std::vector<int> TripleRomanDomination::feasibilityCheck(const Graph& graph, std
 Chromosome TripleRomanDomination::heuristic1(Graph graph) {
     Chromosome solution(Chromosome(graph.getOrder()));
     std::vector<int> validVertices;
-    std::random_device randomNumber;
-    std::mt19937 seed(randomNumber());
     
     size_t graphOrder = graph.getOrder();
     size_t choosenVertex = 0;
@@ -280,8 +261,7 @@ Chromosome TripleRomanDomination::heuristic1(Graph graph) {
     	for (const auto& pair : graph.getAdjacencyList()) 
         	validVertices.push_back(pair.first);
 
-        std::uniform_int_distribution<int> gap(0, validVertices.size() - 1);
-        choosenVertex = validVertices[gap(seed)];
+        choosenVertex = validVertices[getRandomInt(0, validVertices.size() - 1)];
 
         if (graph.getVertexDegree(choosenVertex) == 0)
             solution.genes[choosenVertex] = 3;

@@ -19,6 +19,9 @@ class TripleRomanDomination {
         size_t ACOBestFitness;   
         static void setNeighbor2(const Graph& graph, Chromosome& solution);     
         static void toggleLabels(const Graph& graph, Chromosome& solution);
+        static int getRandomInt(int start, int end);
+        static float getRandomFloat(int start, int end);
+        
 	public:
 		TripleRomanDomination(Graph& graph, size_t populationSize, size_t genesSize, size_t generations, 
 			short int heuristic, double mutationRate, double elitismRate,

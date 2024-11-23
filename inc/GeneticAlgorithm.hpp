@@ -25,6 +25,8 @@ class GeneticAlgorithm {
         float mutationRate;
         float elitismRate;
 
+		size_t maxNoImprovementIterations;
+		
 		void createPopulation(Chromosome(*heuristic)(Graph), Graph graph);
 		
 		Chromosome crossOver(Chromosome& chromosome1, Chromosome& cromossomo2,
@@ -74,7 +76,8 @@ class GeneticAlgorithm {
                         graph(graph), maxRVNSiterations(150), 
                         maxRVNSnoImprovementIterations(10),
                         currentRVNSnumber(1), maxRVNSfunctions(5),
-                        minDestructionRate(0.2), maxDestructionRate(0.5) {}                 
+                        minDestructionRate(0.2), maxDestructionRate(0.5),
+                        maxNoImprovementIterations(100) {}                 
 
 		~GeneticAlgorithm() {}
 		
