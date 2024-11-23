@@ -17,9 +17,9 @@ fi
 
 executable="./app"
 
-input_directory="./representative_set"
+input_directory="./input_files/representative_set"
 
-output_directory="./output_files"
+output_directory="./output_files/genetic_algorithm_tests"
 
 tests_directory="$output_directory/$folder_name"
 mkdir -p "$tests_directory"
