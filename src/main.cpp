@@ -47,7 +47,7 @@ int main(int argc, char** argv) {
         if (graph.getOrder() == 0)
             return -1;
         
-    	constexpr size_t trial = 10;
+    	constexpr size_t trial = 100;
         constexpr size_t populationSize = 1000;
         size_t generations = graph.getOrder() / 2;
         short int heuristic = std::stoi(argv[3]);
@@ -64,7 +64,7 @@ int main(int argc, char** argv) {
         TripleRomanDomination* trd = new TripleRomanDomination(graph, populationSize, graph.getOrder(), generations, heuristic,
                 mutationRate, elitismRate, numberOfAnts, iterations); 
         std::cout << "graph_name,graph_order,graph_size,graph_min_degree,graph_max_degree,GA_fitness_heuristic" << heuristic;
-        std::cout << ",lower_bound,upper_bound,elapsed_time_GA(seconds)" << std::endl;
+        std::cout << ",lower_bound,upper_bound,elapsed_time_GA(seconds),is_3RDF" << std::endl;
 	    // std::cout << "ACO_fitness_" << numberOfAnts << "_" << iterations << ",lower_bound,upper_bound,elapsed_time_GA(seconds),elapsed_time_ACO(seconds)" << std::endl;
         for (size_t i = 0; i < trial; ++i) {         	
 	        std::cout << argv[2] << ",";
@@ -101,7 +101,8 @@ int main(int argc, char** argv) {
 	    // 	std::cout << trd->getACOBestFitness() << ",";
 	    	std::cout << lowerBound << ",";
             std::cout << upperBound << ","; 
-	    	std::cout << elapsedGA.count() << std::endl;
+	    	std::cout << elapsedGA.count() << ",";
+	    	std::cout << TripleRomanDomination::feasible(graph, trd->getSolutionGeneticAlgorithm()) << std::endl;
 	    //	std::cout << elapsedACO.count() << std::endl;	
         }
         

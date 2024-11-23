@@ -30,7 +30,7 @@ class GeneticAlgorithm {
 		Chromosome crossOver(Chromosome& chromosome1, Chromosome& cromossomo2,
                 	Chromosome(*crossOverHeuristic)(Chromosome&, Chromosome&)); 
                 	
-        Chromosome mutation(Chromosome& chromosome);
+        Chromosome& mutation(Chromosome& chromosome);
         
         std::vector<Chromosome>& elitism(float elitismRate);
         

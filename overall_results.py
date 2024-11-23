@@ -1,8 +1,10 @@
 import pandas as pd
 import os
-
+import sys
 # Caminho da pasta com os arquivos CSV
-caminho_pasta = './output_files/genetic_algorithm_tests/heuristic1_with_RVNS'
+
+pasta = sys.argv[1]
+caminho_pasta = f'./output_files/genetic_algorithm_tests/{pasta}'
 
 # Lista para armazenar os dados processados
 dados_processados = []
@@ -15,15 +17,15 @@ for arquivo in os.listdir(caminho_pasta):
 
         # Aplica as operações nas colunas desejadas
         entrada = {
-            'graph_name': df['graph_name'].unique()[0],
-            'graph_order': df['graph_order'].unique()[0],
-            'graph_size': df['graph_size'].unique()[0],
-            'min_degree': df['graph_min_degree'].unique()[0],
-            'max_degree': df['graph_max_degree'].unique()[0],
-            'lower_bound': df['lower_bound'].unique()[0],
-            'upper_bound': df['upper_bound'].unique()[0],
-            'fitness_value': df['GA_fitness_heuristic1'].min(),
-            'elapsed_time(seconds)': df['elapsed_time_GA(seconds)'].min(),
+            'Graph Name': df['graph_name'].unique()[0],
+            '$V(G)$': df['graph_order'].unique()[0],
+            '$E(G)$': df['graph_size'].unique()[0],
+            '$\delta$': df['graph_min_degree'].unique()[0],
+            '$\Delta$': df['graph_max_degree'].unique()[0],
+            'Lower Bound': df['lower_bound'].unique()[0],
+            'Upper Bound': df['upper_bound'].unique()[0],
+            'Fitness Value': df['GA_fitness_heuristic1'].min(),
+            'Elapsed Time(seconds)': df['elapsed_time_GA(seconds)'].min(),
         }
         
         dados_processados.append(entrada)

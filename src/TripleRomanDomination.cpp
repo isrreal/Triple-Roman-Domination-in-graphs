@@ -91,6 +91,7 @@ void TripleRomanDomination::runGeneticAlgorithm(short int heuristic, bool hasRVN
         selectedHeuristic = heuristic2;
         selectedHeuristicRVNS = heuristic2RVNS;
     } 
+    
     else if (heuristic == 3) {
         selectedHeuristic = heuristic3;
         selectedHeuristicRVNS = heuristic3RVNS;
@@ -102,11 +103,12 @@ void TripleRomanDomination::runGeneticAlgorithm(short int heuristic, bool hasRVN
     }
 
     if (hasRVNS) 
-        this->geneticAlgorithm->run1(geneticAlgorithm->getGenerations(), selectedHeuristic, heuristic1RVNS);
+        this->geneticAlgorithm->run1(geneticAlgorithm->getGenerations(), selectedHeuristic, selectedHeuristicRVNS);
     else 
         this->geneticAlgorithm->run2(geneticAlgorithm->getGenerations(), selectedHeuristic);
 
     solutionGeneticAlgorithm = this->geneticAlgorithm->getBestSolution();
+    
     std::for_each(solutionGeneticAlgorithm.begin(), solutionGeneticAlgorithm.end(), [&](int element) {
         this->geneticAlgorithmBestFitness += element;
     });
@@ -126,7 +128,8 @@ void TripleRomanDomination::runACO() {
 }
 
 bool TripleRomanDomination::feasible(const Graph& graph, std::vector<int> solution) {
-    bool isValid = false;
+    bool isValid = false;	
+    bool hasNeighborAtLeast2 = false;
 
     for (size_t i = 0; i < solution.size(); ++i) {
 
@@ -166,7 +169,7 @@ bool TripleRomanDomination::feasible(const Graph& graph, std::vector<int> soluti
         } 
 
         else if (solution[i] == 2) {
-            bool hasNeighborAtLeast2 = false;
+      		hasNeighborAtLeast2 = false;
             for (auto& neighbor : graph.getAdjacencyList(i)) {
                 if (solution[neighbor] >= 2) {
                     hasNeighborAtLeast2 = true;
@@ -182,11 +185,15 @@ bool TripleRomanDomination::feasible(const Graph& graph, std::vector<int> soluti
     return true;    
 }
 
-std::vector<int> TripleRomanDomination::feasibilityCheck(const Graph& graph, std::vector<int> solution) {  
+std::vector<int> TripleRomanDomination::feasibilityCheck(const Graph& graph, std::vector<int>& solution) {  
     bool isValid = false;
-                                                                                 
+    bool hasNeighborAtLeast2 = false;
+                                                                     
     for (size_t i = 0; i < solution.size(); ++i) {
-        if (solution[i] == 0) {                                 
+    	isValid = false;  
+    	
+        if (solution[i] == 0) {          
+        	                     
             size_t countNeighbors2 = 0;
             size_t countNeighbors3 = 0;
             
@@ -216,15 +223,21 @@ std::vector<int> TripleRomanDomination::feasibilityCheck(const Graph& graph, std
             }
             
             if (!isValid) {
-            	if (countNeighbors3 == 0 && countNeighbors2 == 0)
-                	solution[i] = 3; 
-                else if (countNeighbors3 == 1 || countNeighbors2 == 2) 
-                    solution[i] = 2;
+            	if (countNeighbors3 == 0) {
+            		if (countNeighbors2 == 0) 
+            			solution[i] = 4;
+            			
+            		else if (countNeighbors2 > 0)
+            			solution[i] = 2;
+            	} 
+            	
+            	else if (countNeighbors3 == 1)
+            		solution[i] = 2;
             }
         }
 
         else if (solution[i] == 2) {
-            bool hasNeighborAtLeast2 = false;
+            hasNeighborAtLeast2 = false;
             for (auto& neighbor: graph.getAdjacencyList(i)) {
                 if (solution[neighbor] >= 2) {
                     hasNeighborAtLeast2 = true;
@@ -371,8 +384,6 @@ Chromosome TripleRomanDomination::heuristic3(Graph graph) {
     std::random_device randomNumber;
     std::mt19937 seed(randomNumber());
     std::uniform_int_distribution<int> gap(0, graph.getOrder() - 1);
-	
-	Graph temp = graph;
 
     for (size_t i = 0; i < graph.getOrder(); ++i)
         sortedVertices[i] = i;
@@ -385,41 +396,38 @@ Chromosome TripleRomanDomination::heuristic3(Graph graph) {
     size_t choosenVertex = 0;
 
     while ((graph.getOrder() > 0) && (choosenVertex < sortedVertices.size())) {
-        if (choosenVertex >= sortedVertices.size()) break;
-
         while (choosenVertex < sortedVertices.size() && 
-                (!graph.vertexExists(sortedVertices[choosenVertex]))) {
+               !graph.vertexExists(sortedVertices[choosenVertex])) {
             ++choosenVertex;
         }
 
-        if (choosenVertex >= sortedVertices.size()) break;
-		
-		if (graph.getVertexDegree(choosenVertex) == 0)
-        	solution.genes[choosenVertex] = 3;
-        	
-        else {
-        	solution.genes[choosenVertex] = 4;
+        if (choosenVertex >= sortedVertices.size()) 
+            break;
 
-		    for (const auto& it: graph.getAdjacencyList(choosenVertex)) {
-		        if (solution.genes[it] == -1)
-		            solution.genes[it] = 0;
+		    if (graph.getVertexDegree(sortedVertices[choosenVertex]) == 0)
+		        solution.genes[sortedVertices[choosenVertex]] = 3;
+		    else {
+		        solution.genes[sortedVertices[choosenVertex]] = 4;
+
+		        for (const auto& it : graph.getAdjacencyList(sortedVertices[choosenVertex])) {
+		            if (solution.genes[it] == -1)
+		                solution.genes[it] = 0;
+		        }
+		    }
+
+		    graph.deleteAdjacencyList(sortedVertices[choosenVertex++]);
+
+		    for (size_t i = 0; i < graphOrder; ++i) {
+		        if (graph.vertexExists(i) && graph.getVertexDegree(i) == 0) {
+		            solution.genes[i] = 3;
+		            graph.deleteVertex(i);
+		        }
 		    }
 		}
-
-        graph.deleteAdjacencyList(sortedVertices[choosenVertex++]);
-
-        for (size_t i = 0; i < graphOrder; ++i) {
-            if (graph.vertexExists(i)) {
-                if (graph.getVertexDegree(i) == 0) {
-                    solution.genes[i] = 3;
-                    graph.deleteVertex(i);
-                }
-            }
-        }
-    }
-
+	
     return solution;
 }
+
 
 Chromosome TripleRomanDomination::heuristic1RVNS(Graph graph, Chromosome& chromosome) {
     Chromosome solution(Chromosome(graph.getOrder()));
@@ -487,12 +495,10 @@ Chromosome TripleRomanDomination::heuristic2RVNS(Graph graph, Chromosome& chromo
             destroyedVertices.push_back(i);       
     }
     
-    std::uniform_int_distribution<int> gap(0, destroyedVertices.size() - 1);
-	
     while (destroyedVertices.size() > 0) {
-        choosenVertex = destroyedVertices[gap(seed)];
-        while (!graph.vertexExists(choosenVertex))
-            choosenVertex = gap(seed);
+    
+        std::uniform_int_distribution<int> gap(0, destroyedVertices.size() - 1);
+		choosenVertex = destroyedVertices[gap(seed)];
 
         if (graph.getVertexDegree(choosenVertex) == 0)
         	solution.genes[choosenVertex] = 3;
@@ -507,16 +513,18 @@ Chromosome TripleRomanDomination::heuristic2RVNS(Graph graph, Chromosome& chromo
 		}
 
         destroyedVertices.erase(
-            std::remove(destroyedVertices.begin(), destroyedVertices.end(), choosenVertex), 
-            destroyedVertices.end()
-        );
+		    std::remove(destroyedVertices.begin(), destroyedVertices.end(), choosenVertex), 
+		    destroyedVertices.end()
+		);
 
-       	for (size_t i = destroyedVertices.size() - 1; i >= 0; --i) {
-            if (graph.vertexExists(destroyedVertices[i]) && graph.getVertexDegree(destroyedVertices[i]) == 0) {
-                solution.genes[destroyedVertices[i]] = 3;
-                destroyedVertices.erase(destroyedVertices.begin() + i);
-            }
-        }  
+		for (size_t i = destroyedVertices.size(); i > 0; --i) {
+		    size_t index = i - 1;
+		    if (graph.vertexExists(destroyedVertices[index]) && 
+		        graph.getVertexDegree(destroyedVertices[index]) == 0) {
+		        solution.genes[destroyedVertices[index]] = 3;
+		        destroyedVertices.erase(destroyedVertices.begin() + index);
+		    }
+		}
     }
     
     toggleLabels(temp, solution);
@@ -525,20 +533,17 @@ Chromosome TripleRomanDomination::heuristic2RVNS(Graph graph, Chromosome& chromo
 }
 
 Chromosome TripleRomanDomination::heuristic3RVNS(Graph graph, Chromosome& chromosome) {
-	Chromosome solution(Chromosome(graph.getOrder()));
-    std::vector<size_t> sortedVertices(graph.getOrder());
+    Chromosome solution(Chromosome(graph.getOrder()));
     size_t graphOrder = graph.getOrder();
-	
-	Graph temp = graph;
-	
-	std::vector<int> destroyedVertices;
+    std::vector<size_t> sortedVertices(graphOrder);
+    std::vector<int> destroyedVertices;
 
-    for (size_t i = 0; i < graph.getOrder(); ++i) {
+    for (size_t i = 0; i < graphOrder; ++i) {
         if (chromosome.genes[i] == -1) 
             destroyedVertices.push_back(i);       
     }
-  
-    for (size_t i = 0; i < graph.getOrder(); ++i)
+
+    for (size_t i = 0; i < graphOrder; ++i)
         sortedVertices[i] = i;
 
     std::sort(sortedVertices.begin(), sortedVertices.end(),
@@ -548,41 +553,48 @@ Chromosome TripleRomanDomination::heuristic3RVNS(Graph graph, Chromosome& chromo
 
     size_t choosenVertex = 0;
 
-    while ((destroyedVertices.size() > 0) && (choosenVertex < sortedVertices.size())) {
-        if (choosenVertex >= sortedVertices.size()) break;
-
+    while (!destroyedVertices.empty() && choosenVertex < sortedVertices.size()) {
         while (choosenVertex < sortedVertices.size() && 
-                (!graph.vertexExists(sortedVertices[choosenVertex]))) {
+               !graph.vertexExists(sortedVertices[choosenVertex])) {
             ++choosenVertex;
         }
 
-        if (choosenVertex >= sortedVertices.size()) break;
-		
-		if (graph.getVertexDegree(choosenVertex) == 0)
-        	solution.genes[choosenVertex] = 3;
-        	
-        else {
-        	solution.genes[choosenVertex] = 4;
+        if (choosenVertex >= sortedVertices.size()) 
+            break;
 
-		    for (const auto& it: graph.getAdjacencyList(choosenVertex)) {
-		        if (solution.genes[it] == -1)
-		            solution.genes[it] = 0;
+        size_t vertex = sortedVertices[choosenVertex];
+
+        if (graph.getVertexDegree(vertex) == 0)
+                solution.genes[vertex] = 3;
+     	else {
+		    solution.genes[vertex] = 4;
+
+		    for (const auto& neighbor : graph.getAdjacencyList(vertex)) {
+		        if (solution.genes[neighbor] == -1)
+		            solution.genes[neighbor] = 0;
 		    }
-		}
-		
-		destroyedVertices.erase(
-				    std::remove(destroyedVertices.begin(), destroyedVertices.end(), destroyedVertices[sortedVertices[choosenVertex++]]), 
-				    destroyedVertices.end()
-		);
+        }
 
-        for (size_t i = destroyedVertices.size() - 1; i >= 0; --i) {
-            if (graph.vertexExists(destroyedVertices[sortedVertices[choosenVertex++]]) 
-            	&& graph.getVertexDegree(destroyedVertices[sortedVertices[choosenVertex++]]) == 0) {
-                solution.genes[destroyedVertices[i]] = 3;
-                destroyedVertices.erase(destroyedVertices.begin() + i);
+        destroyedVertices.erase(
+            std::remove(destroyedVertices.begin(), destroyedVertices.end(), vertex), 
+            destroyedVertices.end()
+        );
+
+        for (size_t i = destroyedVertices.size(); i > 0; --i) {
+            size_t index = i - 1;
+            size_t destroyedVertex = destroyedVertices[index];
+
+            if (graph.vertexExists(destroyedVertex) && 
+                graph.getVertexDegree(destroyedVertex) == 0) {
+                solution.genes[destroyedVertex] = 3;
+                destroyedVertices.erase(destroyedVertices.begin() + index);
             }
         }
+
+        ++choosenVertex;
     }
+
+    toggleLabels(graph, solution);
 
     return solution;
 }

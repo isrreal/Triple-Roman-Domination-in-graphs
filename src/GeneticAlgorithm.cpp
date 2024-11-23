@@ -268,7 +268,7 @@ Chromosome GeneticAlgorithm::tournamentSelection(std::vector<Chromosome> populat
     std::uniform_int_distribution<int> gap(0, population.size() - 1);
     std::uniform_real_distribution<float> probability(0, 1); 
     
-    
+    	
     Chromosome c1 = GeneticAlgorithm::fitness(population[gap(seed)], nullptr);
     Chromosome c2 = GeneticAlgorithm::fitness(population[gap(seed)], nullptr);
    
@@ -407,7 +407,7 @@ Chromosome GeneticAlgorithm::crossOver(Chromosome& chromosome1, Chromosome& chro
 }
 
 
-Chromosome GeneticAlgorithm::mutation(Chromosome& chromosome) {
+Chromosome& GeneticAlgorithm::mutation(Chromosome& chromosome) {
     std::random_device randomNumber;
     std::mt19937 seed(randomNumber()); 
     std::uniform_real_distribution<> gap(0.0, 1.0);
@@ -423,7 +423,7 @@ Chromosome GeneticAlgorithm::mutation(Chromosome& chromosome) {
         }
     }
 
-    return  chromosome;
+    return chromosome;
 }
 
 
@@ -454,7 +454,8 @@ std::vector<Chromosome>& GeneticAlgorithm::elitism(float elitismRate) {
  
 bool GeneticAlgorithm::feasible(Chromosome& chromosome) {
     bool isValid = false;
-
+    bool hasNeighborAtLeast2 = false;
+    
     for (size_t i = 0; i < genesSize; ++i) {
 
         isValid = false;
@@ -493,7 +494,7 @@ bool GeneticAlgorithm::feasible(Chromosome& chromosome) {
         } 
 
         else if (chromosome.genes[i] == 2) {
-            bool hasNeighborAtLeast2 = false;
+            hasNeighborAtLeast2 = false;
             for (auto& neighbor : this->graph.getAdjacencyList(i)) {
                 if (chromosome.genes[neighbor] >= 2) {
                     hasNeighborAtLeast2 = true;
@@ -521,8 +522,11 @@ bool GeneticAlgorithm::feasible(Chromosome& chromosome) {
  
 Chromosome GeneticAlgorithm::feasibilityCheck(Chromosome& chromosome) {  
     bool isValid = false;
-                                                                                 
+    bool hasNeighborAtLeast2 = false;
+                                                           
     for (size_t i = 0; i < genesSize; ++i) {
+    	isValid = false;
+    	 
         if (chromosome.genes[i] == 0) {                                 
             size_t countNeighbors2 = 0;
             size_t countNeighbors3 = 0;
@@ -561,7 +565,7 @@ Chromosome GeneticAlgorithm::feasibilityCheck(Chromosome& chromosome) {
         }
 
         else if (chromosome.genes[i] == 2) {
-            bool hasNeighborAtLeast2 = false;
+            hasNeighborAtLeast2 = false;
             for (auto& neighbor : this->graph.getAdjacencyList(i)) {
                 if (chromosome.genes[neighbor] >= 2) {
                     hasNeighborAtLeast2 = true;
@@ -594,7 +598,7 @@ std::vector<Chromosome>& GeneticAlgorithm::createNewPopulation1() {
         Chromosome selected2 = this->selectionMethod(rouletteWheelSelection);
         Chromosome offspring = this->crossOver(selected1, selected2, nullptr);
         
-		mutation(offspring);
+	    offspring = mutation(offspring);
 		
         temp.push_back(offspring);       
     }
