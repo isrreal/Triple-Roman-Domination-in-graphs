@@ -1,4 +1,4 @@
-CPPFLAGS=-std=c++17 
+CPPFLAGS=-std=c++17 -Wall -Wextra -O3
 IPATH=-Iinc/
 SRC=src/
 OBJ=obj/
