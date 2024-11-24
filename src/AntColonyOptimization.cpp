@@ -21,7 +21,7 @@ void AntColonyOptimization::run() {
         if (summation(currentBestSolution) < summation(bestSolution))
               bestSolution = currentBestSolution;
         
-        updatePheromones(currentBestSolution, bestSolution, graphPheromone);
+        updatePheromones(currentBestSolution, bestSolution);
                                                                
         convergenceFactor = computeConvergence(graphPheromone);
                                  
@@ -155,14 +155,14 @@ void AntColonyOptimization::toggleLabels(std::vector<int> solution) {
 std::vector<int> AntColonyOptimization::reduceSolution(std::vector<int> solution) {
     Graph temp = this->graph;
     std::vector<int> sortedVertices;
-    int initLabel = -1;
 
     for (size_t i = 0; i < temp.getOrder(); ++i)
         sortedVertices.push_back(i);
 
     std::sort(sortedVertices.begin(), sortedVertices.end(),
         [&](size_t a, size_t b) {
-            return temp.getVertexDegree(a) < temp.getVertexDegree(b);                                                                             
+            return temp.getVertexDegree(a) <  
+            temp.getVertexDegree(b);                                                                             
         });
     
     size_t choosenVertex = 0;
@@ -460,9 +460,8 @@ float AntColonyOptimization::getMinPheromoneValue(std::vector<float> graphPherom
 }
 
 
-void AntColonyOptimization::updatePheromones(std::vector<int>& currentBestSolution,                                                               
-                                             std::vector<int>& bestSolution,        
-                                             std::vector<float>& pheromoneValues) {                                                               
+void AntColonyOptimization::updatePheromones(std::vector<int>& currentBestSolution, std::vector<int>& bestSolution)
+{                                                               
     size_t weightCurrentBestSolution = summation(currentBestSolution);
     size_t weightBestSolution = summation(bestSolution); 
     float equation = 0.0;        

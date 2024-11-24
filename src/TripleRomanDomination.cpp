@@ -194,7 +194,7 @@ std::vector<int> TripleRomanDomination::feasibilityCheck(const Graph& graph, std
                 }
                                                                                  
                 if (solution[neighbor] == 4) {
-                    isValid == true;
+                    isValid = true;
                     break;
                 }
                 
@@ -252,6 +252,8 @@ Chromosome TripleRomanDomination::heuristic1(Graph graph) {
     
     size_t graphOrder = graph.getOrder();
     size_t choosenVertex = 0;
+    
+    validVertices.reserve(graphOrder);
 	
 	Graph temp = graph;
 	
@@ -301,22 +303,20 @@ Chromosome TripleRomanDomination::heuristic1(Graph graph) {
  
 Chromosome TripleRomanDomination::heuristic2(Graph graph) {
     Chromosome solution(Chromosome(graph.getOrder()));
-    std::random_device randomNumber;
-    std::mt19937 seed(randomNumber());
     std::vector<size_t> validVertices;
-    
+
     size_t choosenVertex = 0;
     size_t graphOrder = graph.getOrder();
+    
+    validVertices.reserve(graphOrder);
     Graph temp = graph;
 	
     while (graph.getOrder() > 0) {
      	validVertices.clear();
         for (const auto& pair : graph.getAdjacencyList()) 
             validVertices.push_back(pair.first);
-
-        std::uniform_int_distribution<int> gap(0, validVertices.size() - 1);
-        
-        choosenVertex = validVertices[gap(seed)];
+       
+        choosenVertex = validVertices[getRandomInt(0, validVertices.size() - 1)];
 		
         if (graph.getVertexDegree(choosenVertex) == 0)
         	solution.genes[choosenVertex] = 3;
@@ -358,15 +358,13 @@ Chromosome TripleRomanDomination::heuristic2(Graph graph) {
  
 Chromosome TripleRomanDomination::heuristic3(Graph graph) {
     Chromosome solution(Chromosome(graph.getOrder()));
-    std::vector<size_t> sortedVertices(graph.getOrder());
     size_t graphOrder = graph.getOrder();
+    std::vector<size_t> sortedVertices;
     
-    std::random_device randomNumber;
-    std::mt19937 seed(randomNumber());
-    std::uniform_int_distribution<int> gap(0, graph.getOrder() - 1);
+    sortedVertices.reserve(graphOrder);	
 
     for (size_t i = 0; i < graph.getOrder(); ++i)
-        sortedVertices[i] = i;
+        sortedVertices.emplace_back(i);
 
     std::sort(sortedVertices.begin(), sortedVertices.end(),
         [&](size_t a, size_t b) {
@@ -411,9 +409,10 @@ Chromosome TripleRomanDomination::heuristic3(Graph graph) {
 
 Chromosome TripleRomanDomination::heuristic1RVNS(Graph graph, Chromosome& chromosome) {
     Chromosome solution(Chromosome(graph.getOrder()));
-    std::random_device randomNumber;
-    std::mt19937 seed(randomNumber());
     std::vector<int> destroyedVertices;
+    
+    destroyedVertices.reserve(graph.getOrder());
+    
     Graph temp = graph;
 
     for (size_t i = 0; i < graph.getOrder(); ++i) {
@@ -424,9 +423,7 @@ Chromosome TripleRomanDomination::heuristic1RVNS(Graph graph, Chromosome& chromo
     size_t choosenVertex = 0;
 
     while (destroyedVertices.size() > 0) {
-    
-		std::uniform_int_distribution<int> gap(0, destroyedVertices.size() - 1);
-		choosenVertex = destroyedVertices[gap(seed)];
+		choosenVertex = destroyedVertices[getRandomInt(0, destroyedVertices.size() - 1)];
 
 		if (graph.getVertexDegree(choosenVertex) == 0)
 		    solution.genes[choosenVertex] = 3;
@@ -461,14 +458,12 @@ Chromosome TripleRomanDomination::heuristic1RVNS(Graph graph, Chromosome& chromo
 
 Chromosome TripleRomanDomination::heuristic2RVNS(Graph graph, Chromosome& chromosome) {
     Chromosome solution(Chromosome(graph.getOrder()));
-    std::random_device randomNumber;
-    std::mt19937 seed(randomNumber());
     
     size_t choosenVertex = 0;
-    size_t graphOrder = graph.getOrder();
     Graph temp = graph;
     
     std::vector<int> destroyedVertices;
+    destroyedVertices.reserve(graph.getOrder());
 
     for (size_t i = 0; i < graph.getOrder(); ++i) {
         if (chromosome.genes[i] == -1) 
@@ -476,9 +471,7 @@ Chromosome TripleRomanDomination::heuristic2RVNS(Graph graph, Chromosome& chromo
     }
     
     while (destroyedVertices.size() > 0) {
-    
-        std::uniform_int_distribution<int> gap(0, destroyedVertices.size() - 1);
-		choosenVertex = destroyedVertices[gap(seed)];
+		choosenVertex = destroyedVertices[getRandomInt(0, destroyedVertices.size() - 1)];
 
         if (graph.getVertexDegree(choosenVertex) == 0)
         	solution.genes[choosenVertex] = 3;
@@ -515,8 +508,13 @@ Chromosome TripleRomanDomination::heuristic2RVNS(Graph graph, Chromosome& chromo
 Chromosome TripleRomanDomination::heuristic3RVNS(Graph graph, Chromosome& chromosome) {
     Chromosome solution(Chromosome(graph.getOrder()));
     size_t graphOrder = graph.getOrder();
+    
     std::vector<size_t> sortedVertices(graphOrder);
     std::vector<int> destroyedVertices;
+    
+    sortedVertices.reserve(graphOrder);
+    destroyedVertices.reserve(graphOrder);
+    
 
     for (size_t i = 0; i < graphOrder; ++i) {
         if (chromosome.genes[i] == -1) 
