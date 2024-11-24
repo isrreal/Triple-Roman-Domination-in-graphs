@@ -15,11 +15,11 @@ if [[ -z "$folder_name" || -z "$first_number" || -z "$second_number" ]]; then
     exit 1
 fi
 
-executable="./app"
+executable="../app"
 
-input_directory="./input_files/representative_set"
+input_directory="../input_files/representative_set"
 
-output_directory="./output_files/genetic_algorithm_tests"
+output_directory="../output_files/genetic_algorithm_tests"
 
 tests_directory="$output_directory/$folder_name"
 mkdir -p "$tests_directory"

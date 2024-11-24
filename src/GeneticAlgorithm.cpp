@@ -16,7 +16,6 @@ Graph GeneticAlgorithm::getGraph() { return this->graph; }
 
 std::vector<int> GeneticAlgorithm::getBestSolution() { return this->bestSolution; } 
 
-
 int GeneticAlgorithm::getRandomInt(int start, int end) {
 	std::random_device randomNumber; 
     std::mt19937 seed(randomNumber()); 
@@ -316,14 +315,14 @@ Chromosome GeneticAlgorithm::rouletteWheelSelection(std::vector<Chromosome> popu
  * @return Chromosome The selected chromosome, or defualt Chromosome object if no valid selection is made.
  */
 
-Chromosome GeneticAlgorithm::selectionMethod(Chromosome(*selectionHeuristic)(std::vector<Chromosome>)) {
+Chromosome GeneticAlgorithm::selectionMethod(Chromosome(*selectionHeuristic)(std::vector<Chromosome>), std::vector<Chromosome> population) {
     if (!selectionHeuristic) 
         return Chromosome(); 
   
-    Chromosome selected = (*selectionHeuristic)(this->population);
+    Chromosome selected = (*selectionHeuristic)(population);
     
-    if (selected.indexRemove < this->population.size()) 
-    	this->population.erase(this->population.begin() + selected.indexRemove);
+    if (selected.indexRemove < population.size()) 
+    	population.erase(population.begin() + selected.indexRemove);
 
     return selected; 
 }
@@ -415,23 +414,20 @@ Chromosome& GeneticAlgorithm::mutation(Chromosome& chromosome) {
     return chromosome;
 }
 
-
 std::vector<Chromosome>& GeneticAlgorithm::elitism(float elitismRate) {
-    std::vector<Chromosome> temp;
+
+    size_t iterations = static_cast<size_t>(std::ceil(this->populationSize * elitismRate));
 
     Chromosome bestSolution = this->getBestChromosome(this->population);
     
-    size_t iterations = static_cast<size_t>(this->populationSize * elitismRate);
-	
-	temp.reserve(iterations);
-	
+	this->population.clear();
+    this->population.reserve(iterations);
+    
     for (size_t i = 0; i < iterations; ++i) {
-        temp.emplace_back(bestSolution);
+        this->population.emplace_back(bestSolution);
     }
-		
-	population.swap(temp);
 	
-    return population; 
+    return this->population;
 }
 
 
@@ -587,22 +583,22 @@ Chromosome GeneticAlgorithm::feasibilityCheck(Chromosome& chromosome) {
  */
 
 std::vector<Chromosome>& GeneticAlgorithm::createNewPopulation1() {
-    this->population = this->elitism(this->elitismRate);
-    
-    std::vector<Chromosome> temp;
+   	std::vector<Chromosome> temp = population;
+   	
+   	this->elitism(this->elitismRate);
     
     temp.reserve(populationSize);
-      
-    while (temp.size() < populationSize) {
-        Chromosome selected1 = this->selectionMethod(tournamentSelection);
-        Chromosome selected2 = this->selectionMethod(rouletteWheelSelection);
+    
+    while (population.size() < populationSize) {
+        Chromosome selected1 = this->selectionMethod(tournamentSelection, temp);
+        Chromosome selected2 = this->selectionMethod(rouletteWheelSelection, temp);
         Chromosome offspring = this->crossOver(selected1, selected2, nullptr);
         
 	    offspring = mutation(offspring);
 		
-        temp.emplace_back(offspring);       
+        population.emplace_back(offspring);       
     }
-    
+
     population.swap(temp);
     
     return population;
@@ -617,12 +613,12 @@ std::vector<Chromosome>& GeneticAlgorithm::createNewPopulation1() {
 
 std::vector<Chromosome>& GeneticAlgorithm::createNewPopulation2() {
     std::vector<Chromosome> temp;
-    
+    	
     temp.reserve(populationSize);
       
     while (temp.size() < populationSize) {
-        Chromosome selected1 = this->selectionMethod(tournamentSelection);
-        Chromosome selected2 = this->selectionMethod(rouletteWheelSelection);
+        Chromosome selected1 = this->selectionMethod(tournamentSelection, population);
+        Chromosome selected2 = this->selectionMethod(rouletteWheelSelection, population);
         Chromosome offspring = this->crossOver(selected1, selected2, nullptr);
 
         temp.emplace_back(offspring);

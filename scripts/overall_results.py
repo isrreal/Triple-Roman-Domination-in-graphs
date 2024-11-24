@@ -4,7 +4,7 @@ import sys
 # Caminho da pasta com os arquivos CSV
 
 pasta = sys.argv[1]
-caminho_pasta = f'./output_files/genetic_algorithm_tests/{pasta}'
+caminho_pasta = f'../output_files/genetic_algorithm_tests/{pasta}'
 
 # Lista para armazenar os dados processados
 dados_processados = []
