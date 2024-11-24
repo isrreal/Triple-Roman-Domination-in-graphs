@@ -46,9 +46,7 @@ class AntColonyOptimization {
         
         bool delta(std::vector<int> solution, size_t vertex);
 
-        void updatePheromones(std::vector<int>& currentBestSolution,
-                std::vector<int>& bestSolution,
-                std::vector<float>& graphPheromone);
+        void updatePheromones(std::vector<int>& currentBestSolution, std::vector<int>& bestSolution);
 
         float computeConvergence(std::vector<float> graphPheromone);
         

@@ -19,19 +19,25 @@ class TripleRomanDomination {
         size_t ACOBestFitness;   
         static void setNeighbor2(const Graph& graph, Chromosome& solution);     
         static void toggleLabels(const Graph& graph, Chromosome& solution);
+        static int getRandomInt(int start, int end);
+        static float getRandomFloat(float start, float end);
+        
 	public:
 		TripleRomanDomination(Graph& graph, size_t populationSize, size_t genesSize, size_t generations, 
-			short int heuristic, double mutationRate, double elitismRate,
-			size_t numberOfAnts, size_t iterations) 
-    			: graph(graph), geneticAlgorithmBestFitness(0), ACOBestFitness(0),   
-                geneticAlgorithm(new GeneticAlgorithm(graph, populationSize, genesSize, generations, mutationRate, elitismRate)),
-    		    ACO(new AntColonyOptimization(graph, iterations, numberOfAnts)) {}
+		double mutationRate, double elitismRate,
+		size_t numberOfAnts, size_t iterations):
+		  graph(graph), 
+		  geneticAlgorithm(new GeneticAlgorithm(graph, populationSize, genesSize, generations, mutationRate, elitismRate)),
+		  ACO(new AntColonyOptimization(graph, iterations, numberOfAnts)),
+		  solutionACO(), 
+		  solutionGeneticAlgorithm(),
+		  geneticAlgorithmBestFitness(0), 
+		  ACOBestFitness(0) {}
 
         ~TripleRomanDomination();
         Graph& getGraph();
         std::vector<int> getSolutionACO();
         std::vector<int> getSolutionGeneticAlgorithm();
-        
         
         size_t getGeneticAlgorithmBestFitness();
         size_t getACOBestFitness();

@@ -16,12 +16,25 @@ Graph GeneticAlgorithm::getGraph() { return this->graph; }
 
 std::vector<int> GeneticAlgorithm::getBestSolution() { return this->bestSolution; } 
 
+
+int GeneticAlgorithm::getRandomInt(int start, int end) {
+	std::random_device randomNumber; 
+    std::mt19937 seed(randomNumber()); 
+    std::uniform_int_distribution<> gap(start, end); 
+    
+    return gap(seed);
+}
+
+float GeneticAlgorithm::getRandomFloat(float start, float end) {
+	std::random_device randomNumber; 
+    std::mt19937 seed(randomNumber()); 
+    std::uniform_real_distribution<> gap(start, end); 
+    
+    return gap(seed);
+}
+
 Chromosome GeneticAlgorithm::getBestChromosome(std::vector<Chromosome> population) {
-	std::random_device randomNumber;
-	std::mt19937 seed(randomNumber());
-	std::uniform_int_distribution<int> gap(0, populationSize - 1);
-	
-	Chromosome bestSolution = GeneticAlgorithm::fitness(population[gap(seed)], nullptr);
+	Chromosome bestSolution = GeneticAlgorithm::fitness(population[getRandomInt(0, populationSize - 1)], nullptr);
 	Chromosome solution;
 	
 	for (size_t i = 0; i < populationSize; ++i) {
@@ -34,19 +47,14 @@ Chromosome GeneticAlgorithm::getBestChromosome(std::vector<Chromosome> populatio
 }
 
 size_t GeneticAlgorithm::chooseVertex(Graph& temp) {
-    float selectionVertexRateConstructSolution = 0.7f;    
-    std::random_device randomNumber;
-    std::mt19937 seed(randomNumber());
-    std::uniform_real_distribution<float> probabilityGap(0.0, 1.0);
-    std::uniform_int_distribution<int> gap(0, this->graph.getOrder() - 1);
+    float selectionVertexRateConstructSolution = 0.7f;   
     
-    float number = probabilityGap(seed); 
+    float number = GeneticAlgorithm::getRandomFloat(0.0, 1.0); 
     
-    size_t vertex = gap(seed);
-    float value = 0.0;
+    size_t vertex = GeneticAlgorithm::getRandomInt(0, this->graph.getOrder() - 1);
     
     while (!temp.vertexExists(vertex)) 
-        vertex = gap(seed);
+        vertex = GeneticAlgorithm::getRandomInt(0, this->graph.getOrder() - 1);
 
     if (selectionVertexRateConstructSolution < number) 
         vertex = rouletteWheelSelection(temp);
@@ -57,15 +65,10 @@ size_t GeneticAlgorithm::chooseVertex(Graph& temp) {
 // returns a index of vertex randomly selected
 size_t GeneticAlgorithm::chooseVertex(std::vector<int> twoOrZeroOrThreeLabeledVertices) {
     constexpr float selectionVertexRateExtendSolution = 0.9f;
+                                                                  
+    float randomNumberGenerated = GeneticAlgorithm::getRandomFloat(0.0, 1.0); 
 
-    std::random_device randomNumber;
-    std::mt19937 seed(randomNumber());
-    std::uniform_real_distribution<float> probabilityGap(0.0, 1.0);
-    std::uniform_int_distribution<int> randomIndex(0, twoOrZeroOrThreeLabeledVertices.size() - 1);                                                               
-
-    float randomNumberGenerated = probabilityGap(seed); 
-
-    size_t choosenIndex = randomIndex(seed);
+    size_t choosenIndex = GeneticAlgorithm::getRandomInt(0, twoOrZeroOrThreeLabeledVertices.size() - 1);
 
     if (randomNumberGenerated > selectionVertexRateExtendSolution)
     	choosenIndex = rouletteWheelSelection(twoOrZeroOrThreeLabeledVertices);
@@ -263,16 +266,12 @@ Chromosome GeneticAlgorithm::fitness(Chromosome& chromosome, Chromosome(*fitness
 
 Chromosome GeneticAlgorithm::tournamentSelection(std::vector<Chromosome> population) { 
     constexpr float parameter = 0.75f; 
-    std::random_device randomNumber;
-    std::mt19937 seed(randomNumber());
-    std::uniform_int_distribution<int> gap(0, population.size() - 1);
-    std::uniform_real_distribution<float> probability(0, 1); 
-    
     	
-    Chromosome c1 = GeneticAlgorithm::fitness(population[gap(seed)], nullptr);
-    Chromosome c2 = GeneticAlgorithm::fitness(population[gap(seed)], nullptr);
-   
-    if (probability(seed) < parameter) 
+    Chromosome c1 = GeneticAlgorithm::fitness(population[getRandomInt(0, population.size() - 1)], nullptr);
+    Chromosome c2 = GeneticAlgorithm::fitness(population[getRandomFloat(0.0, 1.0)], nullptr);
+   	
+   	float probability = GeneticAlgorithm::getRandomFloat(0.0, 1.0);
+    if (probability < parameter) 
        return GeneticAlgorithm::chooseBestSolution(c1, c2);
     else 
        return GeneticAlgorithm::chooseWorstSolution(c1, c2); 
@@ -295,10 +294,7 @@ Chromosome GeneticAlgorithm::rouletteWheelSelection(std::vector<Chromosome> popu
         totalFitness += population[i].fitnessValue;
     }
 
-    std::random_device randomNumber;
-    std::mt19937 seed(randomNumber());
-    std::uniform_int_distribution<> distribution(0, totalFitness - 1);
-    size_t randomValue = distribution(seed);
+    size_t randomValue = GeneticAlgorithm::getRandomInt(0, totalFitness - 1);
 
     size_t cumulativeFitness = 0;
     for (auto& chromosome: population) {
@@ -326,7 +322,7 @@ Chromosome GeneticAlgorithm::selectionMethod(Chromosome(*selectionHeuristic)(std
   
     Chromosome selected = (*selectionHeuristic)(this->population);
     
-    if (selected.indexRemove >= 0 && selected.indexRemove < this->population.size()) 
+    if (selected.indexRemove < this->population.size()) 
     	this->population.erase(this->population.begin() + selected.indexRemove);
 
     return selected; 
@@ -375,12 +371,9 @@ Chromosome GeneticAlgorithm::crossOver(Chromosome& chromosome1, Chromosome& chro
  	
    if (crossOverHeuristic)
         return (*crossOverHeuristic)(chromosome1, chromosome2);
-     
-   std::random_device randomNumber;
-   std::mt19937 seed(randomNumber()); 
-   std::uniform_int_distribution<> gap(0, genesSize - 1);
-   size_t range1 = gap(seed);
-   size_t range2 = gap(seed);
+    
+   size_t range1 = GeneticAlgorithm::getRandomInt(0, genesSize - 1);
+   size_t range2 = GeneticAlgorithm::getRandomInt(0, genesSize - 1);
    
    std::vector<int> x, y;
 
@@ -408,17 +401,13 @@ Chromosome GeneticAlgorithm::crossOver(Chromosome& chromosome1, Chromosome& chro
 
 
 Chromosome& GeneticAlgorithm::mutation(Chromosome& chromosome) {
-    std::random_device randomNumber;
-    std::mt19937 seed(randomNumber()); 
-    std::uniform_real_distribution<> gap(0.0, 1.0);
-    std::uniform_int_distribution<> randomLabel(0, 4);
-
 	double probability = 0.0;
 	
     for (size_t i = 0; i < chromosome.genes.size(); ++i) {
-        probability = gap(seed);
+        probability = getRandomFloat(0.0, 1.0);
+        
         if (probability <= this->mutationRate) {
-            chromosome.genes[i] = randomLabel(seed); 
+            chromosome.genes[i] = getRandomInt(0, 4); 
         	feasibilityCheck(chromosome);
         }
     }
@@ -434,8 +423,11 @@ std::vector<Chromosome>& GeneticAlgorithm::elitism(float elitismRate) {
     
     size_t iterations = static_cast<size_t>(this->populationSize * elitismRate);
 	
-    for (size_t i = 0; i < iterations; ++i)
-        temp.push_back(bestSolution);
+	temp.reserve(iterations);
+	
+    for (size_t i = 0; i < iterations; ++i) {
+        temp.emplace_back(bestSolution);
+    }
 		
 	population.swap(temp);
 	
@@ -545,7 +537,7 @@ Chromosome GeneticAlgorithm::feasibilityCheck(Chromosome& chromosome) {
                 }
                                                                                  
                 if (chromosome.genes[neighbor] == 4) {
-                    isValid == true;
+                    isValid = true;
                     break;
                 }
                 
@@ -557,10 +549,16 @@ Chromosome GeneticAlgorithm::feasibilityCheck(Chromosome& chromosome) {
             }
             
             if (!isValid) {
-            	if (countNeighbors3 == 0 && countNeighbors2 == 0)
-                	chromosome.genes[i] = 3; 
-                else if (countNeighbors3 == 1 || countNeighbors2 == 2) 
-                    chromosome.genes[i] = 2;
+            	if (countNeighbors3 == 0) {
+            		if (countNeighbors2 == 0) 
+            			chromosome.genes[i] = 3;
+            			
+            		else if (countNeighbors2 > 0)
+            			chromosome.genes[i] = 2;
+            	} 
+            	
+            	else if (countNeighbors3 == 1)
+            		chromosome.genes[i] = 2;
             }
         }
 
@@ -592,6 +590,8 @@ std::vector<Chromosome>& GeneticAlgorithm::createNewPopulation1() {
     this->population = this->elitism(this->elitismRate);
     
     std::vector<Chromosome> temp;
+    
+    temp.reserve(populationSize);
       
     while (temp.size() < populationSize) {
         Chromosome selected1 = this->selectionMethod(tournamentSelection);
@@ -600,7 +600,7 @@ std::vector<Chromosome>& GeneticAlgorithm::createNewPopulation1() {
         
 	    offspring = mutation(offspring);
 		
-        temp.push_back(offspring);       
+        temp.emplace_back(offspring);       
     }
     
     population.swap(temp);
@@ -617,13 +617,15 @@ std::vector<Chromosome>& GeneticAlgorithm::createNewPopulation1() {
 
 std::vector<Chromosome>& GeneticAlgorithm::createNewPopulation2() {
     std::vector<Chromosome> temp;
+    
+    temp.reserve(populationSize);
       
     while (temp.size() < populationSize) {
         Chromosome selected1 = this->selectionMethod(tournamentSelection);
         Chromosome selected2 = this->selectionMethod(rouletteWheelSelection);
         Chromosome offspring = this->crossOver(selected1, selected2, nullptr);
 
-        temp.push_back(offspring);
+        temp.emplace_back(offspring);
     }
     
     population.swap(temp);
@@ -647,14 +649,16 @@ void GeneticAlgorithm::run1(size_t generations, Chromosome(*heuristic)(Graph), C
    Chromosome currentBestSolution = this->tournamentSelection(this->population);                                         
    Chromosome bestSolution = currentBestSolution;
 
-   for (size_t i = 0; i < generations; ++i) {        
+   for (size_t i = 0, j = 0; (i < generations) && (j < maxNoImprovementIterations); ++i, ++j) {        
    
 		this->population.swap(this->createNewPopulation1());
        	
         currentBestSolution = this->tournamentSelection(this->population);                                       
 		
-        if (bestSolution.fitnessValue > currentBestSolution.fitnessValue)
-            bestSolution = currentBestSolution; 
+        if (bestSolution.fitnessValue > currentBestSolution.fitnessValue) {
+            bestSolution = currentBestSolution;       
+            j = 1;
+        } 
         
         RVNS(bestSolution, heuristicRVNS);
    }
@@ -670,14 +674,16 @@ void GeneticAlgorithm::run2(size_t generations, Chromosome(*heuristic)(Graph)) {
    Chromosome currentBestSolution = this->tournamentSelection(this->population);                                         
    Chromosome bestSolution = currentBestSolution;
 
-   for (size_t i = 0; i < generations; ++i) {        
+   for (size_t i = 0, j = 0; (i < generations) && (j < maxNoImprovementIterations); ++i, ++j) {        
    
 		this->population.swap(this->createNewPopulation2());
        	
-        currentBestSolution = this->tournamentSelection(this->population);                                       
+        currentBestSolution =  this->tournamentSelection(this->population);                                       
 		
-        if (bestSolution.fitnessValue > currentBestSolution.fitnessValue)
+        if (bestSolution.fitnessValue > currentBestSolution.fitnessValue) {
             bestSolution = currentBestSolution;       
+            j = 1;
+        }
    }
 
     this->bestSolution = bestSolution.genes;
@@ -687,11 +693,10 @@ void GeneticAlgorithm::run2(size_t generations, Chromosome(*heuristic)(Graph)) {
 
 size_t GeneticAlgorithm::rouletteWheelSelection(Graph& temp) {
     float totalFitness = 0.0f;
+    
     std::vector<std::pair<size_t, float>> probabilities;
-
-    std::random_device randomNumber;
-    std::mt19937 seed(randomNumber());
-    std::uniform_real_distribution<float> gap(0.0, 1.0);
+    
+    probabilities.reserve(graph.getOrder());
 
     for (size_t i = 0; i < graph.getOrder(); ++i) 
         if (temp.vertexExists(i)) 
@@ -701,7 +706,7 @@ size_t GeneticAlgorithm::rouletteWheelSelection(Graph& temp) {
         if (temp.vertexExists(i))
             probabilities.push_back({i, (temp.getVertexDegree(i) / totalFitness)});
     
-    float randomValue = gap(seed);
+    float randomValue = getRandomFloat(0.0, 1.0);
 
     float cumulativeSum = 0.0f;
     for (const auto& prob : probabilities) {
@@ -717,17 +722,17 @@ size_t GeneticAlgorithm::rouletteWheelSelection(Graph& temp) {
 size_t GeneticAlgorithm::rouletteWheelSelection(std::vector<int> twoOrZeroOrThreeLabeledVertices) {
     float totalFitness = 0.0f;
     std::vector<std::pair<size_t, float>> probabilities;
-    std::random_device randomNumber;
-    std::mt19937 seed(randomNumber());
-    std::uniform_real_distribution<float> gap(0.0, 1.0);
+    
+    probabilities.reserve(graph.getOrder());
 
     for (size_t i = 0; i < twoOrZeroOrThreeLabeledVertices.size(); ++i) 
         totalFitness += population[i].fitnessValue;
     
-    for (size_t i = 0; i < twoOrZeroOrThreeLabeledVertices.size(); ++i)
+    for (size_t i = 0; i < twoOrZeroOrThreeLabeledVertices.size(); ++i) {
         probabilities.push_back({i, (graph.getVertexDegree(twoOrZeroOrThreeLabeledVertices[i]) / totalFitness)});
-
-    float randomValue = gap(seed);
+	}
+	
+ 	float randomValue = getRandomFloat(0.0, 1.0);
                                              
     float cumulativeSum = 0.0f;
     for (const auto& prob : probabilities) {

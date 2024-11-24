@@ -48,7 +48,7 @@ int main(int argc, char** argv) {
             return -1;
         
     	constexpr size_t trial = 10;
-        constexpr size_t populationSize = 1000;
+        size_t populationSize = graph.getOrder() / 1.5;
         size_t generations = graph.getOrder() / 2;
         short int heuristic = std::stoi(argv[3]);
         bool hasRVNS = std::stoi(argv[4]);
@@ -56,12 +56,14 @@ int main(int argc, char** argv) {
         constexpr float elitismRate = 0.15;
         constexpr size_t numberOfAnts = 20;
         constexpr size_t iterations = 10;
+        int upperBound = 0;
+    	int lowerBound = 0;
         
         size_t Delta = graph.getMaxDegree();
        	size_t delta = graph.getMinDegree();
 
        // graph, populationSize, genesSize, generations, heuristic, mutation rate, elitism rate, numberOfAnts, iterations
-        TripleRomanDomination* trd = new TripleRomanDomination(graph, populationSize, graph.getOrder(), generations, heuristic,
+        TripleRomanDomination* trd = new TripleRomanDomination(graph, populationSize, graph.getOrder(), generations,
                 mutationRate, elitismRate, numberOfAnts, iterations); 
         std::cout << "graph_name,graph_order,graph_size,graph_min_degree,graph_max_degree,GA_fitness_heuristic" << heuristic;
         std::cout << ",lower_bound,upper_bound,elapsed_time_GA(seconds),is_3RDF" << std::endl;
@@ -74,15 +76,15 @@ int main(int argc, char** argv) {
 	        std::cout << Delta << ",";
 	        
 	        std::chrono::duration<double> elapsedGA;
-	    	std::chrono::duration<double> elapsedACO;
-	    
+	    //	std::chrono::duration<double> elapsedACO;
+	     
 	    	std::thread gaThread([&]() {
 	    		auto startGA = std::chrono::high_resolution_clock::now();
 	    		trd->runGeneticAlgorithm(heuristic, hasRVNS);
 	    		auto endGA = std::chrono::high_resolution_clock::now();
 	    		elapsedGA = endGA - startGA;
 	    	});			
-	   /*    	
+	    /*  	
 	    	std::thread acoThread([&]() {
 	    		auto startACO = std::chrono::high_resolution_clock::now();
 	    		trd->runACO();
@@ -92,10 +94,10 @@ int main(int argc, char** argv) {
 	   */	
 	    	gaThread.join();
 	    //	acoThread.join();
-              
-        	int upperBound = computeRightUpperBound(graph, upperBound);
+	                  
+        	upperBound = computeRightUpperBound(graph, upperBound);
 
-        	int lowerBound = computeRightLowerBound(graph, lowerBound);
+        	lowerBound = computeRightLowerBound(graph, lowerBound);
 
 	    	std::cout << trd->getGeneticAlgorithmBestFitness() << ",";
 	    // 	std::cout << trd->getACOBestFitness() << ",";

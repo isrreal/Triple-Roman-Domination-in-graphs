@@ -1,10 +1,10 @@
 #include "Graph.hpp"
 
 Graph::Graph(size_t order, bool isDirected, float probabilityOfEdge) {
-    this->isDirected = isDirected;
     this->order = order;
     this->size = 0;
-
+    this->isDirected = isDirected;
+    
     size_t connectedVertex = 0;
     float probability = 0.0;
 
@@ -35,9 +35,12 @@ Graph::Graph(size_t order, bool isDirected, float probabilityOfEdge) {
     }
 }
 
-Graph::Graph(const std::string& filename, bool isDirected) 
-    : isDirected(isDirected), size(0), order(0) {
+Graph::Graph(const std::string& filename, bool isDirected) {
     std::ifstream file(filename);
+    this->order = 0;
+    this->size = 0;
+    this->isDirected = isDirected;
+    
     if (!file) 
         throw std::runtime_error("Error opening the file!");
     
@@ -53,8 +56,6 @@ Graph::Graph(const std::string& filename, bool isDirected)
             addEdge(source, destination);
         }
         
-        else 
-        	std::cerr << "Error reading line: " << line << std::endl;
     }
     
     file.close();
@@ -62,10 +63,10 @@ Graph::Graph(const std::string& filename, bool isDirected)
 
 
 Graph::Graph(const Graph& graph) {
-    this->adjList = graph.adjList;
-    this->order = graph.order;
+	this->order = graph.order;
     this->size = graph.size;
     this->isDirected = graph.isDirected;
+    this->adjList = graph.adjList;
 }
 
 Graph::Graph() {}
