@@ -43,7 +43,8 @@ class GeneticAlgorithm {
 		std::vector<Chromosome>& createNewPopulation1();
 		std::vector<Chromosome>& createNewPopulation2();
 		
-        Chromosome selectionMethod(Chromosome(*selectionHeuristic)(std::vector<Chromosome>)); 
+        Chromosome selectionMethod(Chromosome(*selectionHeuristic)(std::vector<Chromosome>),
+        std::vector<Chromosome> population); 
         
         Chromosome getBestChromosome(std::vector<Chromosome> population);
         

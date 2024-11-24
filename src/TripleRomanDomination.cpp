@@ -85,11 +85,16 @@ void TripleRomanDomination::runGeneticAlgorithm(short int heuristic, bool hasRVN
         selectedHeuristicRVNS = heuristic1RVNS;
     }
 
+	/**/
     if (hasRVNS) 
         this->geneticAlgorithm->run1(geneticAlgorithm->getGenerations(), selectedHeuristic, selectedHeuristicRVNS);
     else 
         this->geneticAlgorithm->run2(geneticAlgorithm->getGenerations(), selectedHeuristic);
-
+	
+	
+	// Chromosome teste = selectedHeuristic(graph);
+	// Chromosome temp = selectedHeuristicRVNS(graph, teste);
+	
     solutionGeneticAlgorithm = this->geneticAlgorithm->getBestSolution();
     
     std::for_each(solutionGeneticAlgorithm.begin(), solutionGeneticAlgorithm.end(), [&](int element) {
@@ -405,7 +410,6 @@ Chromosome TripleRomanDomination::heuristic3(Graph graph) {
 	
     return solution;
 }
-
 
 Chromosome TripleRomanDomination::heuristic1RVNS(Graph graph, Chromosome& chromosome) {
     Chromosome solution(Chromosome(graph.getOrder()));
