@@ -434,9 +434,9 @@ std::vector<Chromosome>& GeneticAlgorithm::createNewPopulation() {
     
     temp.reserve(populationSize);
     
-    while (population.size() < populationSize) {
-        Chromosome selected1 = this->selectionMethod(tournamentSelection, temp);
-        Chromosome selected2 = this->selectionMethod(rouletteWheelSelection, temp);
+    while (population.size() < populationSize) { 
+       	Chromosome selected1 = temp[getRandomInt(0, populationSize - 1)];
+       	Chromosome selected2 = temp[getRandomInt(0, populationSize - 1)];
         
         Chromosome offspring = (getRandomFloat(0.0, 1.0) <= crossOverRate) ? 
         	this->onePointCrossOver(selected1, selected2, nullptr) : this->twoPointCrossOver(selected1, selected2, nullptr);
@@ -463,6 +463,8 @@ void GeneticAlgorithm::run(size_t generations, Chromosome(*heuristic)(Graph)) {
    while ((iteration < generations) && (currentNoImprovementIteration < maxNoImprovementIterations)) {
    
 		this->population.swap(this->createNewPopulation());
+		
+		 std::cout << "aqui" << std::endl;
        	
         currentBestSolution =  this->tournamentSelection(this->population);                                       
 		
