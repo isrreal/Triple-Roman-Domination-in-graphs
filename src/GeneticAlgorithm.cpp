@@ -494,29 +494,3 @@ size_t GeneticAlgorithm::rouletteWheelSelection(Graph& temp) {
 
     return probabilities.back().first;
 }
-
-// selects a vertex of graph that has 0, 2 or 3 label, by roulette wheel selection method embiased by vertex degree and total fitness
-size_t GeneticAlgorithm::rouletteWheelSelection(std::vector<int> twoOrZeroOrThreeLabeledVertices) {
-    float totalFitness = 0.0f;
-    std::vector<std::pair<size_t, float>> probabilities;
-    
-    probabilities.reserve(graph.getOrder());
-
-    for (size_t i = 0; i < twoOrZeroOrThreeLabeledVertices.size(); ++i) 
-        totalFitness += population[i].fitnessValue;
-    
-    for (size_t i = 0; i < twoOrZeroOrThreeLabeledVertices.size(); ++i) {
-        probabilities.push_back({i, (graph.getVertexDegree(twoOrZeroOrThreeLabeledVertices[i]) / totalFitness)});
-	}
-	
- 	float randomValue = getRandomFloat(0.0, 1.0);
-                                             
-    float cumulativeSum = 0.0f;
-    for (const auto& prob : probabilities) {
-        cumulativeSum += prob.second;
-        if (randomValue <= cumulativeSum) 
-            return prob.first;
-    }
-                                             
-    return probabilities.back().first;
-}
