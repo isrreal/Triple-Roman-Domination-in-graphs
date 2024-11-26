@@ -47,7 +47,7 @@ class TripleRomanDomination {
 		static bool feasible(const Graph& graph, std::vector<int> solution);
 		static std::vector<int> feasibilityCheck(const Graph& graph, std::vector<int>& solution);
 		
-        static Chromosome heuristic1(Graph graph);
+        inline static Chromosome heuristic1(Graph graph);
         static Chromosome heuristic2(Graph graph);
         static Chromosome heuristic3(Graph graph);   
 };

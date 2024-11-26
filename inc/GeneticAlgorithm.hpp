@@ -22,16 +22,16 @@ class GeneticAlgorithm {
 
 		void createPopulation(Chromosome(*heuristic)(Graph), Graph graph);
 	
-        std::vector<Chromosome>& createNewPopulation();    
-		Chromosome onePointCrossOver(Chromosome& chromosome1, Chromosome& cromossomo2,
+        inline std::vector<Chromosome>& createNewPopulation();    
+		inline Chromosome onePointCrossOver(Chromosome& chromosome1, Chromosome& cromossomo2,
                 	Chromosome(*crossOverHeuristic)(Chromosome&, Chromosome&)); 
                 	
-    	Chromosome twoPointCrossOver(Chromosome& chromosome1, Chromosome& cromossomo2,
+    	inline Chromosome twoPointCrossOver(Chromosome& chromosome1, Chromosome& cromossomo2,
         			Chromosome(*crossOverHeuristic)(Chromosome&, Chromosome&));
                 	
         Chromosome& mutation(Chromosome& chromosome);
         
-        std::vector<Chromosome>& elitism(float elitismRate);
+        inline std::vector<Chromosome>& elitism(float elitismRate);
         
         bool feasible(Chromosome& chromosome);
                 
@@ -46,8 +46,8 @@ class GeneticAlgorithm {
         size_t rouletteWheelSelection(std::vector<int> twoOrZeroOrThreeLabeledVertices);
         
         static Chromosome fitness(Chromosome& chromosome, Chromosome(*fitnessHeuristic)(Chromosome&));
-		static Chromosome tournamentSelection(std::vector<Chromosome> population);
-		static Chromosome rouletteWheelSelection(std::vector<Chromosome> population); 
+		inline static Chromosome tournamentSelection(std::vector<Chromosome> population);
+		inline static Chromosome rouletteWheelSelection(std::vector<Chromosome> population); 
 		static Chromosome chooseBestSolution(const Chromosome& chromosome1, const Chromosome& chromosome2);
         static Chromosome chooseWorstSolution(const Chromosome& chromosome1, const Chromosome& chromosome2);
         
