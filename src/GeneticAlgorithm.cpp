@@ -463,8 +463,6 @@ void GeneticAlgorithm::run(size_t generations, Chromosome(*heuristic)(Graph)) {
    while ((iteration < generations) && (currentNoImprovementIteration < maxNoImprovementIterations)) {
    
 		this->population.swap(this->createNewPopulation());
-		
-		 std::cout << "aqui" << std::endl;
        	
         currentBestSolution =  this->tournamentSelection(this->population);                                       
 		
