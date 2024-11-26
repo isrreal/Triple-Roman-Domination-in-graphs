@@ -17,13 +17,17 @@ class GeneticAlgorithm {
         
         float mutationRate;
         float elitismRate;
+        float crossOverRate;
 		size_t maxNoImprovementIterations;
 
 		void createPopulation(Chromosome(*heuristic)(Graph), Graph graph);
 	
         std::vector<Chromosome>& createNewPopulation();    
-		Chromosome crossOver(Chromosome& chromosome1, Chromosome& cromossomo2,
+		Chromosome onePointCrossOver(Chromosome& chromosome1, Chromosome& cromossomo2,
                 	Chromosome(*crossOverHeuristic)(Chromosome&, Chromosome&)); 
+                	
+    	Chromosome twoPointCrossOver(Chromosome& chromosome1, Chromosome& cromossomo2,
+        			Chromosome(*crossOverHeuristic)(Chromosome&, Chromosome&));
                 	
         Chromosome& mutation(Chromosome& chromosome);
         
@@ -52,13 +56,13 @@ class GeneticAlgorithm {
 	
 	public:
 		GeneticAlgorithm(Graph& graph, size_t populationSize, size_t genesSize, size_t generations,
-			double mutationRate, double elitismRate):
+			float mutationRate, float elitismRate, float crossOverRate):
 			  populationSize(populationSize), genesSize(genesSize), 
 			  population(populationSize), generations(generations), 
 			  graph(graph), bestSolution(), 
 			  mutationRate(mutationRate), elitismRate(elitismRate),
-              maxNoImprovementIterations(100) {}
-                
+			  crossOverRate(crossOverRate),
+              maxNoImprovementIterations(100) {}               
 
 		~GeneticAlgorithm() {}
 		
