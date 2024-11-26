@@ -128,10 +128,8 @@ Chromosome GeneticAlgorithm::tournamentSelection(std::vector<Chromosome> populat
 Chromosome GeneticAlgorithm::rouletteWheelSelection(std::vector<Chromosome> population) {
     size_t totalFitness = 0;
 
-    for (size_t i = 0; i < population.size(); ++i) {
-        fitness(population[i], nullptr);
+    for (size_t i = 0; i < population.size(); ++i)
         totalFitness += population[i].fitnessValue;
-    }
 
     size_t randomValue = GeneticAlgorithm::getRandomInt(0, totalFitness - 1);
 

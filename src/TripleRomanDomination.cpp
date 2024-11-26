@@ -33,6 +33,11 @@ int TripleRomanDomination::getRandomInt(int start, int end) {
     return gap(seed);
 }
 
+void TripleRomanDomination::fitness(Chromosome& chromosome) { 
+    for (size_t i = 0; i < chromosome.genesSize; ++i)
+        chromosome.fitnessValue += chromosome.genes[i];
+}
+
 void TripleRomanDomination::toggleLabels(const Graph& graph, Chromosome& solution) {
 	size_t initLabel = 0;
 	
@@ -275,6 +280,8 @@ Chromosome TripleRomanDomination::heuristic1(Graph graph) {
     }
     
     feasibilityCheck(temp, solution.genes);
+    
+    fitness(solution);
 
     return solution;
 }
@@ -329,7 +336,9 @@ Chromosome TripleRomanDomination::heuristic2(Graph graph) {
     }
     
     toggleLabels(temp, solution);
-
+    
+	fitness(solution);
+	
     return solution;
 }
 
@@ -393,6 +402,8 @@ Chromosome TripleRomanDomination::heuristic3(Graph graph) {
 		}
     
     toggleLabels(temp, solution);	
-
+	
+	fitness(solution);
+	
     return solution;
 }
