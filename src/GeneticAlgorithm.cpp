@@ -58,17 +58,14 @@ Chromosome GeneticAlgorithm::getBestChromosome(std::vector<Chromosome> populatio
 void GeneticAlgorithm::createPopulation(Chromosome(*generateChromosomeHeuristic)(Graph), Graph graph) {
     if (generateChromosomeHeuristic) {  
        Chromosome func = (*generateChromosomeHeuristic)(graph);  
-       for (size_t i = 0; i < populationSize; ++i) {
+       for (size_t i = 0; i < populationSize; ++i) 
             this->population[i] = Chromosome(func);
-            this->population[i].indexRemove = i;
-       }
+    
    } 
         
    else {
-       for (size_t i = 0; i < populationSize; ++i) {
-           this->population[i] = Chromosome(genesSize); 
-           this->population[i].indexRemove = i;
-       }
+       for (size_t i = 0; i < populationSize; ++i) 
+           this->population[i] = Chromosome(genesSize);       
    }
 }
 
@@ -154,13 +151,13 @@ Chromosome GeneticAlgorithm::rouletteWheelSelection(std::vector<Chromosome> popu
  */
 
 Chromosome GeneticAlgorithm::selectionMethod(Chromosome(*selectionHeuristic)(std::vector<Chromosome>), std::vector<Chromosome> population) {
-    if (!selectionHeuristic) 
-        return Chromosome(); 
-  
-    Chromosome selected = (*selectionHeuristic)(population);
+    Chromosome selected;
     
-    if (selected.indexRemove < population.size()) 
-    	population.erase(population.begin() + selected.indexRemove);
+    if (!selectionHeuristic)  	
+    	selected = population[getRandomInt(0, population.size() - 1)];   
+    
+  	else
+    	selected = (*selectionHeuristic)(population);
 
     return selected; 
 }
@@ -433,8 +430,8 @@ std::vector<Chromosome>& GeneticAlgorithm::createNewPopulation() {
     temp.reserve(populationSize);
     
     while (population.size() < populationSize) { 
-       	Chromosome selected1 = temp[getRandomInt(0, populationSize - 1)];
-       	Chromosome selected2 = temp[getRandomInt(0, populationSize - 1)];
+       	Chromosome selected1 = this->selectionMethod(nullptr, temp);
+       	Chromosome selected2 = this->selectionMethod(nullptr, temp);
         
         Chromosome offspring = (getRandomFloat(0.0, 1.0) <= crossOverRate) ? 
         	this->onePointCrossOver(selected1, selected2, nullptr) : this->twoPointCrossOver(selected1, selected2, nullptr);

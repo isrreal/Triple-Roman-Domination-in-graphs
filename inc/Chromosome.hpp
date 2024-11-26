@@ -9,7 +9,6 @@
 struct Chromosome {
     size_t genesSize;
     std::vector<int> genes;
-    size_t indexRemove;
     size_t fitnessValue;
 
     Chromosome() = default;
@@ -21,13 +20,11 @@ struct Chromosome {
     Chromosome(std::vector<int> primeiraMetade, std::vector<int> segundaMetade);
 
     Chromosome(const Chromosome& chromosome);
-
-
+	
     Chromosome& operator=(const Chromosome& chromosome) {
         if (this != &chromosome) { 
             genesSize = chromosome.genesSize;
             genes = chromosome.genes;
-            indexRemove = chromosome.indexRemove;
             fitnessValue = chromosome.fitnessValue;
         }
         
