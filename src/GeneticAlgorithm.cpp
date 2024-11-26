@@ -239,23 +239,18 @@ Chromosome GeneticAlgorithm::crossOver(Chromosome& chromosome1, Chromosome& chro
 }
 
 
-Chromosome& GeneticAlgorithm::mutation(Chromosome& chromosome) {
-	double probability = 0.0;
-	
-    for (size_t i = 0; i < chromosome.genes.size(); ++i) {
-        probability = getRandomFloat(0.0, 1.0);
+Chromosome& GeneticAlgorithm::mutation(Chromosome& chromosome) {	
+	std::vector<int> labels = {0, 2, 3, 4};
         
-        if (probability <= this->mutationRate) {
-            chromosome.genes[i] = getRandomInt(0, 4); 
-        	feasibilityCheck(chromosome);
-        }
+    if (getRandomFloat(0.0, 1.0) <= this->mutationRate) {
+        chromosome.genes[getRandomInt(0, genesSize - 1)] = getRandomInt(0, labels.size() - 1); 
+    	feasibilityCheck(chromosome);
     }
 
     return chromosome;
 }
 
 std::vector<Chromosome>& GeneticAlgorithm::elitism(float elitismRate) {
-
     size_t iterations = static_cast<size_t>(std::ceil(this->populationSize * elitismRate));
 
     Chromosome bestSolution = this->getBestChromosome(this->population);
@@ -263,9 +258,8 @@ std::vector<Chromosome>& GeneticAlgorithm::elitism(float elitismRate) {
 	this->population.clear();
     this->population.reserve(iterations);
     
-    for (size_t i = 0; i < iterations; ++i) {
+    for (size_t i = 0; i < iterations; ++i) 
         this->population.emplace_back(bestSolution);
-    }
 	
     return this->population;
 }
@@ -423,18 +417,22 @@ Chromosome GeneticAlgorithm::feasibilityCheck(Chromosome& chromosome) {
  */
 
 std::vector<Chromosome>& GeneticAlgorithm::createNewPopulation() {
-    std::vector<Chromosome> temp;
-    	
-    temp.reserve(populationSize);
-      
-    while (temp.size() < populationSize) {
-        Chromosome selected1 = this->selectionMethod(tournamentSelection, population);
-        Chromosome selected2 = this->selectionMethod(rouletteWheelSelection, population);
-        Chromosome offspring = this->crossOver(selected1, selected2, nullptr);
-
-        temp.emplace_back(offspring);
-    }
+    std::vector<Chromosome> temp = population;
+   	
+   	this->elitism(this->elitismRate);
     
+    temp.reserve(populationSize);
+    
+    while (population.size() < populationSize) {
+        Chromosome selected1 = this->selectionMethod(tournamentSelection, temp);
+        Chromosome selected2 = this->selectionMethod(rouletteWheelSelection, temp);
+        Chromosome offspring = this->crossOver(selected1, selected2, nullptr);
+        
+	 	offspring = mutation(offspring);
+		
+        population.emplace_back(offspring);       
+    }
+
     population.swap(temp);
     
     return population;
