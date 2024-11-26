@@ -439,7 +439,7 @@ std::vector<Chromosome>& GeneticAlgorithm::createNewPopulation() {
         Chromosome selected2 = this->selectionMethod(rouletteWheelSelection, temp);
         
         Chromosome offspring = (getRandomFloat(0.0, 1.0) <= crossOverRate) ? 
-        	this->twoPointCrossOver(selected1, selected2, nullptr) : this->onePointCrossOver(selected1, selected2, nullptr);
+        	this->onePointCrossOver(selected1, selected2, nullptr) : this->twoPointCrossOver(selected1, selected2, nullptr);
         	
 	 	offspring = mutation(offspring);
 		
