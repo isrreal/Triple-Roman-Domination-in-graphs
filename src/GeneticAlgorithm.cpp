@@ -45,166 +45,6 @@ Chromosome GeneticAlgorithm::getBestChromosome(std::vector<Chromosome> populatio
 	return bestSolution;
 }
 
-size_t GeneticAlgorithm::chooseVertex(Graph& temp) {
-    float selectionVertexRateConstructSolution = 0.7f;   
-    
-    float number = GeneticAlgorithm::getRandomFloat(0.0, 1.0); 
-    
-    size_t vertex = GeneticAlgorithm::getRandomInt(0, this->graph.getOrder() - 1);
-    
-    while (!temp.vertexExists(vertex)) 
-        vertex = GeneticAlgorithm::getRandomInt(0, this->graph.getOrder() - 1);
-
-    if (selectionVertexRateConstructSolution < number) 
-        vertex = rouletteWheelSelection(temp);
-        
-    return vertex;
-}
-
-// returns a index of vertex randomly selected
-size_t GeneticAlgorithm::chooseVertex(std::vector<int> twoOrZeroOrThreeLabeledVertices) {
-    constexpr float selectionVertexRateExtendSolution = 0.9f;
-                                                                  
-    float randomNumberGenerated = GeneticAlgorithm::getRandomFloat(0.0, 1.0); 
-
-    size_t choosenIndex = GeneticAlgorithm::getRandomInt(0, twoOrZeroOrThreeLabeledVertices.size() - 1);
-
-    if (randomNumberGenerated > selectionVertexRateExtendSolution)
-    	choosenIndex = rouletteWheelSelection(twoOrZeroOrThreeLabeledVertices);
-    	
-    return choosenIndex;
-}
-
-Chromosome GeneticAlgorithm::destroySolution(Chromosome& chromosome) {
-    float destructionRate = minDestructionRate + ((currentRVNSnumber - 1) *
-                ((maxDestructionRate - minDestructionRate)) 
-                / (maxRVNSfunctions - 1));
-    Graph temp = this->graph;
-    size_t itr = genesSize * destructionRate; 
-    size_t vertex = 0;
-    
-    while (itr != 0 && (temp.getOrder() > 0)) {
-       vertex = chooseVertex(temp);
-       if ((chromosome.genes[vertex] == 0) || 
-       	  (chromosome.genes[vertex] == 2)||
-       	  (chromosome.genes[vertex] == 3))
-            	chromosome.genes[vertex] = -1;
-       else
-            ++itr;
-       temp.deleteVertex(vertex);
-       --itr;
-    }
-
-    return chromosome;
-}
-
-Chromosome GeneticAlgorithm::extendSolution(Chromosome& chromosome) {
-    constexpr float addVerticesRate = 0.05f;
-    size_t itr = 0;
-    std::vector<int> twoOrZeroOrThreeLabeledVertices;
-    
-    for (size_t i = 0; i < genesSize; ++i) {
-        if ((chromosome.genes[i] == 0) || (chromosome.genes[i] == 2) || (chromosome.genes[i] == 3))
-            twoOrZeroOrThreeLabeledVertices.push_back(i);
-    }
-
-    itr = addVerticesRate * twoOrZeroOrThreeLabeledVertices.size();
-    
-    size_t vertex = 0;
-
-    while (itr != 0 && !twoOrZeroOrThreeLabeledVertices.empty()) {          
-        vertex = chooseVertex(twoOrZeroOrThreeLabeledVertices);         
-        chromosome.genes[vertex] = 4; 
-        twoOrZeroOrThreeLabeledVertices.erase(twoOrZeroOrThreeLabeledVertices.begin() + vertex);                                                                
-        --itr;
-    }
-
-    return chromosome;
-}
-
-
-
-Chromosome GeneticAlgorithm::reduceSolution(Chromosome& chromosome) {
-    Graph temp = this->graph;
-    std::vector<int> sortedVertices;
-    int initLabel = -1;
-
-    for (size_t i = 0; i < temp.getOrder(); ++i)
-        sortedVertices.push_back(i);
-
-    std::sort(sortedVertices.begin(), sortedVertices.end(),
-        [&](size_t a, size_t b) {
-            return temp.getVertexDegree(a) < temp.getVertexDegree(b);                                                                             
-        });
-    
-    size_t choosenVertex = 0;
-    
-    while ((temp.getOrder() > 0) && (choosenVertex < sortedVertices.size())) {
-        if (choosenVertex >= sortedVertices.size()) break;
-        
-        while (choosenVertex < sortedVertices.size() && 
-                (!temp.vertexExists(sortedVertices[choosenVertex]))) {
-            ++choosenVertex;
-        }
-       
-        if (choosenVertex >= sortedVertices.size()) break;
-
-        if (chromosome.genes[sortedVertices[choosenVertex]] == 4 || chromosome.genes[sortedVertices[choosenVertex]] == 3) {         
-    		initLabel = chromosome.genes[sortedVertices[choosenVertex]];
-    		chromosome.genes[sortedVertices[choosenVertex]] = 0;
-    		
-    		if (!feasible(chromosome)) {
-        		chromosome.genes[sortedVertices[choosenVertex]] = 2;
-        		
-        		if (!feasible(chromosome)) {
-        			chromosome.genes[sortedVertices[choosenVertex]] = 3;
-            		
-            		if (!feasible(chromosome)) 
-                		chromosome.genes[sortedVertices[choosenVertex]] = initLabel;        
-        		}
-    		}
-		}
-            	
-        temp.deleteAdjacencyList(sortedVertices[choosenVertex++]);
-    }
-
-    return chromosome;
-}
-
-Chromosome GeneticAlgorithm::RVNS(Chromosome& chromosome, Chromosome(*heuristicRVNS)(Graph, Chromosome&)) {
-	size_t currentNoImprovementIteration = 0;
-	size_t currentRVNSnumber = 1;
-    Chromosome temp = chromosome;
-    
-    while ((currentNoImprovementIteration < maxRVNSnoImprovementIterations) && (maxRVNSiterations > 0)) {
-        destroySolution(temp);
-        
-        (*heuristicRVNS)(graph, temp);
-        
-        extendSolution(temp);
-        reduceSolution(temp);
-
-        if (temp.fitnessValue < chromosome.fitnessValue) {
-            chromosome = temp;
-            currentRVNSnumber = 1;
-            currentNoImprovementIteration = 0;
-        }
-
-        else {
-            ++currentRVNSnumber;
-            ++currentNoImprovementIteration;
-
-            if (currentRVNSnumber > maxRVNSiterations)
-                currentRVNSnumber = 1;
-        }
-
-        --maxRVNSiterations;
-    }	
-
-    return chromosome;
-}
-
-
 /**
  * @brief Creates a population of chromosomes with a specific number of genes.
  * 
@@ -579,39 +419,10 @@ Chromosome GeneticAlgorithm::feasibilityCheck(Chromosome& chromosome) {
  * @brief Generates a new population by crossing over Chromosomes from the current population.
  *     
  * 
- * @return std::vector<Chromosome> A new population of Chromosomes.
+ * @return std::vector<Chromosome>& A new population of Chromosomes.
  */
 
-std::vector<Chromosome>& GeneticAlgorithm::createNewPopulation1() {
-   	std::vector<Chromosome> temp = population;
-   	
-   	this->elitism(this->elitismRate);
-    
-    temp.reserve(populationSize);
-    
-    while (population.size() < populationSize) {
-        Chromosome selected1 = this->selectionMethod(tournamentSelection, temp);
-        Chromosome selected2 = this->selectionMethod(rouletteWheelSelection, temp);
-        Chromosome offspring = this->crossOver(selected1, selected2, nullptr);
-        
-	    offspring = mutation(offspring);
-		
-        population.emplace_back(offspring);       
-    }
-
-    population.swap(temp);
-    
-    return population;
-}
-
-/**
- * @brief Generates a new population by crossing over Chromosomes from the current population.
- *     
- * 
- * @return std::vector<Chromosome> A new population of Chromosomes.
- */
-
-std::vector<Chromosome>& GeneticAlgorithm::createNewPopulation2() {
+std::vector<Chromosome>& GeneticAlgorithm::createNewPopulation() {
     std::vector<Chromosome> temp;
     	
     temp.reserve(populationSize);
@@ -629,57 +440,25 @@ std::vector<Chromosome>& GeneticAlgorithm::createNewPopulation2() {
     return population;
 }
 
-/**
- * @brief Runs the genetic algorithm for a specified number of generations.
- * 
- * @param generations Number of generations to evolve.
- * @param heuristic Pointer to a function that generates initial Chromosomes from a graph.
- * @param graph Object to the graph used to generate initial solutions.
- * @return Chromosome The best solution found after all generations.
- */
-
-void GeneticAlgorithm::run1(size_t generations, Chromosome(*heuristic)(Graph), Chromosome(*heuristicRVNS)(Graph, Chromosome&)) { 
+void GeneticAlgorithm::run(size_t generations, Chromosome(*heuristic)(Graph)) { 
 
    this->createPopulation(heuristic, graph);
 	
    Chromosome currentBestSolution = this->tournamentSelection(this->population);                                         
    Chromosome bestSolution = currentBestSolution;
-
-   for (size_t i = 0, j = 0; (i < generations) && (j < maxNoImprovementIterations); ++i, ++j) {        
+   size_t iteration = 0;
+   size_t currentNoImprovementIteration = 0;
+   while ((iteration < generations) && (currentNoImprovementIteration < maxNoImprovementIterations)) {
    
-		this->population.swap(this->createNewPopulation1());
-       	
-        currentBestSolution = this->tournamentSelection(this->population);                                       
-		
-        if (bestSolution.fitnessValue > currentBestSolution.fitnessValue) {
-            bestSolution = currentBestSolution;       
-            j = 1;
-        } 
-        
-        RVNS(bestSolution, heuristicRVNS);
-   }
-
-    this->bestSolution = bestSolution.genes;
-}
-
-
-void GeneticAlgorithm::run2(size_t generations, Chromosome(*heuristic)(Graph)) { 
-
-   this->createPopulation(heuristic, graph);
-	
-   Chromosome currentBestSolution = this->tournamentSelection(this->population);                                         
-   Chromosome bestSolution = currentBestSolution;
-
-   for (size_t i = 0, j = 0; (i < generations) && (j < maxNoImprovementIterations); ++i, ++j) {        
-   
-		this->population.swap(this->createNewPopulation2());
+		this->population.swap(this->createNewPopulation());
        	
         currentBestSolution =  this->tournamentSelection(this->population);                                       
 		
         if (bestSolution.fitnessValue > currentBestSolution.fitnessValue) {
             bestSolution = currentBestSolution;       
-            j = 1;
+            currentNoImprovementIteration = 1;
         }
+        ++iteration;
    }
 
     this->bestSolution = bestSolution.genes;
