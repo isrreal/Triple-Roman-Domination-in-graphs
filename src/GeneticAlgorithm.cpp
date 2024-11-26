@@ -107,7 +107,7 @@ Chromosome GeneticAlgorithm::tournamentSelection(std::vector<Chromosome> populat
     constexpr float parameter = 0.75f; 
     	
     Chromosome c1 = GeneticAlgorithm::fitness(population[getRandomInt(0, population.size() - 1)], nullptr);
-    Chromosome c2 = GeneticAlgorithm::fitness(population[getRandomFloat(0.0, 1.0)], nullptr);
+    Chromosome c2 = GeneticAlgorithm::fitness(population[getRandomInt(0, population.size() - 1)], nullptr);
    	
    	float probability = GeneticAlgorithm::getRandomFloat(0.0, 1.0);
     if (probability < parameter) 
@@ -476,33 +476,4 @@ void GeneticAlgorithm::run(size_t generations, Chromosome(*heuristic)(Graph)) {
    }
 
     this->bestSolution = bestSolution.genes;
-}
-
-// selects a vertex of graph by roulette wheel selection method embiased by vertex degree and total fitness
-
-size_t GeneticAlgorithm::rouletteWheelSelection(Graph& temp) {
-    float totalFitness = 0.0f;
-    
-    std::vector<std::pair<size_t, float>> probabilities;
-    
-    probabilities.reserve(graph.getOrder());
-
-    for (size_t i = 0; i < graph.getOrder(); ++i) 
-        if (temp.vertexExists(i)) 
-            totalFitness += population[i].fitnessValue;
-
-    for (size_t i = 0; i < graph.getOrder(); ++i)
-        if (temp.vertexExists(i))
-            probabilities.push_back({i, (temp.getVertexDegree(i) / totalFitness)});
-    
-    float randomValue = getRandomFloat(0.0, 1.0);
-
-    float cumulativeSum = 0.0f;
-    for (const auto& prob : probabilities) {
-        cumulativeSum += prob.second;
-        if (randomValue <= cumulativeSum) 
-            return prob.first;
-    }
-
-    return probabilities.back().first;
 }
