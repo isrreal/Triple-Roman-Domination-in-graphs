@@ -15,20 +15,13 @@ class GeneticAlgorithm {
         Graph graph;
         std::vector<int> bestSolution;
         
-        float minDestructionRate;
-        float maxDestructionRate;
-        size_t maxRVNSnoImprovementIterations;
-        size_t maxRVNSiterations;
-        size_t currentRVNSnumber;
-        size_t maxRVNSfunctions;
-        
         float mutationRate;
         float elitismRate;
-
 		size_t maxNoImprovementIterations;
-		
+
 		void createPopulation(Chromosome(*heuristic)(Graph), Graph graph);
-		
+	
+        std::vector<Chromosome>& createNewPopulation();    
 		Chromosome crossOver(Chromosome& chromosome1, Chromosome& cromossomo2,
                 	Chromosome(*crossOverHeuristic)(Chromosome&, Chromosome&)); 
                 	
@@ -40,24 +33,10 @@ class GeneticAlgorithm {
                 
 		Chromosome feasibilityCheck(Chromosome& chromosome);
 		
-		std::vector<Chromosome>& createNewPopulation1();
-		std::vector<Chromosome>& createNewPopulation2();
-		
         Chromosome selectionMethod(Chromosome(*selectionHeuristic)(std::vector<Chromosome>),
         std::vector<Chromosome> population); 
         
         Chromosome getBestChromosome(std::vector<Chromosome> population);
-        
-        Chromosome RVNS(Chromosome& chromosome, Chromosome(*heuristicRVNS)(Graph, Chromosome&));
-        
-        Chromosome destroySolution(Chromosome& chromosome);
-        
-        Chromosome extendSolution(Chromosome& chromosome);
-        
-        Chromosome reduceSolution(Chromosome& chromosome);
-        
-        size_t chooseVertex(Graph& graph);
-        size_t chooseVertex(std::vector<int> twoOrZeroOrThreeLabeledVertices);
         
         size_t rouletteWheelSelection(Graph& graph);
         size_t rouletteWheelSelection(std::vector<int> twoOrZeroOrThreeLabeledVertices);
@@ -77,11 +56,8 @@ class GeneticAlgorithm {
 			  populationSize(populationSize), genesSize(genesSize), 
 			  population(populationSize), generations(generations), 
 			  graph(graph), bestSolution(), 
-			  minDestructionRate(0.2), maxDestructionRate(0.5), 
-			  maxRVNSnoImprovementIterations(10), maxRVNSiterations(150), 
-			  currentRVNSnumber(1), maxRVNSfunctions(5), 
-			  mutationRate(mutationRate), elitismRate(elitismRate), 
-			  maxNoImprovementIterations(100) {}
+			  mutationRate(mutationRate), elitismRate(elitismRate),
+              maxNoImprovementIterations(100) {}
                 
 
 		~GeneticAlgorithm() {}
@@ -94,9 +70,7 @@ class GeneticAlgorithm {
 		double getMutationRate();
 		double getElitismRate();
         std::vector<int> getBestSolution();		      
-
-		void run1(size_t generations, Chromosome(*heuristic)(Graph), Chromosome(*heuristicRVNS)(Graph, Chromosome&));
-		void run2(size_t generations, Chromosome(*heuristic)(Graph));
+        void run(size_t generations, Chromosome(*heuristic)(Graph));
 };	
 
 #endif

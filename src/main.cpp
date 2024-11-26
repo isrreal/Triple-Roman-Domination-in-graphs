@@ -41,7 +41,7 @@ int computeRightUpperBound(Graph& graph, int upperBound) {
 }
 
 int main(int argc, char** argv) {
-    if (argc > 4) {
+    if (argc > 3) {
         Graph graph(argv[1], false);
         
         if (graph.getOrder() == 0)
@@ -51,7 +51,6 @@ int main(int argc, char** argv) {
         size_t populationSize = graph.getOrder() / 1.5;
         size_t generations = graph.getOrder() / 2;
         short int heuristic = std::stoi(argv[3]);
-        bool hasRVNS = std::stoi(argv[4]);
         constexpr float mutationRate = 0.05;
         constexpr float elitismRate = 0.15;
         constexpr size_t numberOfAnts = 20;
@@ -80,7 +79,7 @@ int main(int argc, char** argv) {
 	     
 	    	std::thread gaThread([&]() {
 	    		auto startGA = std::chrono::high_resolution_clock::now();
-	    		trd->runGeneticAlgorithm(heuristic, hasRVNS);
+	    		trd->runGeneticAlgorithm(heuristic);
 	    		auto endGA = std::chrono::high_resolution_clock::now();
 	    		elapsedGA = endGA - startGA;
 	    	});			
