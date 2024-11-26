@@ -1,0 +1,11 @@
+graph_name,graph_order,graph_size,graph_min_degree,graph_max_degree,GA_fitness_heuristic3,lower_bound,upper_bound,elapsed_time_GA(seconds)
+can24,24,68,3,8,6,10,36,2.00592
+can24,24,68,3,8,6,10,36,1.89774
+can24,24,68,3,8,6,10,36,1.92591
+can24,24,68,3,8,6,10,36,1.95238
+can24,24,68,3,8,6,10,36,2.04096
+can24,24,68,3,8,6,10,36,1.99216
+can24,24,68,3,8,6,10,36,1.9531
+can24,24,68,3,8,6,10,36,1.90707
+can24,24,68,3,8,6,10,36,2.07259
+can24,24,68,3,8,6,10,36,2.20307
