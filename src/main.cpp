@@ -53,6 +53,7 @@ int main(int argc, char** argv) {
         short int heuristic = std::stoi(argv[3]);
         constexpr float mutationRate = 0.05;
         constexpr float elitismRate = 0.15;
+        constexpr float crossOverRate = 0.15;
         constexpr size_t numberOfAnts = 20;
         constexpr size_t iterations = 10;
         int upperBound = 0;
@@ -63,7 +64,7 @@ int main(int argc, char** argv) {
 
        // graph, populationSize, genesSize, generations, heuristic, mutation rate, elitism rate, numberOfAnts, iterations
         TripleRomanDomination* trd = new TripleRomanDomination(graph, populationSize, graph.getOrder(), generations,
-                mutationRate, elitismRate, numberOfAnts, iterations); 
+                mutationRate, elitismRate, crossOverRate, numberOfAnts, iterations); 
         std::cout << "graph_name,graph_order,graph_size,graph_min_degree,graph_max_degree,GA_fitness_heuristic" << heuristic;
         std::cout << ",lower_bound,upper_bound,elapsed_time_GA(seconds),is_3RDF" << std::endl;
 	    // std::cout << "ACO_fitness_" << numberOfAnts << "_" << iterations << ",lower_bound,upper_bound,elapsed_time_GA(seconds),elapsed_time_ACO(seconds)" << std::endl;

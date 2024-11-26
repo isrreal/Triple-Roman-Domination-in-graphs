@@ -23,10 +23,10 @@ class TripleRomanDomination {
         
 	public:
 		TripleRomanDomination(Graph& graph, size_t populationSize, size_t genesSize, size_t generations, 
-		double mutationRate, double elitismRate,
+		float mutationRate, float elitismRate, float crossOverRate, 
 		size_t numberOfAnts, size_t iterations):
 		  graph(graph), 
-		  geneticAlgorithm(new GeneticAlgorithm(graph, populationSize, genesSize, generations, mutationRate, elitismRate)),
+		  geneticAlgorithm(new GeneticAlgorithm(graph, populationSize, genesSize, generations, mutationRate, elitismRate, crossOverRate)),
 		  ACO(new AntColonyOptimization(graph, iterations, numberOfAnts)),
 		  solutionACO(), 
 		  solutionGeneticAlgorithm(),
