@@ -1,0 +1,11 @@
+graph_name,graph_order,graph_size,graph_min_degree,graph_max_degree,GA_fitness_heuristic3,lower_bound,upper_bound,elapsed_time_GA(seconds),is_3RDF
+cycle11,11,11,2,2,20,-1,16,0.0114998,1
+cycle11,11,11,2,2,20,-1,16,0.0109501,1
+cycle11,11,11,2,2,20,-1,16,0.0112393,1
+cycle11,11,11,2,2,20,-1,16,0.0026976,1
+cycle11,11,11,2,2,20,-1,16,0.00263489,1
+cycle11,11,11,2,2,20,-1,16,0.00265655,1
+cycle11,11,11,2,2,20,-1,16,0.00256588,1
+cycle11,11,11,2,2,20,-1,16,0.00263616,1
+cycle11,11,11,2,2,20,-1,16,0.00270962,1
+cycle11,11,11,2,2,20,-1,16,0.00273663,1
