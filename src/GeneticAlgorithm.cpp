@@ -454,11 +454,12 @@ void GeneticAlgorithm::run(size_t generations, Chromosome(*heuristic)(Graph)) {
        	
         currentBestSolution =  this->tournamentSelection(this->population);                                       
 		
+        ++iteration;
+        ++currentNoImprovementIteration;
         if (bestSolution.fitnessValue > currentBestSolution.fitnessValue) {
             bestSolution = currentBestSolution;       
             currentNoImprovementIteration = 1;
         }
-        ++iteration;
    }
 
     this->bestSolution = bestSolution.genes;
