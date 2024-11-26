@@ -150,17 +150,15 @@ Chromosome GeneticAlgorithm::rouletteWheelSelection(std::vector<Chromosome> popu
  * @return Chromosome The selected chromosome, or defualt Chromosome object if no valid selection is made.
  */
 
-Chromosome GeneticAlgorithm::selectionMethod(Chromosome(*selectionHeuristic)(std::vector<Chromosome>), std::vector<Chromosome> population) {
-    Chromosome selected;
+Chromosome GeneticAlgorithm::selectionMethod(
+    Chromosome (*selectionHeuristic)(std::vector<Chromosome>), 
+    std::vector<Chromosome> population) {
+    if (!selectionHeuristic)
+        return population[getRandomInt(0, population.size() - 1)];
     
-    if (!selectionHeuristic)  	
-    	selected = population[getRandomInt(0, population.size() - 1)];   
-    
-  	else
-    	selected = (*selectionHeuristic)(population);
-
-    return selected; 
+    return (*selectionHeuristic)(population);
 }
+
 
 
 /**
@@ -429,11 +427,15 @@ std::vector<Chromosome>& GeneticAlgorithm::createNewPopulation() {
     
     temp.reserve(populationSize);
     
-    while (population.size() < populationSize) { 
-       	Chromosome selected1 = this->selectionMethod(nullptr, temp);
-       	Chromosome selected2 = this->selectionMethod(nullptr, temp);
-        
-        Chromosome offspring = (getRandomFloat(0.0, 1.0) <= crossOverRate) ? 
+    Chromosome selected1;
+    Chromosome selected2;
+    Chromosome offspring;
+    
+    while (population.size() < populationSize) {          
+        selected1 = temp[getRandomInt(0, temp.size() - 1)]; 
+        selected2 = temp[getRandomInt(0, temp.size() - 1)]; 
+       	
+        offspring = (getRandomFloat(0.0, 1.0) <= crossOverRate) ? 
         	this->onePointCrossOver(selected1, selected2, nullptr) : this->twoPointCrossOver(selected1, selected2, nullptr);
         	
 	 	offspring = mutation(offspring);

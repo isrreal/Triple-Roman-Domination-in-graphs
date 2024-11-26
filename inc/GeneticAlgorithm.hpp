@@ -37,7 +37,7 @@ class GeneticAlgorithm {
                 
 		Chromosome feasibilityCheck(Chromosome& chromosome);
 		
-        Chromosome selectionMethod(Chromosome(*selectionHeuristic)(std::vector<Chromosome>),
+        inline Chromosome selectionMethod(Chromosome(*selectionHeuristic)(std::vector<Chromosome>),
         std::vector<Chromosome> population); 
         
         Chromosome getBestChromosome(std::vector<Chromosome> population);
