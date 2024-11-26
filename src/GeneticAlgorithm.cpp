@@ -468,10 +468,7 @@ void GeneticAlgorithm::run(size_t generations, Chromosome(*heuristic)(Graph)) {
 		
         ++iteration;
         ++currentNoImprovementIteration;
-<<<<<<< HEAD
-=======
 
->>>>>>> dev
         if (bestSolution.fitnessValue > currentBestSolution.fitnessValue) {
             bestSolution = currentBestSolution;       
             currentNoImprovementIteration = 1;
