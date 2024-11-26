@@ -24,7 +24,7 @@ for arquivo in os.listdir(caminho_pasta):
             '$\Delta$': df['graph_max_degree'].unique()[0],
             'Lower Bound': df['lower_bound'].unique()[0],
             'Upper Bound': df['upper_bound'].unique()[0],
-            'Fitness Value': df['GA_fitness_heuristic1'].min(),
+            'Fitness Value': df['GA_fitness_heuristic2'].min(),
             'Elapsed Time(seconds)': df['elapsed_time_GA(seconds)'].min(),
         }
         
