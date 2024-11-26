@@ -35,6 +35,9 @@ Graph::Graph(size_t order, bool isDirected, float probabilityOfEdge) {
            }
         }
     }
+    
+    delta = computeMinVertexDegree();
+    Delta = computeMaxVertexDegree();
 }
 
 Graph::Graph(const std::string& filename, bool isDirected) {
