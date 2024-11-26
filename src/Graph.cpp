@@ -4,6 +4,8 @@ Graph::Graph(size_t order, bool isDirected, float probabilityOfEdge) {
     this->order = order;
     this->size = 0;
     this->isDirected = isDirected;
+    this->delta = 0;
+    this->Delta = 0;
     
     size_t connectedVertex = 0;
     float probability = 0.0;
@@ -40,7 +42,9 @@ Graph::Graph(const std::string& filename, bool isDirected) {
     this->order = 0;
     this->size = 0;
     this->isDirected = isDirected;
-    
+    this->delta = 0;
+    this->Delta = 0;
+
     if (!file) 
         throw std::runtime_error("Error opening the file!");
     
@@ -58,9 +62,10 @@ Graph::Graph(const std::string& filename, bool isDirected) {
         
     }
     
+    delta = computeMinVertexDegree();
+    Delta = computeMaxVertexDegree();
     file.close();
 }
-
 
 Graph::Graph(const Graph& graph) {
 	this->order = graph.order;
@@ -96,12 +101,8 @@ bool Graph::edgeExists(size_t u, size_t v) const {
     return std::find(adjList.at(u).begin(), adjList.at(u).end(), v) != adjList.at(u).end();
 }
 
-size_t Graph::getVertexDegree(size_t vertex) const {
-    return !vertexExists(vertex) ? 0 : const_cast<const std::unordered_map<size_t, std::list<size_t>>&>(adjList).at(vertex).size();
-}
-
-size_t Graph::getMaxDegree() const {
-    size_t maxDegree = getVertexDegree(getAdjacencyList().begin()->first);
+size_t Graph::computeMaxVertexDegree() {
+	size_t maxDegree = getVertexDegree(getAdjacencyList().begin()->first);
     size_t temp = 0;
     
     for (const auto& it : getAdjacencyList()) {
@@ -114,8 +115,8 @@ size_t Graph::getMaxDegree() const {
 }
 
 
-size_t Graph::getMinDegree() const {
-    size_t minDegree = getVertexDegree(getAdjacencyList().begin()->first);
+size_t Graph::computeMinVertexDegree() {
+ 	size_t minDegree = getVertexDegree(getAdjacencyList().begin()->first);
     size_t temp = 0;
     
     for (const auto& it : getAdjacencyList()) {
@@ -126,6 +127,16 @@ size_t Graph::getMinDegree() const {
             
     return minDegree;
 }
+
+size_t Graph::getVertexDegree(size_t vertex) const {
+    return !vertexExists(vertex) ? 0 : const_cast<const std::unordered_map<size_t, std::list<size_t>>&>(adjList).at(vertex).size();
+}
+
+
+
+size_t Graph::getMaxDegree() const { return Delta; }
+
+size_t Graph::getMinDegree() const { return delta; }
 
 size_t Graph::getSize() const { return this->size; }
 

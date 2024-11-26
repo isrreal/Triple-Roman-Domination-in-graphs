@@ -15,11 +15,15 @@ class Graph {
 private:
     size_t order;
     size_t size;
-    bool isDirected;  
+    bool isDirected; 
+    size_t Delta;
+    size_t delta; 
     std::unordered_map<size_t, std::list<size_t>> adjList;
     void addVertex(size_t source);
     void addEdge(size_t source, size_t destination);
     Graph readGraph(const std::string& filename);
+    size_t computeMaxVertexDegree();
+    size_t computeMinVertexDegree();
 public:	
 
     Graph(size_t order, bool isDirected, float probabilityOfEdge);	
