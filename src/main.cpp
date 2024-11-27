@@ -49,13 +49,14 @@ int main(int argc, char** argv) {
         
     	constexpr size_t trial = 10;
         size_t populationSize = graph.getOrder() / 1.5;
-        size_t generations = graph.getOrder() / 2;
+        size_t generations = 1000;
         short int heuristic = std::stoi(argv[3]);
-        constexpr float mutationRate = 0.40;
-        constexpr float elitismRate = 0.15;
-        constexpr float crossOverRate = 0.15;
+        constexpr float mutationRate = 0.2;
+        constexpr float elitismRate = 0.1;
+        constexpr float crossOverRate = 0.7;
         constexpr size_t numberOfAnts = 20;
         constexpr size_t iterations = 10;
+        
         int upperBound = 0;
     	int lowerBound = 0;
         

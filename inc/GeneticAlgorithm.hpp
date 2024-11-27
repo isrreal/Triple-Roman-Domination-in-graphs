@@ -20,24 +20,23 @@ class GeneticAlgorithm {
         float crossOverRate;
 		size_t maxNoImprovementIterations;
 
-		void createPopulation(Chromosome(*heuristic)(const Graph&), const Graph& graph);
+		inline void createPopulation(std::function<Chromosome(const Graph&)> generateChromosomeHeuristic, const Graph& graph);
 	
         inline std::vector<Chromosome>& createNewPopulation();    
-		inline Chromosome onePointCrossOver(Chromosome& chromosome1, Chromosome& cromossomo2,
-                	Chromosome(*crossOverHeuristic)(Chromosome&, Chromosome&)); 
+        
+		inline Chromosome onePointCrossOver(Chromosome& chromosome1, Chromosome& cromossomo2); 
                 	
-    	inline Chromosome twoPointCrossOver(Chromosome& chromosome1, Chromosome& cromossomo2,
-        			Chromosome(*crossOverHeuristic)(Chromosome&, Chromosome&));
+    	inline Chromosome twoPointCrossOver(Chromosome& chromosome1, Chromosome& cromossomo2);
                 	
         inline Chromosome& mutation(Chromosome& chromosome) {
         	std::vector<int> labels = {0, 2, 3, 4};
         	
-			for (auto& gene: chromosome.genes) {
-				if (getRandomFloat(0.0, 1.0) <= this->mutationRate)
-					gene = getRandomInt(0, labels.size());; 
+			if (getRandomFloat(0.0, 1.0) <= this->mutationRate) {
+				size_t randomIndex = getRandomInt(0, genesSize - 1);
+				short randomLabel = getRandomInt(0, labels.size());
+				chromosome.genes[randomIndex] = randomLabel;
+    			feasibilityCheck(chromosome);
     		}
-    
-    		feasibilityCheck(chromosome);
     		
 			return chromosome;   
         }

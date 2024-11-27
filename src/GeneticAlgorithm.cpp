@@ -39,18 +39,17 @@ Chromosome GeneticAlgorithm::getBestChromosome(std::vector<Chromosome> populatio
  * @param graph Object to the graph used to initialize the chromosomes.
  */
 
-void GeneticAlgorithm::createPopulation(Chromosome(*generateChromosomeHeuristic)(const Graph&), const Graph& graph) {
-    if (generateChromosomeHeuristic) {  
-       Chromosome func = (*generateChromosomeHeuristic)(graph);  
-       for (size_t i = 0; i < populationSize; ++i) 
+void GeneticAlgorithm::createPopulation(std::function<Chromosome(const Graph&)> generateChromosomeHeuristic, const Graph& graph) {
+    if (generateChromosomeHeuristic) {
+        Chromosome func = generateChromosomeHeuristic(graph);  
+        for (size_t i = 0; i < populationSize; ++i) 
             this->population[i] = Chromosome(func);
+    } 
     
-   } 
-        
-   else {
-       for (size_t i = 0; i < populationSize; ++i) 
-           this->population[i] = Chromosome(genesSize);       
-   }
+    else {
+        for (size_t i = 0; i < populationSize; ++i) 
+            this->population[i] = Chromosome(genesSize);       
+    }
 }
 
 /**
@@ -90,12 +89,7 @@ Chromosome GeneticAlgorithm::chooseWorstSolution(const Chromosome& chromosome1, 
  */
 
 
-Chromosome GeneticAlgorithm::twoPointCrossOver(Chromosome& chromosome1, Chromosome& chromosome2,
- 	Chromosome(*crossOverHeuristic)(Chromosome&, Chromosome&)) {
- 	
-   if (crossOverHeuristic)
-        return (*crossOverHeuristic)(chromosome1, chromosome2);
-    
+Chromosome GeneticAlgorithm::twoPointCrossOver(Chromosome& chromosome1, Chromosome& chromosome2) {
    size_t range1 = GeneticAlgorithm::getRandomInt(0, genesSize - 1);
    size_t range2 = GeneticAlgorithm::getRandomInt(0, genesSize - 1);
    
@@ -117,12 +111,8 @@ Chromosome GeneticAlgorithm::twoPointCrossOver(Chromosome& chromosome1, Chromoso
    return chooseBestSolution(solution1, solution2);
 }
 
-Chromosome GeneticAlgorithm::onePointCrossOver(Chromosome& chromosome1, Chromosome& chromosome2,
- 	Chromosome(*crossOverHeuristic)(Chromosome&, Chromosome&)) {
- 	
-   if (crossOverHeuristic)
-        return (*crossOverHeuristic)(chromosome1, chromosome2);
-    
+Chromosome GeneticAlgorithm::onePointCrossOver(Chromosome& chromosome1, Chromosome& chromosome2) {
+  
    size_t index = GeneticAlgorithm::getRandomInt(0, genesSize - 1);
    
    Chromosome solution1 = chromosome1;
@@ -322,9 +312,9 @@ std::vector<Chromosome>& GeneticAlgorithm::createNewPopulation() {
         selected2 = tournamentSelection(temp);      	
        	
        	if (getRandomFloat(0.0, 1.0) <= crossOverRate)   		
-        	offspring = this->twoPointCrossOver(selected1, selected2, nullptr); 
+        	offspring = this->twoPointCrossOver(selected1, selected2); 
         else      
-        	offspring = this->onePointCrossOver(selected1, selected2, nullptr);     
+        	offspring = this->onePointCrossOver(selected1, selected2);     
         
 	    mutation(offspring);	    
 		
