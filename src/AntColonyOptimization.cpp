@@ -9,14 +9,15 @@ void AntColonyOptimization::run() {
      
     while (temp > 0) {
         for (size_t i = 0; i < numberOfAnts; ++i) {
-            solution = constructSolution(solution);
-            solution = extendSolution(solution);
-            solution = reduceSolution(solution);
-            solution = RVNS(solution);
+            solution = std::move(constructSolution(solution));
+			solution = std::move(extendSolution(solution));
+			solution = std::move(reduceSolution(solution));
+			solution = std::move(RVNS(solution));
+			
             if (summation(solution) < summation(currentBestSolution))
                 currentBestSolution = solution;
         }    
-                                                           
+                                           
         if (summation(currentBestSolution) < summation(bestSolution))
               bestSolution = currentBestSolution;
         
@@ -37,8 +38,6 @@ void AntColonyOptimization::initializePheromones(std::vector<float>& graphPherom
     for (size_t i = 0; i < graphPheromone.size(); ++i)
         graphPheromone[i] = 0.5;
 }
-
-
 
 /**
  * @brief Constructs a feasible solution for the Triple Roman Domination problem.
@@ -95,7 +94,6 @@ std::vector<int> AntColonyOptimization::constructSolution(std::vector<int> solut
  */
 
 std::vector<int> AntColonyOptimization::extendSolution(std::vector<int> solution) {
-    constexpr float addVerticesRate = 0.05f;
     size_t itr = 0;
     std::vector<int> twoOrZeroOrThreeLabeledVertices;
     
@@ -319,8 +317,6 @@ size_t AntColonyOptimization::chooseVertex(Graph& temp) {
  */
 
 size_t AntColonyOptimization::chooseVertex(std::vector<int> twoOrZeroOrThreeLabeledVertices) {
-    constexpr float selectionVertexRateExtendSolution = 0.9f;
-
     std::random_device randomNumber;
     std::mt19937 seed(randomNumber());
     std::uniform_real_distribution<float> probabilityGap(0.0, 1.0);
@@ -459,8 +455,7 @@ float AntColonyOptimization::getMinPheromoneValue(std::vector<float> graphPherom
 }
 
 
-void AntColonyOptimization::updatePheromones(std::vector<int>& currentBestSolution, std::vector<int>& bestSolution)
-{                                                               
+void AntColonyOptimization::updatePheromones(std::vector<int>& currentBestSolution, std::vector<int>& bestSolution) {                                                               
     size_t weightCurrentBestSolution = summation(currentBestSolution);
     size_t weightBestSolution = summation(bestSolution); 
     float equation = 0.0;        

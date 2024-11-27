@@ -54,7 +54,7 @@ int main(int argc, char** argv) {
         constexpr float mutationRate = 0.2;
         constexpr float elitismRate = 0.1;
         constexpr float crossOverRate = 0.7;
-        constexpr size_t numberOfAnts = 20;
+        constexpr size_t numberOfAnts = 5;
         constexpr size_t iterations = 10;
         
         int upperBound = 0;
