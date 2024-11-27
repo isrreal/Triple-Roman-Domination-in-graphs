@@ -39,18 +39,60 @@ Chromosome GeneticAlgorithm::getBestChromosome(std::vector<Chromosome> populatio
  * @param graph Object to the graph used to initialize the chromosomes.
  */
 
-void GeneticAlgorithm::createPopulation(std::function<Chromosome(const Graph&)> generateChromosomeHeuristic, const Graph& graph) {
-    if (generateChromosomeHeuristic) {
-        Chromosome func = generateChromosomeHeuristic(graph);  
-        for (size_t i = 0; i < populationSize; ++i) 
-            this->population[i] = Chromosome(func);
+void GeneticAlgorithm::createPopulation(
+    std::vector<std::function<Chromosome(const Graph&)>> generateChromosomeHeuristics, 
+    const Graph& graph, 
+    size_t heuristic) {
+
+    if (!generateChromosomeHeuristics.empty()) {
+        if (heuristic == 4) {
+        
+            for (size_t i = 0; i <= populationSize - 5; ++i) {
+                this->population[i] = generateChromosomeHeuristics[0](graph);
+            }
+
+            this->population[populationSize - 4] = generateChromosomeHeuristics[1](graph);
+            this->population[populationSize - 3] = generateChromosomeHeuristics[1](graph);
+            this->population[populationSize - 2] = generateChromosomeHeuristics[2](graph);
+            this->population[populationSize - 1] = generateChromosomeHeuristics[2](graph);
+				
+			std::random_device randomNumber; 
+    		std::mt19937 seed(randomNumber());
+    		
+			std::shuffle(population.begin(), population.end(), randomNumber);
+        } 
+        
+        else if (heuristic == 1) {
+            Chromosome func = generateChromosomeHeuristics[0](graph);
+            for (size_t i = 0; i < populationSize; ++i) {
+                this->population[i] = func;
+            }
+        }
+        
+         else if (heuristic == 2) {
+            Chromosome func = generateChromosomeHeuristics[1](graph);
+            for (size_t i = 0; i < populationSize; ++i) {
+                this->population[i] = func;
+            }
+        }
+        
+        else if (heuristic == 3) {
+            Chromosome func = generateChromosomeHeuristics[2](graph);
+            for (size_t i = 0; i < populationSize; ++i) {
+                this->population[i] = func;
+            }
+        }
+        
     } 
     
     else {
-        for (size_t i = 0; i < populationSize; ++i) 
-            this->population[i] = Chromosome(genesSize);       
+    
+        for (size_t i = 0; i < populationSize; ++i) {
+            this->population[i] = Chromosome(genesSize);
+        }
     }
 }
+
 
 /**
  * @brief Chooses the best Chromosome between two options based on their fitness values.
@@ -326,8 +368,8 @@ std::vector<Chromosome>& GeneticAlgorithm::createNewPopulation() {
     return population;
 }
 
-void GeneticAlgorithm::run(size_t generations, Chromosome(*heuristic)(const Graph&)) { 
-   this->createPopulation(heuristic, graph);
+void GeneticAlgorithm::run(size_t generations, std::vector<std::function<Chromosome(const Graph&)>> heuristics, size_t chosenHeuristic) { 
+   this->createPopulation(heuristics, graph, chosenHeuristic);
 	
    Chromosome currentBestSolution = this->tournamentSelection(this->population);                                         
    Chromosome bestSolution = currentBestSolution;

@@ -34,26 +34,24 @@ size_t TripleRomanDomination::getACOBestFitness() {
  * @return size_t The calculated triple Roman domination number.
  */
  
+ 
 void TripleRomanDomination::runGeneticAlgorithm(short int heuristic) {  
     this->geneticAlgorithmBestFitness = 0;
 
-    Chromosome (*selectedHeuristic)(const Graph&) = nullptr;
-
-    if (heuristic == 2) 
-        selectedHeuristic = heuristic2;
-    else if (heuristic == 3) 
-        selectedHeuristic = heuristic3;
-    else 
-        selectedHeuristic = heuristic1;
-
-    this->geneticAlgorithm->run(geneticAlgorithm->getGenerations(), selectedHeuristic);
-	
-    solutionGeneticAlgorithm = this->geneticAlgorithm->getBestSolution();
+    std::vector<std::function<Chromosome(const Graph&)>> heuristics;
+    heuristics.reserve(3);
     
-    std::for_each(solutionGeneticAlgorithm.begin(), solutionGeneticAlgorithm.end(), [&](int element) {
-        this->geneticAlgorithmBestFitness += element;
-    });
+    heuristics.emplace_back(heuristic1);
+    heuristics.emplace_back(heuristic2);
+    heuristics.emplace_back(heuristic3);
+
+    this->geneticAlgorithm->run(geneticAlgorithm->getGenerations(), heuristics, heuristic);
+    
+    solutionGeneticAlgorithm = this->geneticAlgorithm->getBestSolution();
+
+    this->geneticAlgorithmBestFitness = std::accumulate(solutionGeneticAlgorithm.begin(), solutionGeneticAlgorithm.end(), 0);
 }
+
 
 
 void TripleRomanDomination::runACO() {
@@ -63,9 +61,7 @@ void TripleRomanDomination::runACO() {
    
    solutionACO = this->ACO->getBestSolution();
 
-   std::for_each(solutionACO.begin(), solutionACO.end(), [&](int element) {
-      this->ACOBestFitness += element;
-   });
+   this->ACOBestFitness = std::accumulate(solutionGeneticAlgorithm.begin(), solutionGeneticAlgorithm.end(), 0);   
 }
 
 bool TripleRomanDomination::feasible(const Graph& graph, std::vector<int> solution) {

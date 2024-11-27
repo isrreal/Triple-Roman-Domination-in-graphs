@@ -20,7 +20,8 @@ class GeneticAlgorithm {
         float crossOverRate;
 		size_t maxNoImprovementIterations;
 
-		inline void createPopulation(std::function<Chromosome(const Graph&)> generateChromosomeHeuristic, const Graph& graph);
+		inline void createPopulation(std::vector<std::function<Chromosome(const Graph&)>> generateChromosomeHeuristics,
+		 	const Graph& graph, size_t heuristic);
 	
         inline std::vector<Chromosome>& createNewPopulation();    
         
@@ -109,7 +110,7 @@ class GeneticAlgorithm {
 		double getMutationRate();
 		double getElitismRate();
         std::vector<int> getBestSolution();		      
-        void run(size_t generations, Chromosome(*heuristic)(const Graph&));
+        void run(size_t generations, std::vector<std::function<Chromosome(const Graph&)>>, size_t chosenHeuristic);
 };	
 
 #endif
