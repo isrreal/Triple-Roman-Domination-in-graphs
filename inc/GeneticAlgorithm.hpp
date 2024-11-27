@@ -20,7 +20,7 @@ class GeneticAlgorithm {
         float crossOverRate;
 		size_t maxNoImprovementIterations;
 
-		void createPopulation(Chromosome(*heuristic)(Graph), Graph graph);
+		void createPopulation(Chromosome(*heuristic)(const Graph&), const Graph& graph);
 	
         inline std::vector<Chromosome>& createNewPopulation();    
 		inline Chromosome onePointCrossOver(Chromosome& chromosome1, Chromosome& cromossomo2,
@@ -29,7 +29,18 @@ class GeneticAlgorithm {
     	inline Chromosome twoPointCrossOver(Chromosome& chromosome1, Chromosome& cromossomo2,
         			Chromosome(*crossOverHeuristic)(Chromosome&, Chromosome&));
                 	
-        Chromosome& mutation(Chromosome& chromosome);
+        inline Chromosome& mutation(Chromosome& chromosome) {
+        	std::vector<int> labels = {0, 2, 3, 4};
+        	
+			for (auto& gene: chromosome.genes) {
+				if (getRandomFloat(0.0, 1.0) <= this->mutationRate)
+					gene = getRandomInt(0, labels.size());; 
+    		}
+    
+    		feasibilityCheck(chromosome);
+    		
+			return chromosome;   
+        }
         
         inline std::vector<Chromosome>& elitism(float elitismRate);
         
@@ -39,7 +50,13 @@ class GeneticAlgorithm {
 
         Chromosome getBestChromosome(std::vector<Chromosome> population);
         
-        static Chromosome fitness(Chromosome& chromosome, Chromosome(*fitnessHeuristic)(Chromosome&));
+        inline static Chromosome fitness(Chromosome& chromosome) {
+        	for (size_t i = 0; i < chromosome.genesSize; ++i) {
+        		chromosome.fitnessValue += chromosome.genes[i];
+        	}
+        		
+   		 	return chromosome; 
+        }
         
 		inline static Chromosome tournamentSelection(const std::vector<Chromosome>& population) {
 			constexpr float parameter = 0.75f; 
@@ -54,14 +71,25 @@ class GeneticAlgorithm {
 			   return GeneticAlgorithm::chooseWorstSolution(c1, c2); 
 		}
 		
-		
-		inline static Chromosome rouletteWheelSelection(std::vector<Chromosome> population); 
 		static Chromosome chooseBestSolution(const Chromosome& chromosome1, const Chromosome& chromosome2);
         static Chromosome chooseWorstSolution(const Chromosome& chromosome1, const Chromosome& chromosome2);
         
-        static int getRandomInt(int start, int end);
-        static float getRandomFloat(float start, float end);
-	
+        inline static int getRandomInt(int start, int end) {
+        	std::random_device randomNumber; 
+    		std::mt19937 seed(randomNumber()); 
+    		std::uniform_int_distribution<> gap(start, end); 
+    
+    		return gap(seed);  
+        }
+        
+        inline static float getRandomFloat(float start, float end) {
+        	std::random_device randomNumber; 
+    		std::mt19937 seed(randomNumber()); 
+    		std::uniform_real_distribution<> gap(start, end); 
+    
+    		return gap(seed);
+    	}
+
 	public:
 		GeneticAlgorithm(Graph& graph, size_t populationSize, size_t genesSize, size_t generations,
 			float mutationRate, float elitismRate, float crossOverRate):
@@ -82,7 +110,7 @@ class GeneticAlgorithm {
 		double getMutationRate();
 		double getElitismRate();
         std::vector<int> getBestSolution();		      
-        void run(size_t generations, Chromosome(*heuristic)(Graph));
+        void run(size_t generations, Chromosome(*heuristic)(const Graph&));
 };	
 
 #endif

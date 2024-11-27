@@ -51,7 +51,7 @@ int main(int argc, char** argv) {
         size_t populationSize = graph.getOrder() / 1.5;
         size_t generations = graph.getOrder() / 2;
         short int heuristic = std::stoi(argv[3]);
-        constexpr float mutationRate = 0.05;
+        constexpr float mutationRate = 0.40;
         constexpr float elitismRate = 0.15;
         constexpr float crossOverRate = 0.15;
         constexpr size_t numberOfAnts = 20;

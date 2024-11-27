@@ -16,28 +16,12 @@ Graph GeneticAlgorithm::getGraph() { return this->graph; }
 
 std::vector<int> GeneticAlgorithm::getBestSolution() { return this->bestSolution; } 
 
-int GeneticAlgorithm::getRandomInt(int start, int end) {
-	std::random_device randomNumber; 
-    std::mt19937 seed(randomNumber()); 
-    std::uniform_int_distribution<> gap(start, end); 
-    
-    return gap(seed);
-}
-
-float GeneticAlgorithm::getRandomFloat(float start, float end) {
-	std::random_device randomNumber; 
-    std::mt19937 seed(randomNumber()); 
-    std::uniform_real_distribution<> gap(start, end); 
-    
-    return gap(seed);
-}
-
 Chromosome GeneticAlgorithm::getBestChromosome(std::vector<Chromosome> population) {
-	Chromosome bestSolution = GeneticAlgorithm::fitness(population[getRandomInt(0, populationSize - 1)], nullptr);
+	Chromosome bestSolution = GeneticAlgorithm::fitness(population[getRandomInt(0, populationSize - 1)]);
 	Chromosome solution;
 	
 	for (size_t i = 0; i < populationSize; ++i) {
-		solution = fitness(population[i], nullptr);
+		solution = fitness(population[i]);
 		if (solution.fitnessValue > bestSolution.fitnessValue)
 			bestSolution = solution;
 	}
@@ -55,7 +39,7 @@ Chromosome GeneticAlgorithm::getBestChromosome(std::vector<Chromosome> populatio
  * @param graph Object to the graph used to initialize the chromosomes.
  */
 
-void GeneticAlgorithm::createPopulation(Chromosome(*generateChromosomeHeuristic)(Graph), Graph graph) {
+void GeneticAlgorithm::createPopulation(Chromosome(*generateChromosomeHeuristic)(const Graph&), const Graph& graph) {
     if (generateChromosomeHeuristic) {  
        Chromosome func = (*generateChromosomeHeuristic)(graph);  
        for (size_t i = 0; i < populationSize; ++i) 
@@ -67,77 +51,6 @@ void GeneticAlgorithm::createPopulation(Chromosome(*generateChromosomeHeuristic)
        for (size_t i = 0; i < populationSize; ++i) 
            this->population[i] = Chromosome(genesSize);       
    }
-}
-
-/**
- * @brief Calculates the fitness score for a given chromosome.
- * 
- * If a fitness heuristic is provided, it is used to calculate the fitness score.
- * Otherwise, returns nullptr.
- * 
- * @param chromosome Reference to the chromosome to evaluate.
- * @param fitnessHeuristic A pointer to a function that evaluates the fitness of the chromosome.
- * @return Chromosome The chromosome with its fitness score calculated, or nullptr if no heuristic is provided.
- */
-
-Chromosome GeneticAlgorithm::fitness(Chromosome& chromosome, Chromosome(*fitnessHeuristic)(Chromosome&) = nullptr) { 
-    if (fitnessHeuristic)
-        return (*fitnessHeuristic)(chromosome);
-
-    for (size_t i = 0; i < chromosome.genesSize; ++i)
-        chromosome.fitnessValue += chromosome.genes[i];
-    return chromosome;
-}
-
-/**
- * @brief Selects the chromosome from the population using tournament selection.
- * 
- * This method randomly selects two chromosomes from the population, evaluates their fitness, 
- * and choses a random number r between 0 and 1. If r < k (where k is a parameters, for example 0.75),
- * fitter of the two parameters is selected to be a parent; otherwise, the one with the higher fitness value is selected.
- * 
- * @param population The vector of chromosomes in the current population.
- * @return Chromosome The chromosome with the highest or lowest fitness value.
- */
-
-/*Chromosome GeneticAlgorithm::tournamentSelection(std::vector<Chromosome> population) { 
-    constexpr float parameter = 0.75f; 
-    	
-    Chromosome c1 = population[getRandomInt(0, population.size() - 1)]; 
-    Chromosome c2 = population[getRandomInt(0, population.size() - 1)];
-   	
-   	float probability = GeneticAlgorithm::getRandomFloat(0.0, 1.0);
-    if (probability < parameter) 
-       return GeneticAlgorithm::chooseBestSolution(c1, c2);
-    else 
-       return GeneticAlgorithm::chooseWorstSolution(c1, c2); 
-}
-*/
-/**
- * @brief Selects a chromosome from the population using roulette wheel selection.
- * 
- * This method randomly selects and returns a chromosome from the population.
- * 
- * @param population The vector of chromosomes in the current population.
- * @return Chromosome The randomly selected chromosome.
- */
-
-Chromosome GeneticAlgorithm::rouletteWheelSelection(std::vector<Chromosome> population) {
-    size_t totalFitness = 0;
-
-    for (size_t i = 0; i < population.size(); ++i)
-        totalFitness += population[i].fitnessValue;
-
-    size_t randomValue = GeneticAlgorithm::getRandomInt(0, totalFitness - 1);
-
-    size_t cumulativeFitness = 0;
-    for (auto& chromosome: population) {
-        cumulativeFitness += chromosome.fitnessValue;
-        if (cumulativeFitness >= randomValue) 
-            return chromosome;
-    }
-    
-    return population.back();
 }
 
 /**
@@ -197,6 +110,9 @@ Chromosome GeneticAlgorithm::twoPointCrossOver(Chromosome& chromosome1, Chromoso
         
    feasibilityCheck(solution1);
    feasibilityCheck(solution2);
+   
+   fitness(solution1);
+   fitness(solution2);
     
    return chooseBestSolution(solution1, solution2);
 }
@@ -217,20 +133,11 @@ Chromosome GeneticAlgorithm::onePointCrossOver(Chromosome& chromosome1, Chromoso
         
    feasibilityCheck(solution1);
    feasibilityCheck(solution2);
+   
+   fitness(solution1);
+   fitness(solution2);
     
    return chooseBestSolution(solution1, solution2);
-}
-
-
-Chromosome& GeneticAlgorithm::mutation(Chromosome& chromosome) {	
-	std::vector<int> labels = {0, 2, 3, 4};
-        
-    if (getRandomFloat(0.0, 1.0) <= this->mutationRate) {
-        chromosome.genes[getRandomInt(0, genesSize - 1)] = getRandomInt(0, labels.size() - 1); 
-    	feasibilityCheck(chromosome);
-    }
-    
-	return chromosome;
 }
 
 std::vector<Chromosome>& GeneticAlgorithm::elitism(float elitismRate) {
@@ -417,21 +324,19 @@ std::vector<Chromosome>& GeneticAlgorithm::createNewPopulation() {
        	if (getRandomFloat(0.0, 1.0) <= crossOverRate)   		
         	offspring = this->twoPointCrossOver(selected1, selected2, nullptr); 
         else      
-        	offspring = this->onePointCrossOver(selected1, selected2, nullptr);
-        	
-	    mutation(offspring);
+        	offspring = this->onePointCrossOver(selected1, selected2, nullptr);     
+        
+	    mutation(offspring);	    
 		
         population.emplace_back(offspring);       
     }
-    
-	std::cout << "aqui\n";
 	
     population.swap(temp);
     
     return population;
 }
 
-void GeneticAlgorithm::run(size_t generations, Chromosome(*heuristic)(Graph)) { 
+void GeneticAlgorithm::run(size_t generations, Chromosome(*heuristic)(const Graph&)) { 
    this->createPopulation(heuristic, graph);
 	
    Chromosome currentBestSolution = this->tournamentSelection(this->population);                                         
