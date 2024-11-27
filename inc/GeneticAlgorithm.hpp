@@ -39,9 +39,6 @@ class GeneticAlgorithm {
 
         Chromosome getBestChromosome(std::vector<Chromosome> population);
         
-        size_t rouletteWheelSelection(Graph& graph);
-        size_t rouletteWheelSelection(std::vector<int> twoOrZeroOrThreeLabeledVertices);
-        
         static Chromosome fitness(Chromosome& chromosome, Chromosome(*fitnessHeuristic)(Chromosome&));
         
 		inline static Chromosome tournamentSelection(const std::vector<Chromosome>& population) {
