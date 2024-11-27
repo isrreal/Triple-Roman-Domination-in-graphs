@@ -36,10 +36,7 @@ class GeneticAlgorithm {
         bool feasible(Chromosome& chromosome);
                 
 		Chromosome feasibilityCheck(Chromosome& chromosome);
-		
-        inline Chromosome selectionMethod(Chromosome(*selectionHeuristic)(std::vector<Chromosome>),
-        std::vector<Chromosome> population); 
-        
+
         Chromosome getBestChromosome(std::vector<Chromosome> population);
         
         size_t rouletteWheelSelection(Graph& graph);

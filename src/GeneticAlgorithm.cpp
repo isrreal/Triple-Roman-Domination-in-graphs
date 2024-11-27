@@ -141,27 +141,6 @@ Chromosome GeneticAlgorithm::rouletteWheelSelection(std::vector<Chromosome> popu
 }
 
 /**
- * @brief Selects a chromosome from the population using a specific selection heuristic and removes it.
- * 
- * Uses the provided selection heuristic to select the best chromosome from the population and removes it
- * to prevent duplications in future selections.
- * 
- * @param selectionHeuristic A pointer to a function that implements the selection heuristic.
- * @return Chromosome The selected chromosome, or defualt Chromosome object if no valid selection is made.
- */
-
-Chromosome GeneticAlgorithm::selectionMethod(
-    Chromosome (*selectionHeuristic)(std::vector<Chromosome>), 
-    std::vector<Chromosome> population) {
-    if (!selectionHeuristic)
-        return population[getRandomInt(0, population.size() - 1)];
-    
-    return (*selectionHeuristic)(population);
-}
-
-
-
-/**
  * @brief Chooses the best Chromosome between two options based on their fitness values.
  * 
  * @param chromosome1 constant reference to the first Chromosome.
@@ -432,8 +411,8 @@ std::vector<Chromosome>& GeneticAlgorithm::createNewPopulation() {
     Chromosome offspring;
     
     while (population.size() < populationSize) {          
-        selected1 = temp[getRandomInt(0, temp.size() - 1)]; 
-        selected2 = temp[getRandomInt(0, temp.size() - 1)]; 
+        selected1 = tournamentSelection(temp); // temp[getRandomInt(0, temp.size() - 1)]; 
+        selected2 = tournamentSelection(temp); // temp[getRandomInt(0, temp.size() - 1)]; 
        	
         offspring = (getRandomFloat(0.0, 1.0) <= crossOverRate) ? 
         	this->onePointCrossOver(selected1, selected2, nullptr) : this->twoPointCrossOver(selected1, selected2, nullptr);
