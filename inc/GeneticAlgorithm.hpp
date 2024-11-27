@@ -43,7 +43,21 @@ class GeneticAlgorithm {
         size_t rouletteWheelSelection(std::vector<int> twoOrZeroOrThreeLabeledVertices);
         
         static Chromosome fitness(Chromosome& chromosome, Chromosome(*fitnessHeuristic)(Chromosome&));
-		inline static Chromosome tournamentSelection(std::vector<Chromosome> population);
+        
+		inline static Chromosome tournamentSelection(const std::vector<Chromosome>& population) {
+			constexpr float parameter = 0.75f; 
+				
+			Chromosome c1 = population[getRandomInt(0, population.size() - 1)]; 
+			Chromosome c2 = population[getRandomInt(0, population.size() - 1)];
+		   	
+		   	float probability = GeneticAlgorithm::getRandomFloat(0.0, 1.0);
+			if (probability < parameter) 
+			   return GeneticAlgorithm::chooseBestSolution(c1, c2);
+			else 
+			   return GeneticAlgorithm::chooseWorstSolution(c1, c2); 
+		}
+		
+		
 		inline static Chromosome rouletteWheelSelection(std::vector<Chromosome> population); 
 		static Chromosome chooseBestSolution(const Chromosome& chromosome1, const Chromosome& chromosome2);
         static Chromosome chooseWorstSolution(const Chromosome& chromosome1, const Chromosome& chromosome2);
