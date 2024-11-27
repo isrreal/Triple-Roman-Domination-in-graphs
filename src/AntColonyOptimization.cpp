@@ -116,7 +116,7 @@ std::vector<int> AntColonyOptimization::extendSolution(std::vector<int> solution
     return solution;
 }
 
-void AntColonyOptimization::toggleLabels(std::vector<int> solution) {
+void AntColonyOptimization::toggleLabels(std::vector<int>& solution) {
 	size_t initLabel = 0;
 	
 	for (size_t i = 0; i < graph.getOrder(); ++i) {
@@ -242,10 +242,9 @@ std::vector<int> AntColonyOptimization::RVNS(std::vector<int> solution) {
     currentRVNSnumber = 1;
 
     while ((currentNoImprovementIteration < maxRVNSnoImprovementIterations) && (maxRVNSiterations > 0)) {
-        destroySolution(solution);
-        constructSolution(solution);
-        extendSolution(solution);
-        reduceSolution(solution);
+        solution = std::move(destroySolution(solution));
+        solution = std::move(extendSolution(solution));
+        solution = std::move(reduceSolution(solution));
 
         if (summation(temp) < summation(solution)) {
             solution = temp;
@@ -317,6 +316,8 @@ size_t AntColonyOptimization::chooseVertex(Graph& temp) {
  */
 
 size_t AntColonyOptimization::chooseVertex(std::vector<int> twoOrZeroOrThreeLabeledVertices) {
+    constexpr float selectionVertexRateExtendSolution = 0.9f;
+
     std::random_device randomNumber;
     std::mt19937 seed(randomNumber());
     std::uniform_real_distribution<float> probabilityGap(0.0, 1.0);

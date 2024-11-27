@@ -40,7 +40,7 @@ class AntColonyOptimization {
 
         size_t summation(std::vector<int> solution);
         
-        void toggleLabels(std::vector<int> solution);
+        void toggleLabels(std::vector<int>& solution);
         
         float getMaxPheromoneValue(std::vector<float> graphPheromone);
         
@@ -63,7 +63,7 @@ class AntColonyOptimization {
              convergenceFactor(0), evaporationRate(0.2),
              minDestructionRate(0.2), maxDestructionRate(0.5),
              currentRVNSnumber(1), maxRVNSfunctions(5), maxRVNSiterations(150),
-             maxRVNSnoImprovementIterations(10),
+             maxRVNSnoImprovementIterations(50),
              addVerticesRate(0.05),
              selectionVertexRateExtendSolution(0.7) {}
 
