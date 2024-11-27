@@ -67,8 +67,9 @@ int main(int argc, char** argv) {
         TripleRomanDomination* trd = new TripleRomanDomination(graph, populationSize, graph.getOrder(), generations,
                 mutationRate, elitismRate, crossOverRate, numberOfAnts, iterations); 
         std::cout << "graph_name,graph_order,graph_size,graph_min_degree,graph_max_degree,GA_fitness_heuristic" << heuristic;
-        std::cout << ",lower_bound,upper_bound,elapsed_time_GA(seconds),is_3RDF" << std::endl;
-	    // std::cout << "ACO_fitness_" << numberOfAnts << "_" << iterations << ",lower_bound,upper_bound,elapsed_time_GA(seconds),elapsed_time_ACO(seconds)" << std::endl;
+	    std::cout << ",ACO_fitness_" << numberOfAnts << "_" << iterations << std::endl; 
+        std::cout << ",lower_bound,upper_bound,elapsed_time_GA(seconds)" << ",elapsed_time_ACO(seconds),is_3RDF_GA,is_3RDF_ACO" << std::endl;
+
         for (size_t i = 0; i < trial; ++i) {         	
 	        std::cout << argv[2] << ",";
 	        std::cout << graph.getOrder() << ",";
@@ -77,36 +78,39 @@ int main(int argc, char** argv) {
 	        std::cout << Delta << ",";
 	        
 	        std::chrono::duration<double> elapsedGA;
-	    //	std::chrono::duration<double> elapsedACO;
-	     
+	    	std::chrono::duration<double> elapsedACO;
+
 	    	std::thread gaThread([&]() {
 	    		auto startGA = std::chrono::high_resolution_clock::now();
 	    		trd->runGeneticAlgorithm(heuristic);
 	    		auto endGA = std::chrono::high_resolution_clock::now();
 	    		elapsedGA = endGA - startGA;
 	    	});			
-	    /*  	
-	    	std::thread acoThread([&]() {
+
+    		std::thread acoThread([&]() {
 	    		auto startACO = std::chrono::high_resolution_clock::now();
 	    		trd->runACO();
 	    		auto endACO = std::chrono::high_resolution_clock::now();
 	    		elapsedACO = endACO - startACO;
 	    	});
-	   */	
+	    	
 	    	gaThread.join();
-	    //	acoThread.join();
-	                  
+	    	acoThread.join();
+	                
         	upperBound = computeRightUpperBound(graph, upperBound);
 
         	lowerBound = computeRightLowerBound(graph, lowerBound);
 
 	    	std::cout << trd->getGeneticAlgorithmBestFitness() << ",";
-	    // 	std::cout << trd->getACOBestFitness() << ",";
+	     	std::cout << trd->getACOBestFitness() << ",";
 	    	std::cout << lowerBound << ",";
             std::cout << upperBound << ","; 
+	    	
 	    	std::cout << elapsedGA.count() << ",";
-	    	std::cout << TripleRomanDomination::feasible(graph, trd->getSolutionGeneticAlgorithm()) << std::endl;
-	    //	std::cout << elapsedACO.count() << std::endl;	
+	    	std::cout << elapsedACO.count() << ",";	    	
+	    	
+	    	std::cout << TripleRomanDomination::feasible(graph, trd->getSolutionGeneticAlgorithm()) << ",";
+	    	std::cout << TripleRomanDomination::feasible(graph, trd->getSolutionACO()) << std::endl;
         }
         
 	    delete trd;

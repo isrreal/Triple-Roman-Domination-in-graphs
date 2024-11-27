@@ -6,7 +6,6 @@ void AntColonyOptimization::run() {
     std::vector<int> currentBestSolution(graph.getOrder(), 4);
     std::vector<int> bestSolution(graph.getOrder(), 4);
     std::vector<int> solution(graph.getOrder(), -1);
-    
      
     while (temp > 0) {
         for (size_t i = 0; i < numberOfAnts; ++i) {
@@ -28,7 +27,7 @@ void AntColonyOptimization::run() {
         if (convergenceFactor > 0.99)
             initializePheromones(graphPheromone);
 
-        --temp;
+        --temp; 			
     }
     
     this->bestSolution = bestSolution;

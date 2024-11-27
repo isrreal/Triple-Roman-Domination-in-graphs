@@ -61,7 +61,7 @@ void TripleRomanDomination::runACO() {
    
    solutionACO = this->ACO->getBestSolution();
 
-   this->ACOBestFitness = std::accumulate(solutionGeneticAlgorithm.begin(), solutionGeneticAlgorithm.end(), 0);   
+   this->ACOBestFitness = std::accumulate(solutionACO.begin(), solutionACO.end(), 0);   
 }
 
 bool TripleRomanDomination::feasible(const Graph& graph, std::vector<int> solution) {
