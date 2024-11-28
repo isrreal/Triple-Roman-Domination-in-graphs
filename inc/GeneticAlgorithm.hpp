@@ -35,7 +35,6 @@ class GeneticAlgorithm {
 			if (getRandomFloat(0.0, 1.0) <= this->mutationRate) {
 				size_t randomIndex = getRandomInt(0, genesSize - 1);
 				short randomLabel = getRandomInt(0, labels.size() - 1);
-				std::cout << labels[randomLabel] << std::endl;
 				chromosome.genes[randomIndex] = labels[randomLabel];
     			feasibilityCheck(chromosome);
     		}
