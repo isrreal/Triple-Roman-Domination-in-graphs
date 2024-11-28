@@ -67,7 +67,7 @@ int main(int argc, char** argv) {
         TripleRomanDomination* trd = new TripleRomanDomination(graph, populationSize, graph.getOrder(), generations,
                 mutationRate, elitismRate, crossOverRate, numberOfAnts, iterations); 
         std::cout << "graph_name,graph_order,graph_size,graph_min_degree,graph_max_degree,GA_fitness_heuristic" << heuristic;
-	    std::cout << ",ACO_fitness_" << numberOfAnts << "_" << iterations << std::endl; 
+	    std::cout << ",ACO_fitness_" << numberOfAnts << "_" << iterations; 
         std::cout << ",lower_bound,upper_bound,elapsed_time_GA(seconds)" << ",elapsed_time_ACO(seconds),is_3RDF_GA,is_3RDF_ACO" << std::endl;
 
         for (size_t i = 0; i < trial; ++i) {         	
