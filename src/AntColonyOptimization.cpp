@@ -9,10 +9,10 @@ void AntColonyOptimization::run() {
      
     while (temp > 0) {
         for (size_t i = 0; i < numberOfAnts; ++i) {
-            solution = std::move(constructSolution(solution));
-			solution = std::move(extendSolution(solution));
-			solution = std::move(reduceSolution(solution));
-			solution = std::move(RVNS(solution));
+            constructSolution(solution);
+			extendSolution(solution);
+			reduceSolution(solution);
+			RVNS(solution);
 			
             if (summation(solution) < summation(currentBestSolution))
                 currentBestSolution = solution;
@@ -51,7 +51,7 @@ void AntColonyOptimization::initializePheromones(std::vector<float>& graphPherom
  * indicates the label assigned to each vertex according to the Triple Roman Domination rules.
  */
 
-std::vector<int> AntColonyOptimization::constructSolution(std::vector<int> solution) {
+void AntColonyOptimization::constructSolution(std::vector<int>& solution) {
     Graph temp(this->graph);
     size_t vertex = 0;
     
@@ -78,7 +78,6 @@ std::vector<int> AntColonyOptimization::constructSolution(std::vector<int> solut
         }
     }
     
-    return solution;
 }
 
 /**
@@ -93,7 +92,7 @@ std::vector<int> AntColonyOptimization::constructSolution(std::vector<int> solut
  * increased to 4 based on the specified rate.
  */
 
-std::vector<int> AntColonyOptimization::extendSolution(std::vector<int> solution) {
+void AntColonyOptimization::extendSolution(std::vector<int>& solution) {
     size_t itr = 0;
     std::vector<int> twoOrZeroOrThreeLabeledVertices;
     
@@ -112,8 +111,7 @@ std::vector<int> AntColonyOptimization::extendSolution(std::vector<int> solution
         twoOrZeroOrThreeLabeledVertices.erase(twoOrZeroOrThreeLabeledVertices.begin() + vertex);                                                                
         --itr;
     }
-
-    return solution;
+    
 }
 
 void AntColonyOptimization::toggleLabels(std::vector<int>& solution) {
@@ -149,7 +147,7 @@ void AntColonyOptimization::toggleLabels(std::vector<int>& solution) {
 * @return A solution that can have its label values reduced
 */
 
-std::vector<int> AntColonyOptimization::reduceSolution(std::vector<int> solution) {
+void AntColonyOptimization::reduceSolution(std::vector<int>& solution) {
     Graph temp = this->graph;
     std::vector<int> sortedVertices;
 
@@ -181,8 +179,6 @@ std::vector<int> AntColonyOptimization::reduceSolution(std::vector<int> solution
 		        	
         temp.deleteAdjacencyList(sortedVertices[choosenVertex++]);
     }
-    
-    return solution;
 }
 
 /**
@@ -198,10 +194,11 @@ std::vector<int> AntColonyOptimization::reduceSolution(std::vector<int> solution
  * maintaining feasibility according to the problem's constraints.
  */
 
-std::vector<int> AntColonyOptimization::destroySolution(std::vector<int> solution) {
+void AntColonyOptimization::destroySolution(std::vector<int>& solution) {
     float destructionRate = minDestructionRate + ((currentRVNSnumber - 1) *
                 ((maxDestructionRate - minDestructionRate)) 
                 / (maxRVNSfunctions - 1));
+                
     Graph temp = this->graph;
     size_t itr = solution.size() * destructionRate; 
     size_t vertex = 0;
@@ -214,8 +211,6 @@ std::vector<int> AntColonyOptimization::destroySolution(std::vector<int> solutio
        temp.deleteVertex(vertex);
        --itr;
     }
-
-    return solution;
 } 
 
 /**
@@ -223,7 +218,6 @@ std::vector<int> AntColonyOptimization::destroySolution(std::vector<int> solutio
  * 
  * @details This function takes a previously computed solution and applies the following subroutines:
  * - @subroutine destroySolution
- * - @subroutine constructSolution
  * - @subroutine extendSolution
  * - @subroutine reduceSolution
  * 
@@ -236,15 +230,16 @@ std::vector<int> AntColonyOptimization::destroySolution(std::vector<int> solutio
  * @return A vector of integers representing the solution with the least weight found by the algorithm.
  */
 
-std::vector<int> AntColonyOptimization::RVNS(std::vector<int> solution) {
+void AntColonyOptimization::RVNS(std::vector<int>& solution) {
     size_t currentNoImprovementIteration = 0;
     std::vector<int> temp = solution;
     currentRVNSnumber = 1;
-
+	
     while ((currentNoImprovementIteration < maxRVNSnoImprovementIterations) && (maxRVNSiterations > 0)) {
-        solution = std::move(destroySolution(solution));
-        solution = std::move(extendSolution(solution));
-        solution = std::move(reduceSolution(solution));
+        destroySolution(temp);
+        constructSolution(temp);
+        extendSolution(temp);
+        reduceSolution(temp);
 
         if (summation(temp) < summation(solution)) {
             solution = temp;
@@ -262,9 +257,6 @@ std::vector<int> AntColonyOptimization::RVNS(std::vector<int> solution) {
 
         --maxRVNSiterations;
     }
-
-
-    return solution;
 }
 
 size_t AntColonyOptimization::chooseVertex(Graph& temp) {

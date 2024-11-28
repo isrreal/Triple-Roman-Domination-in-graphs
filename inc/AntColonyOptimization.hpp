@@ -26,12 +26,12 @@ class AntColonyOptimization {
         float selectionVertexRateExtendSolution;
 
         void initializePheromones(std::vector<float>& graphPheromone);
-        std::vector<int> constructSolution(std::vector<int> solution);
-        std::vector<int> extendSolution(std::vector<int> solution);
-        std::vector<int> reduceSolution(std::vector<int> solution);
-        std::vector<int> RVNS(std::vector<int> solution);
+        void constructSolution(std::vector<int>& solution);
+        void extendSolution(std::vector<int>& solution);
+        void reduceSolution(std::vector<int>& solution);
+        void RVNS(std::vector<int>& solution);
                                                                        
-        std::vector<int> destroySolution(std::vector<int> solution);
+        void destroySolution(std::vector<int>& solution);
 
         size_t chooseVertex(Graph& temp);
         size_t chooseVertex(std::vector<int> twoOrZeroLabeledVertices);
