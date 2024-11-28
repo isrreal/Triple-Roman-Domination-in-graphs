@@ -62,27 +62,11 @@ void GeneticAlgorithm::createPopulation(
 			std::shuffle(population.begin(), population.end(), randomNumber);
         } 
         
-        else if (heuristic == 1) {
-            Chromosome func = generateChromosomeHeuristics[0](graph);
-            for (size_t i = 0; i < populationSize; ++i) {
-                this->population[i] = func;
-            }
+        else if (heuristic > 0 && heuristic < 4) {
+            Chromosome func = generateChromosomeHeuristics[heuristic - 1](graph);
+            for (size_t i = 0; i < populationSize; ++i) 
+                this->population[i] = func;          
         }
-        
-         else if (heuristic == 2) {
-            Chromosome func = generateChromosomeHeuristics[1](graph);
-            for (size_t i = 0; i < populationSize; ++i) {
-                this->population[i] = func;
-            }
-        }
-        
-        else if (heuristic == 3) {
-            Chromosome func = generateChromosomeHeuristics[2](graph);
-            for (size_t i = 0; i < populationSize; ++i) {
-                this->population[i] = func;
-            }
-        }
-        
     } 
     
     else {
@@ -177,11 +161,11 @@ std::vector<Chromosome>& GeneticAlgorithm::elitism(float elitismRate) {
 
     Chromosome bestSolution = this->getBestChromosome(this->population);
     
-	this->population.clear();
-    this->population.reserve(iterations);
-    
+    population.clear();
+  	population.reserve(iterations);
+  	
     for (size_t i = 0; i < iterations; ++i) 
-        this->population.emplace_back(bestSolution);
+    	this->population.emplace_back(bestSolution);
 	
     return this->population;
 }

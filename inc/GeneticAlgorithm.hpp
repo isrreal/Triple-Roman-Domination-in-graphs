@@ -29,16 +29,16 @@ class GeneticAlgorithm {
                 	
     	inline Chromosome twoPointCrossOver(Chromosome& chromosome1, Chromosome& cromossomo2);
                 	
-        inline Chromosome& mutation(Chromosome& chromosome) {
-        	std::vector<int> labels = {0, 2, 3, 4};
-        	
-			if (getRandomFloat(0.0, 1.0) <= this->mutationRate) {
+        inline Chromosome& mutation(Chromosome& chromosome) {	
+			if (getRandomFloat(0.0, 1.0) < this->mutationRate) {
+				std::vector<int> labels = {0, 2, 3, 4};
 				size_t randomIndex = getRandomInt(0, genesSize - 1);
 				short randomLabel = getRandomInt(0, labels.size() - 1);
+				
 				chromosome.genes[randomIndex] = labels[randomLabel];
     			feasibilityCheck(chromosome);
     		}
-    		
+
 			return chromosome;   
         }
         
