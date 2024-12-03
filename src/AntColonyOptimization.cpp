@@ -1,42 +1,9 @@
 #include "AntColonyOptimization.hpp"
 
-void AntColonyOptimization::run() {
-    size_t temp = iterations;
-    
-    std::vector<int> currentBestSolution(graph.getOrder(), 4);
-    std::vector<int> bestSolution(graph.getOrder(), 4);
-    std::vector<int> solution(graph.getOrder(), -1);
-     
-    while (temp > 0) {
-        for (size_t i = 0; i < numberOfAnts; ++i) {
-            constructSolution(solution);
-			extendSolution(solution);
-			reduceSolution(solution);
-			RVNS(solution);
-			
-            if (summation(solution) < summation(currentBestSolution))
-                currentBestSolution = solution;
-        }    
-                                           
-        if (summation(currentBestSolution) < summation(bestSolution))
-              bestSolution = currentBestSolution;
-        
-        updatePheromones(currentBestSolution, bestSolution);
-                                                               
-        convergenceFactor = computeConvergence(graphPheromone);
-                                 
-        if (convergenceFactor > 0.99)
-            initializePheromones(graphPheromone);
-
-        --temp; 			
-    }
-    
-    this->bestSolution = bestSolution;
-}
-
 void AntColonyOptimization::initializePheromones(std::vector<float>& graphPheromone) {
-    for (size_t i = 0; i < graphPheromone.size(); ++i)
-        graphPheromone[i] = 0.5;
+    for (auto& vertexPheromone: graphPheromone) {
+        vertexPheromone = 0.5;
+    }
 }
 
 /**
@@ -53,31 +20,31 @@ void AntColonyOptimization::initializePheromones(std::vector<float>& graphPherom
 
 void AntColonyOptimization::constructSolution(std::vector<int>& solution) {
     Graph temp(this->graph);
-    size_t vertex = 0;
+    size_t vertex {0};
     
     std::random_device randomNumber;
     std::mt19937 seed(randomNumber());
     std::uniform_int_distribution<int> gap(0, graph.getOrder() - 1);
 	
-	size_t graphOrder = graph.getOrder();
     while (temp.getOrder() > 0) {
         vertex = chooseVertex(temp);  
         solution[vertex] = 4;
 
-        for (const auto& it: temp.getAdjacencyList(vertex)) 
-            if (solution[it] == -1) 
+        for (const auto& it: temp.getAdjacencyList(vertex)) {
+            if (solution[it] == -1) {
                 solution[it] = 0;
+            }
+        }
 
         temp.deleteAdjacencyList(vertex);
         
-        for (size_t i = 0; i < graphOrder; ++i) {
-            if (temp.vertexExists(i) && temp.getVertexDegree(i) == 0) {
-                    solution[i] = 3;
-                    temp.deleteVertex(i);
-            }
+        for (const auto& [i, j]: temp.getAdjacencyList()) {
+        	if (temp.getVertexDegree(i) == 0) {
+            	solution[i] = 3;
+            	temp.deleteVertex(i);
+           	}
         }
-    }
-    
+    }  
 }
 
 /**
@@ -93,17 +60,17 @@ void AntColonyOptimization::constructSolution(std::vector<int>& solution) {
  */
 
 void AntColonyOptimization::extendSolution(std::vector<int>& solution) {
-    size_t itr = 0;
+    size_t itr = {0};
+    size_t vertex {0};
     std::vector<int> twoOrZeroOrThreeLabeledVertices;
     
     for (size_t i = 0; i < solution.size(); ++i) {
-        if ((solution[i] == 0) || (solution[i] == 2) || (solution[i] == 3))
+        if ((solution[i] == 0) || (solution[i] == 2) || (solution[i] == 3)) {
             twoOrZeroOrThreeLabeledVertices.push_back(i);
+        }
     }
 
-    itr = addVerticesRate * twoOrZeroOrThreeLabeledVertices.size();
-    
-    size_t vertex = 0;
+    itr = static_cast<size_t>(addVerticesRate * twoOrZeroOrThreeLabeledVertices.size());
 
     while (itr != 0 && !twoOrZeroOrThreeLabeledVertices.empty()) {          
         vertex = chooseVertex(twoOrZeroOrThreeLabeledVertices);         
@@ -111,30 +78,9 @@ void AntColonyOptimization::extendSolution(std::vector<int>& solution) {
         twoOrZeroOrThreeLabeledVertices.erase(twoOrZeroOrThreeLabeledVertices.begin() + vertex);                                                                
         --itr;
     }
-    
 }
 
-void AntColonyOptimization::toggleLabels(std::vector<int>& solution) {
-	size_t initLabel = 0;
-	
-	for (size_t i = 0; i < graph.getOrder(); ++i) {
-	    if (solution[i] == 4 || solution[i] == 3) { 
-			initLabel = solution[i];
-			solution[i] = 0;
-				
-			if (!feasible(solution)) {
-	    		solution[i] = 2;
-	    		
-	    		if (!feasible(solution)) {
-	    			solution[i] = 3;
-	        		
-	        		if (!feasible(solution)) 
-	            		solution[i] = initLabel;        
-	    		}
-			}
-		}
-	}
-}
+
 
 
 /**	@brief Tries to reduce the labels of vertices 
@@ -148,10 +94,11 @@ void AntColonyOptimization::toggleLabels(std::vector<int>& solution) {
 */
 
 void AntColonyOptimization::reduceSolution(std::vector<int>& solution) {
-    Graph temp = this->graph;
+    Graph temp { this->graph };
     std::vector<int> sortedVertices;
-
-    for (size_t i = 0; i < temp.getOrder(); ++i)
+    size_t choosenVertex {0};
+    
+    for (size_t i {0}; i < temp.getOrder(); ++i)
         sortedVertices.push_back(i);
 
     std::sort(sortedVertices.begin(), sortedVertices.end(),
@@ -160,58 +107,26 @@ void AntColonyOptimization::reduceSolution(std::vector<int>& solution) {
             temp.getVertexDegree(b);                                                                             
         });
     
-    size_t choosenVertex = 0;
-    
     while ((temp.getOrder() > 0) && (choosenVertex < sortedVertices.size())) {
-        if (choosenVertex >= sortedVertices.size()) break;
+        if (choosenVertex >= sortedVertices.size()) { break; } ;
         
         while (choosenVertex < sortedVertices.size() && 
                 (!temp.vertexExists(sortedVertices[choosenVertex]))) {
             ++choosenVertex;
         }
        
-        if (choosenVertex >= sortedVertices.size()) break;
+        if (choosenVertex >= sortedVertices.size()) { break; };
 
         if (solution[sortedVertices[choosenVertex]] == 4 || solution[sortedVertices[choosenVertex]] == 3 
-        	|| solution[sortedVertices[choosenVertex]] == 2) 
+        	|| solution[sortedVertices[choosenVertex]] == 2) {
         	
-			toggleLabels(solution);
+			toggleLabels(this->graph, solution);
+			
+		}
 		        	
         temp.deleteAdjacencyList(sortedVertices[choosenVertex++]);
     }
 }
-
-/**
- * @brief Attempts to reduce the labels of vertices in the solution.
- * 
- * @details This function sorts the vertices of the graph in descending order based on their degree 
- * and selects the vertex with the highest degree. For each selected vertex with a label of 4 or 3 
- * in the solution, it attempts to reduce the label to 2 and checks if the solution remains feasible.
- * If the solution remains feasible, the label is updated to 0; otherwise, the original label is restored.
- * This process continues until all vertices have been processed.
- * 
- * @return A vector of integers representing the solution with potentially reduced labels, while 
- * maintaining feasibility according to the problem's constraints.
- */
-
-void AntColonyOptimization::destroySolution(std::vector<int>& solution) {
-    float destructionRate = minDestructionRate + ((currentRVNSnumber - 1) *
-                ((maxDestructionRate - minDestructionRate)) 
-                / (maxRVNSfunctions - 1));
-                
-    Graph temp = this->graph;
-    size_t itr = solution.size() * destructionRate; 
-    size_t vertex = 0;
-    while (itr != 0 && (temp.getOrder() > 0)) {
-       vertex = chooseVertex(temp);
-       if ((solution[vertex] == 0) || (solution[vertex] == 2) || (solution[vertex] == 3))
-            solution[vertex] = -1;
-       else
-            ++itr;
-       temp.deleteVertex(vertex);
-       --itr;
-    }
-} 
 
 /**
  * @brief Attempts to improve the final solution computed by the algorithm.
@@ -231,8 +146,8 @@ void AntColonyOptimization::destroySolution(std::vector<int>& solution) {
  */
 
 void AntColonyOptimization::RVNS(std::vector<int>& solution) {
-    size_t currentNoImprovementIteration = 0;
-    std::vector<int> temp = solution;
+    size_t currentNoImprovementIteration {0};
+    std::vector<int> temp { solution };
     currentRVNSnumber = 1;
 	
     while ((currentNoImprovementIteration < maxRVNSnoImprovementIterations) && (maxRVNSiterations > 0)) {
@@ -251,25 +166,26 @@ void AntColonyOptimization::RVNS(std::vector<int>& solution) {
             ++currentRVNSnumber;
             ++currentNoImprovementIteration;
 
-            if (currentRVNSnumber > maxRVNSiterations)
+            if (currentRVNSnumber > maxRVNSiterations) {
                 currentRVNSnumber = 1;
+            }
         }
 
         --maxRVNSiterations;
     }
 }
 
-size_t AntColonyOptimization::chooseVertex(Graph& temp) {
-    float selectionVertexRateConstructSolution = 0.7f;    
+size_t AntColonyOptimization::chooseVertex(const Graph& temp) {
+    float selectionVertexRateConstructSolution { 0.7f };    
     std::random_device randomNumber;
     std::mt19937 seed(randomNumber());
     std::uniform_real_distribution<float> probabilityGap(0.0, 1.0);
-    std::uniform_int_distribution<int> gap(0, this->graph.getOrder() - 1);
+    std::uniform_int_distribution<size_t> gap(0, this->graph.getOrder() - 1);
     
-    float number = probabilityGap(seed); 
+    float number { probabilityGap(seed) }; 
     
-    size_t vertex = gap(seed);
-    float value = 0.0;
+    size_t vertex { gap(seed) };
+    float value { 0.0 };
     
     while (!temp.vertexExists(vertex)) 
         vertex = gap(seed);
@@ -286,9 +202,10 @@ size_t AntColonyOptimization::chooseVertex(Graph& temp) {
         }
     }
 
-    else
+    else {
         vertex = rouletteWheelSelection(temp);
-
+	}
+	
     return vertex;
 }
 
@@ -307,24 +224,24 @@ size_t AntColonyOptimization::chooseVertex(Graph& temp) {
  *         or is randomly selected.
  */
 
-size_t AntColonyOptimization::chooseVertex(std::vector<int> twoOrZeroOrThreeLabeledVertices) {
-    constexpr float selectionVertexRateExtendSolution = 0.9f;
+size_t AntColonyOptimization::chooseVertex(const std::vector<int>& twoOrZeroOrThreeLabeledVertices) {
+    constexpr float selectionVertexRateExtendSolution {0.9f};
 
     std::random_device randomNumber;
     std::mt19937 seed(randomNumber());
     std::uniform_real_distribution<float> probabilityGap(0.0, 1.0);
-    std::uniform_int_distribution<int> randomIndex(0, twoOrZeroOrThreeLabeledVertices.size() - 1);                                                               
+    std::uniform_int_distribution<size_t> randomIndex(0, twoOrZeroOrThreeLabeledVertices.size() - 1);                                                               
 
-    float randomNumberGenerated = probabilityGap(seed); 
+    float randomNumberGenerated { probabilityGap(seed) }; 
 
     size_t choosenIndex = randomIndex(seed);
 
     if (randomNumberGenerated > selectionVertexRateExtendSolution) {
-        float maxObjectiveValue = -1.0f;
-        float objectiveValue = 0.0;
-        size_t vertex = 0;
+        float maxObjectiveValue {-1.0f};
+        float objectiveValue {0.0};
+        size_t vertex {0};
 
-        for (size_t i = 0; i < twoOrZeroOrThreeLabeledVertices.size(); ++i) {
+        for (size_t i {0}; i < twoOrZeroOrThreeLabeledVertices.size(); ++i) {
             vertex = twoOrZeroOrThreeLabeledVertices[i];
 
             objectiveValue = this->graph.getVertexDegree(vertex) * graphPheromone[vertex];
@@ -336,10 +253,137 @@ size_t AntColonyOptimization::chooseVertex(std::vector<int> twoOrZeroOrThreeLabe
         }
     }
 
-    else 
+    else {
         choosenIndex = rouletteWheelSelection(twoOrZeroOrThreeLabeledVertices);
+    }
 
     return choosenIndex;
+}
+
+
+size_t AntColonyOptimization::rouletteWheelSelection(const Graph& temp) {
+    float totalFitness { 0.0f };
+    std::vector<std::pair<size_t, float>> probabilities;
+
+    std::random_device randomNumber;
+    std::mt19937 seed(randomNumber());
+    std::uniform_real_distribution<float> gap(0.0, 1.0);
+
+    for (size_t i {0}; i < graph.getOrder(); ++i) 
+        if (temp.vertexExists(i)) 
+            totalFitness += temp.getVertexDegree(i) * graphPheromone[i];
+
+    for (size_t i {0}; i < graph.getOrder(); ++i)
+        if (temp.vertexExists(i))
+            probabilities.push_back({i, ((temp.getVertexDegree(i) * graphPheromone[i]) / totalFitness)});
+    
+    float randomValue { gap(seed) };
+
+   	float cumulativeSum { 0.0f };
+   	
+    for (const auto& [vertex, pickRate] : probabilities) {
+        cumulativeSum += pickRate;
+        if (randomValue <= cumulativeSum) {
+            return vertex;
+        }
+    }
+
+    return probabilities.back().first;
+}
+
+
+
+size_t AntColonyOptimization::rouletteWheelSelection(const std::vector<int>& twoOrZeroOrThreeLabeledVertices) {
+    float totalFitness {0.0f};
+    std::vector<std::pair<size_t, float>> probabilities;
+    std::random_device randomNumber;
+    std::mt19937 seed(randomNumber());
+    std::uniform_real_distribution<float> gap(0.0, 1.0);
+
+    for (size_t i {0}; i < twoOrZeroOrThreeLabeledVertices.size(); ++i) 
+        totalFitness += graph.getVertexDegree(twoOrZeroOrThreeLabeledVertices[i]) * graphPheromone[twoOrZeroOrThreeLabeledVertices[i]];
+    
+    for (size_t i {0}; i < twoOrZeroOrThreeLabeledVertices.size(); ++i)
+        probabilities.push_back({i, ((graph.getVertexDegree(twoOrZeroOrThreeLabeledVertices[i]) * graphPheromone[twoOrZeroOrThreeLabeledVertices[i]]) / totalFitness)});
+
+    float randomValue { gap(seed) };
+                                             
+    float cumulativeSum { 0.0f };
+    for (const auto& [vertex, pickRate] : probabilities) {
+        cumulativeSum += pickRate;
+        if (randomValue <= cumulativeSum) {
+            return vertex;
+        }
+    }
+                                             
+    return probabilities.back().first;
+}
+
+
+/**
+ * @brief Attempts to reduce the labels of vertices in the solution.
+ * 
+ * @details This function sorts the vertices of the graph in descending order based on their degree 
+ * and selects the vertex with the highest degree. For each selected vertex with a label of 4 or 3 
+ * in the solution, it attempts to reduce the label to 2 and checks if the solution remains feasible.
+ * If the solution remains feasible, the label is updated to 0; otherwise, the original label is restored.
+ * This process continues until all vertices have been processed.
+ * 
+ * @return A vector of integers representing the solution with potentially reduced labels, while 
+ * maintaining feasibility according to the problem's constraints.
+ */
+
+void AntColonyOptimization::destroySolution(std::vector<int>& solution) {
+    float destructionRate { minDestructionRate + ((currentRVNSnumber - 1) *
+                ((maxDestructionRate - minDestructionRate)) 
+                / (maxRVNSfunctions - 1)) };
+                
+    Graph temp { this->graph };
+    size_t itr { static_cast<size_t>(solution.size() * destructionRate) }; 
+    size_t vertex {0};
+    while (itr != 0 && (temp.getOrder() > 0)) {
+       vertex = chooseVertex(temp);
+       if ((solution[vertex] == 0) || (solution[vertex] == 2) || (solution[vertex] == 3)) {
+            solution[vertex] = -1;
+       }
+       
+       else {
+            ++itr;
+       }
+       
+       temp.deleteVertex(vertex);
+       --itr;
+    }
+} 
+
+void AntColonyOptimization::updatePheromones(std::vector<int>& currentBestSolution, std::vector<int>& bestSolution) {                                                               
+    size_t weightCurrentBestSolution { summation(currentBestSolution) };
+    size_t weightBestSolution { summation(bestSolution) }; 
+    float equation { 0.0 };        
+
+    for (size_t i {0}; i < graphPheromone.size(); ++i) {  
+        equation = (((weightCurrentBestSolution * delta(currentBestSolution, i) + 
+                      weightBestSolution * delta(bestSolution, i))) 
+                    / (weightCurrentBestSolution + weightBestSolution)) - graphPheromone[i];                                                      
+         
+        graphPheromone[i] += evaporationRate * equation;
+    }
+}
+
+float AntColonyOptimization::computeConvergence(const std::vector<float>& graphPheromone) {
+    float maxPheromone { getMaxPheromoneValue(graphPheromone) }; 
+    float minPheromone { getMinPheromoneValue(graphPheromone) }; 
+    float temp { 0.0 };
+
+    size_t numberOfAnts { graphPheromone.size() };
+
+    for (size_t i {0}; i < numberOfAnts; ++i) {
+        temp += std::max(maxPheromone - graphPheromone[i], graphPheromone[i] - minPheromone);
+    }
+
+    this->convergenceFactor = 2 * ((temp / (numberOfAnts * (maxPheromone + minPheromone)))) - 1;
+
+    return this->convergenceFactor;
 }
 
 /**
@@ -354,18 +398,18 @@ size_t AntColonyOptimization::chooseVertex(std::vector<int> twoOrZeroOrThreeLabe
  * @return True if the input solution meets the constraints of the Triple Roman Domination Function; False otherwise.
  */
 
-bool AntColonyOptimization::feasible(std::vector<int> solution) {
-    bool isValid = false;
+bool AntColonyOptimization::feasible(const Graph& graph, const std::vector<int>& solution) {
+    bool isValid {false};
 
-    for (size_t i = 0; i < solution.size(); ++i) {
+    for (size_t i {0}; i < solution.size(); ++i) {
 
         isValid = false;
 
         if (solution[i] == 0) {                                 
-            size_t countNeighbors2 = 0;
-            size_t countNeighbors3 = 0;
+            size_t countNeighbors2 {0};
+            size_t countNeighbors3 {0};
             
-            for (auto& neighbor : this->graph.getAdjacencyList(i)) {          
+            for (auto& neighbor : graph.getAdjacencyList(i)) {          
                 if ((countNeighbors2 == 1 && solution[neighbor] >= 3) ||
                     (countNeighbors2 == 2 && solution[neighbor] >= 2)) {
                     isValid = true;
@@ -394,8 +438,8 @@ bool AntColonyOptimization::feasible(std::vector<int> solution) {
         } 
 
         else if (solution[i] == 2) {
-            bool hasNeighborAtLeast2 = false;
-            for (auto& neighbor : this->graph.getAdjacencyList(i)) {
+            bool hasNeighborAtLeast2 {false};
+            for (auto& neighbor : graph.getAdjacencyList(i)) {
                 if (solution[neighbor] >= 2) {
                     hasNeighborAtLeast2 = true;
                     break; 
@@ -410,10 +454,10 @@ bool AntColonyOptimization::feasible(std::vector<int> solution) {
     return true;    
 }
 
-size_t AntColonyOptimization::summation(std::vector<int> solution) {
-    size_t temp = 0;
-    for (size_t i = 0; i < solution.size(); ++i)
-        temp += solution[i];
+size_t AntColonyOptimization::summation(const std::vector<int>& solution) {
+    size_t temp {0};
+    for (const auto& it: solution)
+        temp += it;
     return temp;
 }
 
@@ -426,114 +470,93 @@ size_t AntColonyOptimization::summation(std::vector<int> solution) {
  *
  */ 
  
-bool AntColonyOptimization::delta(std::vector<int> solution, size_t vertex) {
+bool AntColonyOptimization::delta(const std::vector<int>& solution, size_t vertex) {
     return solution[vertex] == 4 ? true : false; 
 }
 
-float AntColonyOptimization::getMaxPheromoneValue(std::vector<float> graphPheromone) {
-    float value = graphPheromone[0];
-
-    for (const auto& it: graphPheromone)
-        if (value < it)
+float AntColonyOptimization::getMinPheromoneValue(const std::vector<float>& graphPheromone) {
+    float value {graphPheromone[0]};                                     
+    for (const auto& it: graphPheromone) {
+        if (value > it) {
             value = it;
-    return value;
-}
-
-float AntColonyOptimization::getMinPheromoneValue(std::vector<float> graphPheromone) {
-    float value = graphPheromone[0];                                     
-    for (const auto& it: graphPheromone) 
-        if (value > it)
-            value = it;
+        }
+    }
+    
     return value;                   
 }
 
+float AntColonyOptimization::getMaxPheromoneValue(const std::vector<float>& graphPheromone) {
+    float value {graphPheromone[0]};
 
-void AntColonyOptimization::updatePheromones(std::vector<int>& currentBestSolution, std::vector<int>& bestSolution) {                                                               
-    size_t weightCurrentBestSolution = summation(currentBestSolution);
-    size_t weightBestSolution = summation(bestSolution); 
-    float equation = 0.0;        
-
-    for (size_t i = 0; i < graphPheromone.size(); ++i) {  
-        equation = (((weightCurrentBestSolution * delta(currentBestSolution, i) + 
-                      weightBestSolution * delta(bestSolution, i))) 
-                    / (weightCurrentBestSolution + weightBestSolution)) - graphPheromone[i];                                                      
-         
-        graphPheromone[i] += evaporationRate * equation;
+    for (const auto& it: graphPheromone) {
+        if (value < it) {
+            value = it;
+        }
     }
+    return value;
 }
 
-
-float AntColonyOptimization::computeConvergence(std::vector<float> graphPheromone) {
-    float maxPheromone = getMaxPheromoneValue(graphPheromone); 
-    float minPheromone = getMinPheromoneValue(graphPheromone); 
-    float temp = 0.0;
-
-    size_t numberOfAnts = graphPheromone.size();
-
-    for (size_t i = 0; i < numberOfAnts; ++i) {
-        temp += std::max(maxPheromone - graphPheromone[i], graphPheromone[i] - minPheromone);
-    }
-
-    this->convergenceFactor = 2 * ((temp / (numberOfAnts * (maxPheromone + minPheromone)))) - 1;
-
-    return this->convergenceFactor;
+void AntColonyOptimization::toggleLabels(const Graph& graph, std::vector<int>& solution) {
+	size_t initLabel {0};
+	
+	for (size_t i {0}; i < graph.getOrder(); ++i) {
+	    if (solution[i] == 4 || solution[i] == 3) { 
+			initLabel = solution[i];
+			solution[i] = 0;
+				
+			if (!feasible(graph, solution)) {
+	    		solution[i] = 2;
+	    		
+	    		if (!feasible(graph, solution)) {
+	    			solution[i] = 3;
+	        		
+	        		if (!feasible(graph, solution)) {
+	            		solution[i] = initLabel;
+	            	}        
+	    		}
+			}
+		}
+	}
 }
 
-size_t AntColonyOptimization::rouletteWheelSelection(Graph& temp) {
-    float totalFitness = 0.0f;
-    std::vector<std::pair<size_t, float>> probabilities;
-
-    std::random_device randomNumber;
-    std::mt19937 seed(randomNumber());
-    std::uniform_real_distribution<float> gap(0.0, 1.0);
-
-    for (size_t i = 0; i < graph.getOrder(); ++i) 
-        if (temp.vertexExists(i)) 
-            totalFitness += temp.getVertexDegree(i) * graphPheromone[i];
-
-    for (size_t i = 0; i < graph.getOrder(); ++i)
-        if (temp.vertexExists(i))
-            probabilities.push_back({i, ((temp.getVertexDegree(i) * graphPheromone[i]) / totalFitness)});
-    
-    float randomValue = gap(seed);
-
-    float cumulativeSum = 0.0f;
-    for (const auto& prob : probabilities) {
-        cumulativeSum += prob.second;
-        
-        if (randomValue <= cumulativeSum) 
-            return prob.first;
-    }
-
-    return probabilities.back().first;
-}
-
-
-
-size_t AntColonyOptimization::rouletteWheelSelection(std::vector<int> twoOrZeroOrThreeLabeledVertices) {
-    float totalFitness = 0.0f;
-    std::vector<std::pair<size_t, float>> probabilities;
-    std::random_device randomNumber;
-    std::mt19937 seed(randomNumber());
-    std::uniform_real_distribution<float> gap(0.0, 1.0);
-
-    for (size_t i = 0; i < twoOrZeroOrThreeLabeledVertices.size(); ++i) 
-        totalFitness += graph.getVertexDegree(twoOrZeroOrThreeLabeledVertices[i]) * graphPheromone[twoOrZeroOrThreeLabeledVertices[i]];
-    
-    for (size_t i = 0; i < twoOrZeroOrThreeLabeledVertices.size(); ++i)
-        probabilities.push_back({i, ((graph.getVertexDegree(twoOrZeroOrThreeLabeledVertices[i]) * graphPheromone[twoOrZeroOrThreeLabeledVertices[i]]) / totalFitness)});
-
-    float randomValue = gap(seed);
-                                             
-    float cumulativeSum = 0.0f;
-    for (const auto& prob : probabilities) {
-        cumulativeSum += prob.second;
-        if (randomValue <= cumulativeSum) 
-            return prob.first;
-    }
-                                             
-    return probabilities.back().first;
-}
-
+// public methods 
 
 std::vector<int> AntColonyOptimization::getBestSolution() { return this->bestSolution; }
+
+void AntColonyOptimization::run() {
+    size_t temp { iterations };
+    
+    std::vector<int> currentBestSolution(graph.getOrder(), 4);
+    std::vector<int> bestSolution(graph.getOrder(), 4);
+    std::vector<int> solution(graph.getOrder(), -1);
+    initializePheromones(graphPheromone);
+    
+    while (temp > 0) {
+        for (size_t i {0}; i < numberOfAnts; ++i) {
+            constructSolution(solution);
+			extendSolution(solution);
+			reduceSolution(solution);
+			RVNS(solution);
+			
+            if (summation(solution) < summation(currentBestSolution)) {
+                currentBestSolution.swap(solution);
+            }
+        }    
+                                           
+        if (summation(currentBestSolution) < summation(bestSolution)) {
+              bestSolution.swap(currentBestSolution);
+        }
+        
+        updatePheromones(currentBestSolution, bestSolution);
+                                                               
+        convergenceFactor = computeConvergence(graphPheromone);
+                                 
+        if (convergenceFactor > 0.99) {
+            initializePheromones(graphPheromone);
+		}
+		
+        --temp; 			
+    }
+    
+    this->bestSolution = bestSolution;
+}

@@ -16,8 +16,9 @@ private:
     size_t order;
     size_t size;
     bool isDirected; 
-    size_t Delta;
     size_t delta; 
+    size_t Delta;
+    
     std::unordered_map<size_t, std::list<size_t>> adjList;
     void addVertex(size_t source);
     void addEdge(size_t source, size_t destination);
@@ -53,7 +54,7 @@ public:
     
     void setAdjacenciesLabel(size_t vertex, int label);
     
-    void DFSVisit(size_t u, std::vector<bool>& discovered, int& numberOfVertices, int& minDegree);
+    void DFSVisit(size_t u, std::vector<bool>& discovered, size_t& numberOfVertices, size_t& minDegree);
 
     std::vector<std::pair<int, int>> connectedComponents();
     

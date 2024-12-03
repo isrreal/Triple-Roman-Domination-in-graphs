@@ -15,7 +15,7 @@ int computeRightLowerBound(const Graph& graph, int lowerBound) {
 
 int computeRightUpperBound(Graph& graph, int upperBound) {
     upperBound = -1;
-    auto components = graph.connectedComponents();
+    auto components { graph.connectedComponents() };
     
     if(components.size() == 1 && graph.getMinDegree() >= 2)
         upperBound = std::floor(3.0 * graph.getOrder() / 2.0);
@@ -47,30 +47,30 @@ int main(int argc, char** argv) {
         if (graph.getOrder() == 0)
             return -1;
         
-    	constexpr size_t trial = 10;
-        size_t populationSize = graph.getOrder() / 1.5;
-        size_t generations = 1000;
-        short int heuristic = std::stoi(argv[3]);
-        constexpr float mutationRate = 0.2;
-        constexpr float elitismRate = 0.1;
-        constexpr float crossOverRate = 0.7;
-        constexpr size_t numberOfAnts = 5;
-        constexpr size_t iterations = 10;
+    	constexpr size_t trial {10};
+        size_t populationSize { static_cast<size_t>(graph.getOrder() / 1.5) };
+        size_t generations {1000};
+        short heuristic = std::stoi(argv[3]);
+        constexpr float mutationRate { 0.2 };
+        constexpr float elitismRate { 0.1 };
+        constexpr float crossOverRate { 0.7 };
+        constexpr size_t numberOfAnts { 5 };
+        constexpr size_t iterations { 10 };
         
-        int upperBound = 0;
-    	int lowerBound = 0;
+        int upperBound { 0 };
+    	int lowerBound { 0 };
         
-        size_t Delta = graph.getMaxDegree();
-       	size_t delta = graph.getMinDegree();
-
+        size_t Delta { graph.getMaxDegree() };
+       	size_t delta { graph.getMinDegree() };
+       	
        // graph, populationSize, genesSize, generations, heuristic, mutation rate, elitism rate, numberOfAnts, iterations
         TripleRomanDomination* trd = new TripleRomanDomination(graph, populationSize, graph.getOrder(), generations,
                 mutationRate, elitismRate, crossOverRate, numberOfAnts, iterations); 
         std::cout << "graph_name,graph_order,graph_size,graph_min_degree,graph_max_degree,GA_fitness_heuristic" << heuristic;
 	    std::cout << ",ACO_fitness_" << numberOfAnts << "_" << iterations; 
-        std::cout << ",lower_bound,upper_bound,elapsed_time_GA(seconds)" << ",elapsed_time_ACO(seconds),is_3RDF_GA,is_3RDF_ACO" << std::endl;
+        std::cout << ",lower_bound,upper_bound,elapsed_time_GA(seconds)" << ",elapsed_time_ACO(seconds),is_3RDF_GA,is_3RDF_ACO\n";
 
-        for (size_t i = 0; i < trial; ++i) {         	
+       for (size_t i {0}; i < trial; ++i) {         	
 	        std::cout << argv[2] << ",";
 	        std::cout << graph.getOrder() << ",";
 	        std::cout << graph.getSize() << ",";
@@ -79,14 +79,15 @@ int main(int argc, char** argv) {
 	        
 	        std::chrono::duration<double> elapsedGA;
 	    	std::chrono::duration<double> elapsedACO;
-
+	    	
+	
 	    	std::thread gaThread([&]() {
 	    		auto startGA = std::chrono::high_resolution_clock::now();
 	    		trd->runGeneticAlgorithm(heuristic);
 	    		auto endGA = std::chrono::high_resolution_clock::now();
 	    		elapsedGA = endGA - startGA;
 	    	});			
-
+	
     		std::thread acoThread([&]() {
 	    		auto startACO = std::chrono::high_resolution_clock::now();
 	    		trd->runACO();
@@ -95,6 +96,7 @@ int main(int argc, char** argv) {
 	    	});
 	    	
 	    	gaThread.join();
+	    	
 	    	acoThread.join();
 	                
         	upperBound = computeRightUpperBound(graph, upperBound);
@@ -110,10 +112,12 @@ int main(int argc, char** argv) {
 	    	std::cout << elapsedACO.count() << ",";	    	
 	    	
 	    	std::cout << TripleRomanDomination::feasible(graph, trd->getSolutionGeneticAlgorithm()) << ",";
-	    	std::cout << TripleRomanDomination::feasible(graph, trd->getSolutionACO()) << std::endl;
-        }
+	    	std::cout << TripleRomanDomination::feasible(graph, trd->getSolutionACO()) << '\n';
+	    	
+     }
         
 	    delete trd;
 	    return EXIT_SUCCESS;
+	    
     }
 }
