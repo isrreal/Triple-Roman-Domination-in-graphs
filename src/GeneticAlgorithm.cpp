@@ -254,11 +254,11 @@ Chromosome& GeneticAlgorithm::tournamentSelection(const std::vector<Chromosome>&
 
 
 Chromosome& GeneticAlgorithm::chooseBestSolution(Chromosome& chromosome1, Chromosome& chromosome2) {
-	    return (chromosome1.fitnessValue > chromosome2.fitnessValue ? chromosome1 : chromosome2);
+	    return (chromosome1.fitnessValue < chromosome2.fitnessValue ? chromosome1 : chromosome2);
 }
 
 Chromosome& GeneticAlgorithm::chooseWorstSolution(Chromosome& chromosome1, Chromosome& chromosome2) {
-	    return (chromosome1.fitnessValue < chromosome2.fitnessValue ? chromosome1 : chromosome2);
+	    return (chromosome1.fitnessValue > chromosome2.fitnessValue ? chromosome1 : chromosome2);
 }
 		
 // public methods 
