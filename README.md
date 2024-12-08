@@ -96,7 +96,7 @@ In this proposed algorithm, elitism and mutation rate do not influence the cross
 
 The Ant Colony Optimization algorithm simulates the behavior of ants searching for food, where ants deposit pheromones along their paths. The best path is the one with the highest pheromone concentration, guiding future ants. In this algorithm, each vertex in the graph is associated with an initial pheromone value of 0.5, and each solution is represented as a vector of size $|V|$. The weight of the solution is the sum of the labels in the solution vector, with the goal of finding a solution with the smallest possible weight. The algorithm runs until a maximum number of iterations is reached or there are no improvements in the solution for a set number of iterations.
 
-The type of Ant Colony Optimization proposed is based on two variants: **MAX-MIN Ant System** (MMAS) and **Hyper-Cube Framework** (HCF).
+The type of Ant Colony Optimization proposed is based on two variants: **MAX-MIN Ant System** (MMAS) using the **Hyper-Cube Framework** (HCF).
 
 ### ACO Sub-routines
 
