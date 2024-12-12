@@ -89,14 +89,14 @@ int main(int argc, char** argv) {
 	    		
 	    	std::thread gaThread([&]() {
 	    		auto startGA = std::chrono::high_resolution_clock::now();
-	    		trd->runGeneticAlgorithm(heuristic);
+	    		trd.runGeneticAlgorithm(heuristic);
 	    		auto endGA = std::chrono::high_resolution_clock::now();
 	    		elapsedGA = endGA - startGA;
 	    	});			
 	
     		std::thread acoThread([&]() {
 	    		auto startACO = std::chrono::high_resolution_clock::now();
-	    		trd->runACO();
+	    		trd.runACO();
 	    		auto endACO = std::chrono::high_resolution_clock::now();
 	    		elapsedACO = endACO - startACO;
 	    	});
@@ -109,16 +109,16 @@ int main(int argc, char** argv) {
 
         	lowerBound = computeRightLowerBound(graph, lowerBound);
 
-	    	std::cout << trd->getGeneticAlgorithmBestFitness() << ",";
-	     	std::cout << trd->getACOBestFitness() << ",";
+	    	std::cout << trd.getGeneticAlgorithmBestFitness() << ",";
+	     	std::cout << trd.getACOBestFitness() << ",";
 	    	std::cout << lowerBound << ",";
             std::cout << upperBound << ","; 
 	    	
 	    	std::cout << elapsedGA.count() << ",";
 	    	std::cout << elapsedACO.count() << ",";	    	
 	    	
-	    	std::cout << TripleRomanDomination::feasible(graph, trd->getSolutionGeneticAlgorithm()) << ",";
-	    	std::cout << TripleRomanDomination::feasible(graph, trd->getSolutionACO()) << '\n';	
+	    	std::cout << TripleRomanDomination::feasible(graph, trd.getSolutionGeneticAlgorithm()) << ",";
+	    	std::cout << TripleRomanDomination::feasible(graph, trd.getSolutionACO()) << '\n';	
  		}
 	}
 	
