@@ -80,9 +80,6 @@ void AntColonyOptimization::extendSolution(std::vector<int>& solution) {
     }
 }
 
-
-
-
 /**	@brief Tries to reduce the labels of vertices 
 *	@details Sorts the vertices of graph on descendent order based on its respective degree,
 *			and selects its first vertex (that has higher degree value). After this, 
@@ -269,13 +266,13 @@ size_t AntColonyOptimization::rouletteWheelSelection(const Graph& temp) {
     std::mt19937 seed(randomNumber());
     std::uniform_real_distribution<float> gap(0.0, 1.0);
 
-    for (size_t i {0}; i < graph.getOrder(); ++i) 
-        if (temp.vertexExists(i)) 
-            totalFitness += temp.getVertexDegree(i) * graphPheromone[i];
+    for (const auto& [i, j]: temp.getAdjacencyList()) {
+        totalFitness += temp.getVertexDegree(i) * graphPheromone[i];
+    }
 
-    for (size_t i {0}; i < graph.getOrder(); ++i)
-        if (temp.vertexExists(i))
-            probabilities.push_back({i, ((temp.getVertexDegree(i) * graphPheromone[i]) / totalFitness)});
+    for (const auto& [i, j]: temp.getAdjacencyList()) {
+        probabilities.push_back( {i, static_cast<float>( ((temp.getVertexDegree(i) * graphPheromone[i]) / totalFitness)) } );
+    }
     
     float randomValue { gap(seed) };
 
@@ -356,17 +353,45 @@ void AntColonyOptimization::destroySolution(std::vector<int>& solution) {
     }
 } 
 
-void AntColonyOptimization::updatePheromones(std::vector<int>& currentBestSolution, std::vector<int>& bestSolution) {                                                               
-    size_t weightCurrentBestSolution { summation(currentBestSolution) };
-    size_t weightBestSolution { summation(bestSolution) }; 
+void AntColonyOptimization::updatePheromones(std::vector<int>& currentBestSolution, std::vector<int>& bestSolution) {   
+	short weightCurrentBestSolution {};
+	short weightBestSolution {};
+	
+	if (convergenceFactor < 0.4) {
+		weightCurrentBestSolution = 1;
+    	weightBestSolution = 0;
+	}                        
+	
+	else if (convergenceFactor >= 0.4 && convergenceFactor < 0.6) {
+		weightCurrentBestSolution = static_cast<short>(2 / 3);
+    	weightBestSolution = static_cast<short>(1 / 3);
+	}        
+	
+	else if (convergenceFactor >= 0.6 && convergenceFactor < 0.8) {
+		weightCurrentBestSolution = static_cast<short>(2 / 3);
+    	weightBestSolution = static_cast<short>(1 / 3);
+	}                   
+	
+	else {
+		weightCurrentBestSolution = 0;
+    	weightBestSolution = 1;
+   	}         
+    
     float equation { 0.0 };        
-
-    for (size_t i {0}; i < graphPheromone.size(); ++i) {  
-        equation = (((weightCurrentBestSolution * delta(currentBestSolution, i) + 
-                      weightBestSolution * delta(bestSolution, i))) 
-                    / (weightCurrentBestSolution + weightBestSolution)) - graphPheromone[i];                                                      
-         
-        graphPheromone[i] += evaporationRate * equation;
+	
+    for (size_t vertex {0}; vertex < graphPheromone.size(); ++vertex) {  
+        equation = weightCurrentBestSolution * delta(currentBestSolution, vertex) + 
+                      weightBestSolution * delta(bestSolution, vertex);
+                                                                                                     
+        graphPheromone[vertex] += evaporationRate * equation;
+        
+        if (graphPheromone[vertex] > 0.999) {
+        	graphPheromone[vertex] = 0.999;
+        }
+        
+        if (graphPheromone[vertex] > 0.001) {
+        	graphPheromone[vertex] = 0.001;
+        }
     }
 }
 
