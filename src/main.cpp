@@ -52,6 +52,7 @@ int main(int argc, char** argv) {
         if (graph.getOrder() == 0) {
             return -1;
         }
+               
         
     	constexpr size_t trial = 10;
         size_t populationSize = static_cast<size_t>(graph.getOrder() / 1.5);
@@ -92,8 +93,8 @@ int main(int argc, char** argv) {
 	    		trd.runGeneticAlgorithm(heuristic);
 	    		auto endGA = std::chrono::high_resolution_clock::now();
 	    		elapsedGA = endGA - startGA;
-	    	});			
-	
+	    	});		
+	    	
     		std::thread acoThread([&]() {
 	    		auto startACO = std::chrono::high_resolution_clock::now();
 	    		trd.runACO();
@@ -102,9 +103,8 @@ int main(int argc, char** argv) {
 	    	});
 	    	
 	    	gaThread.join();
-	    	
-	    	acoThread.join();
-	                
+  	    	acoThread.join();
+  	    	
         	upperBound = computeRightUpperBound(graph, upperBound);
 
         	lowerBound = computeRightLowerBound(graph, lowerBound);
@@ -120,6 +120,7 @@ int main(int argc, char** argv) {
 	    	std::cout << TripleRomanDomination::feasible(graph, trd.getSolutionGeneticAlgorithm()) << ",";
 	    	std::cout << TripleRomanDomination::feasible(graph, trd.getSolutionACO()) << '\n';	
  		}
+ 	
 	}
 	
     return EXIT_SUCCESS;
