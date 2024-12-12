@@ -12,14 +12,15 @@ Graph::Graph(size_t order, bool isDirected, float probabilityOfEdge):
     std::uniform_real_distribution<float> probabilityGap(0.0, 1.0);
 
     for (size_t i {0}; i < order; ++i)
-        adjList[i] = {};
+        adjList[i] {};
 
     for (size_t i {0}; i < order; ++i) {
         connectedVertex = gap(seed);
 
-        while (i == connectedVertex)
+        while (i == connectedVertex) {
             connectedVertex = gap(seed);
-
+		}
+		
         if (!edgeExists(i, connectedVertex)) {
             addEdge(i, connectedVertex);
         }
@@ -48,7 +49,7 @@ Graph::Graph(const std::string& filename, bool isDirected):
     }
     
     size_t source, destination {0};
-    std::string line = "";
+    std::string line {};
     
     while (std::getline(file, line)) {
         std::stringstream ssEdges(line);
@@ -100,10 +101,10 @@ bool Graph::edgeExists(size_t u, size_t v) const {
 }
 
 size_t Graph::computeMaxVertexDegree() {
-	size_t maxDegree { getVertexDegree(getAdjacencyList().begin()->first) };
+	size_t maxDegree = getVertexDegree(getAdjacencyList().begin()->first);
     size_t temp {0};
     
-    for (const auto& [i, j] : getAdjacencyList()) {
+    for (const auto& [i, _] : getAdjacencyList()) {
         temp = getVertexDegree(i);
         if (maxDegree < temp) {
             maxDegree = temp;
@@ -115,7 +116,7 @@ size_t Graph::computeMaxVertexDegree() {
 
 
 size_t Graph::computeMinVertexDegree() {
- 	size_t minDegree { getVertexDegree(getAdjacencyList().begin()->first) };
+ 	size_t minDegree = getVertexDegree(getAdjacencyList().begin()->first);
     size_t temp {0};
     
     for (const auto& [i, j] : getAdjacencyList()) {
@@ -149,8 +150,9 @@ bool Graph::vertexExists(size_t vertex) const { return adjList.find(vertex) != a
 void Graph::DFSVisit(size_t u, std::vector<bool>& discovered, size_t& numberOfVertices, size_t& minDegree) {
     discovered[u] = true;
 
-    if (getVertexDegree(u) < static_cast<size_t>(minDegree)) 
+    if (getVertexDegree(u) < static_cast<size_t>(minDegree)) { 
         minDegree = getVertexDegree(u);
+    }
 
     for (const size_t& v : getAdjacencyList(u)) {
         if (!discovered[v]) {
@@ -168,7 +170,7 @@ std::vector<std::pair<int, int>> Graph::connectedComponents() {
     std::vector<bool> discovered(getOrder(), false);
     std::vector<std::pair<int, int>> components;
 
-    for (const auto& [u, v] : adjList) {
+    for (const auto& [u, _] : adjList) {
         size_t vertex = u;
         if (!discovered[vertex]) {
             size_t numberOfVertices = 1;

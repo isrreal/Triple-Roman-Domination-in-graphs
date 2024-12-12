@@ -72,9 +72,9 @@ void AntColonyOptimization::extendSolution(std::vector<int>& solution) {
     size_t vertex {0};
     std::vector<int> twoOrZeroOrThreeLabeledVertices;
     
-    for (size_t i = 0; i < solution.size(); ++i) {
-        if ((solution[i] == 0) || (solution[i] == 2) || (solution[i] == 3)) {
-            twoOrZeroOrThreeLabeledVertices.push_back(i);
+    for (const auto& it: solution) {
+        if ((solution[it] == 0) || (solution[it] == 2) || (solution[it] == 3)) {
+            twoOrZeroOrThreeLabeledVertices.push_back(it);
         }
     }
 
@@ -103,8 +103,9 @@ void AntColonyOptimization::reduceSolution(std::vector<int>& solution) {
     std::vector<int> sortedVertices;
     size_t choosenVertex {0};
     
-    for (size_t i {0}; i < temp.getOrder(); ++i)
+    for (size_t i {0}; i < temp.getOrder(); ++i) {
         sortedVertices.push_back(i);
+    }
 
     std::sort(sortedVertices.begin(), sortedVertices.end(),
         [&](size_t a, size_t b) {
@@ -192,19 +193,17 @@ size_t AntColonyOptimization::chooseVertex(const Graph& temp) {
     size_t vertex { gap(seed) };
     float value { 0.0 };
     
-    while (!temp.vertexExists(vertex)) 
+    while (!temp.vertexExists(vertex)) {
         vertex = gap(seed);
+    }
 
     if (selectionVertexRateConstructSolution < number) {
-        for (size_t i = 0; i < this->graph.getOrder(); ++i) {
-            if (temp.vertexExists(i)) { 
-                if (value < (temp.getVertexDegree(i) * graphPheromone[i])) {
-                    value = temp.getVertexDegree(i) * graphPheromone[i];
-                	vertex = i;
-																																																																						                                  																																																																											          																																																																					                                                                                               
-                }
-            }
-        }
+    	for (const auto& [vertex_iterator, _]: temp.getAdjacencyList()) {
+            if (value < (temp.getVertexDegree(vertex_iterator) * graphPheromone[vertex_iterator])) {
+                value = temp.getVertexDegree(vertex_iterator) * graphPheromone[vertex_iterator];
+            	vertex = vertex_iterator;
+           	}
+              																												                                  																																																																											          																																																																					                                                                                                              }
     }
 
     else {
@@ -459,15 +458,18 @@ bool AntColonyOptimization::feasible(const Graph& graph, const std::vector<int>&
                     break;
                 }
                 
-                if (solution[neighbor] == 3) 
+                if (solution[neighbor] == 3) {
                     ++countNeighbors3;
+                }
                     
-                if (solution[neighbor] == 2) 
+                if (solution[neighbor] == 2) {
                     ++countNeighbors2;
+                }
             }
             
-            if (!isValid)
+            if (!isValid) {
                 return false;
+            }
         } 
 
         else if (solution[i] == 2) {
@@ -479,8 +481,9 @@ bool AntColonyOptimization::feasible(const Graph& graph, const std::vector<int>&
                 }
             }
 
-            if (!hasNeighborAtLeast2) 
-                return false;           
+            if (!hasNeighborAtLeast2) {
+                return false;          
+            } 
         }
     }
     
@@ -489,8 +492,9 @@ bool AntColonyOptimization::feasible(const Graph& graph, const std::vector<int>&
 
 size_t AntColonyOptimization::summation(const std::vector<int>& solution) {
     size_t temp {0};
-    for (const auto& it: solution)
+    for (const auto& it: solution) {
         temp += it;
+    }
     return temp;
 }
 
