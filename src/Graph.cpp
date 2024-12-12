@@ -12,7 +12,7 @@ Graph::Graph(size_t order, bool isDirected, float probabilityOfEdge):
     std::uniform_real_distribution<float> probabilityGap(0.0, 1.0);
 
     for (size_t i {0}; i < order; ++i)
-        adjList[i] {};
+        adjList[i] = {};
 
     for (size_t i {0}; i < order; ++i) {
         connectedVertex = gap(seed);
