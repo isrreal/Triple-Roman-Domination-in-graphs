@@ -40,7 +40,7 @@ public:
     size_t getMaxDegree() const;
     size_t getMinDegree() const;
     
-    std::unordered_map<size_t, std::list<size_t>> getAdjacencyList() const;
+    const std::unordered_map<size_t, std::list<size_t>>& getAdjacencyList() const;
     
     const std::list<size_t>& getAdjacencyList(size_t vertex) const;
     
