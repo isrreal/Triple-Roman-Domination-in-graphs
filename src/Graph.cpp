@@ -140,7 +140,7 @@ size_t Graph::getSize() const { return this->size; }
 
 size_t Graph::getOrder() const { return this->order; }
 
-std::unordered_map<size_t, std::list<size_t>> Graph::getAdjacencyList() const { return this->adjList; }
+const std::unordered_map<size_t, std::list<size_t>>& Graph::getAdjacencyList() const { return this->adjList; }
 
 const std::list<size_t>& Graph::getAdjacencyList(size_t vertex) const { return this->adjList.at(vertex); }
 
