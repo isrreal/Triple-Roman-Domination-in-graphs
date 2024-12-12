@@ -38,11 +38,19 @@ void AntColonyOptimization::constructSolution(std::vector<int>& solution) {
 
         temp.deleteAdjacencyList(vertex);
         
-        for (const auto& [i, j]: temp.getAdjacencyList()) {
-        	if (temp.getVertexDegree(i) == 0) {
-            	solution[i] = 3;
-            	temp.deleteVertex(i);
-           	}
+        std::vector<size_t> verticesToRemove;
+        
+        verticesToRemove.reserve(temp.getOrder());
+        
+        for (const auto& [i, _]: temp.getAdjacencyList()) {
+            if (temp.getVertexDegree(i) == 0) {
+                solution[i] = 3;
+                verticesToRemove.push_back(i);
+            }
+        }
+
+        for (const auto& vertex : verticesToRemove) {
+            temp.deleteVertex(vertex);
         }
     }  
 }
@@ -266,11 +274,11 @@ size_t AntColonyOptimization::rouletteWheelSelection(const Graph& temp) {
     std::mt19937 seed(randomNumber());
     std::uniform_real_distribution<float> gap(0.0, 1.0);
 
-    for (const auto& [i, j]: temp.getAdjacencyList()) {
+    for (const auto& [i, _]: temp.getAdjacencyList()) {
         totalFitness += temp.getVertexDegree(i) * graphPheromone[i];
     }
 
-    for (const auto& [i, j]: temp.getAdjacencyList()) {
+    for (const auto& [i, _]: temp.getAdjacencyList()) {
         probabilities.push_back( {i, static_cast<float>( ((temp.getVertexDegree(i) * graphPheromone[i]) / totalFitness)) } );
     }
     
