@@ -4,7 +4,7 @@ import sys
 # Caminho da pasta com os arquivos CSV
 
 pasta = sys.argv[1]
-caminho_pasta = f'../output_files/genetic_algorithm_tests/{pasta}'
+caminho_pasta = f'../output_files/generic_tests/{pasta}'
 
 # Lista para armazenar os dados processados
 dados_processados = []
@@ -24,8 +24,10 @@ for arquivo in os.listdir(caminho_pasta):
             '$\Delta$': df['graph_max_degree'].unique()[0],
             'Lower Bound': df['lower_bound'].unique()[0],
             'Upper Bound': df['upper_bound'].unique()[0],
-            'Fitness Value': df['GA_fitness_heuristic2'].min(),
-            'Elapsed Time(seconds)': df['elapsed_time_GA(seconds)'].min(),
+            'Fitness Value (GA)': df['GA_fitness_heuristic1'].min(),
+            'Fitness Value (ACO)': df['ACO_fitness_5_10'].min(),
+            'Elapsed Time GA (seconds)': df['elapsed_time_GA(seconds)'].min(),
+            'Elapsed Time ACO (seconds)': df['elapsed_time_ACO(seconds)'].min(),
         }
         
         dados_processados.append(entrada)

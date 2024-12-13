@@ -5,7 +5,7 @@ df = pd.read_csv('saida_unificada.csv')
 
 # Converte para LaTeX
 latex_table = df.to_latex(index=False, 
-	column_format="|c|c|c|c|c|c|c|c|c|"
+	column_format="|l|r|r|r|r|r|r|r|r|r|r|"
 )
 
 # Salva em um arquivo .tex
