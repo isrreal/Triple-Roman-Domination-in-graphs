@@ -11,8 +11,9 @@ Graph::Graph(size_t order, bool isDirected, float probabilityOfEdge):
     std::uniform_int_distribution<int> gap(0, order - 1);
     std::uniform_real_distribution<float> probabilityGap(0.0, 1.0);
 
-    for (size_t i {0}; i < order; ++i)
+    for (size_t i {0}; i < order; ++i) {
         adjList[i] = {};
+    }
 
     for (size_t i {0}; i < order; ++i) {
         connectedVertex = gap(seed);
@@ -71,9 +72,7 @@ Graph::Graph(const std::string& filename, bool isDirected):
 Graph::Graph(const Graph& graph): order(graph.order), size(graph.size),
 	isDirected(graph.isDirected), delta(graph.delta),
 	Delta(graph.Delta), adjList(graph.adjList) {}
-
-Graph::Graph() {}
-
+	
 void Graph::addVertex(size_t source) {
 	if (!vertexExists(source)) {
         adjList[source] = {};
@@ -119,7 +118,7 @@ size_t Graph::computeMinVertexDegree() {
  	size_t minDegree = getVertexDegree(getAdjacencyList().begin()->first);
     size_t temp {0};
     
-    for (const auto& [i, j] : getAdjacencyList()) {
+    for (const auto& [i, _] : getAdjacencyList()) {
         temp = getVertexDegree(i);
         if (minDegree > temp) {
             minDegree = temp;

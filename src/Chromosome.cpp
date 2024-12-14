@@ -1,32 +1,33 @@
 #include "Chromosome.hpp"
 
 Chromosome::Chromosome(std::vector<int> genes) {
-	this->genesSize = genes.size();
+	this->genes_size = genes.size();
 	this->genes = genes;
-	this->fitnessValue = 0;
+	this->fitness  = 0;
 }
 
-Chromosome::Chromosome(size_t genesSize) {
-    this->genesSize = genesSize;
-    this->genes = std::vector<int>(genesSize, -1);
-    this->fitnessValue = 0;
+Chromosome::Chromosome(size_t genes_size) {
+    this->genes_size = genes_size;
+    this->genes = std::vector<int>(genes_size, -1);
+    this->fitness  = 0;
 } 
 
-Chromosome::Chromosome(std::vector<int> firstHalf, std::vector<int> secondHalf) {
-    this->genesSize = firstHalf.size() + secondHalf.size(); 
-    this->genes = firstHalf;
-    this->genes.insert(this->genes.end(), secondHalf.begin(), secondHalf.end());
-    this->fitnessValue = 0;
+Chromosome::Chromosome(std::vector<int> first_half, std::vector<int> second_half) {
+    this->genes_size = first_half.size() + second_half.size(); 
+    this->genes = first_half;
+    this->genes.insert(this->genes.end(), second_half.begin(), second_half.end());
+    this->fitness  = 0;
 }
 
 Chromosome::Chromosome(const Chromosome& chromosome) {
-    this->genesSize = chromosome.genesSize;
+    this->genes_size = chromosome.genes_size;
     this->genes = chromosome.genes;
-    this->fitnessValue = chromosome.fitnessValue;
+    this->fitness  = chromosome.fitness ;
 }
 
 std::ostream& operator<<(std::ostream& os, const Chromosome& chromosome) {
-    for (const auto& it: chromosome.genes)
+    for (const auto& it: chromosome.genes) {
         os << it << " ";
+    }
     return os;
 }

@@ -2,6 +2,7 @@
 #include "TripleRomanDomination.hpp"
 #include "Graph.hpp"             
 #include "AntColonyOptimization.hpp"
+#include "util_functions.hpp"
 #include <thread>
 #include <chrono>
 
@@ -45,18 +46,17 @@ int computeRightUpperBound(Graph& graph, int upperBound) {
     return upperBound;
 }
 
-int main(int argc, char** argv) {
+auto main(int argc, char** argv) -> int {
     if (argc > 3) {
         Graph graph(argv[1], false);
         
         if (graph.getOrder() == 0) {
             return -1;
         }
-               
-        
+                     
     	constexpr size_t trial = 10;
         size_t populationSize = static_cast<size_t>(graph.getOrder() / 1.5);
-        size_t generations = 1000;
+        constexpr size_t generations = 1000;
         short heuristic = std::stoi(argv[3]);
         constexpr float mutationRate = 0.2;
         constexpr float elitismRate = 0.1;
@@ -117,10 +117,9 @@ int main(int argc, char** argv) {
 	    	std::cout << elapsedGA.count() << ",";
 	    	std::cout << elapsedACO.count() << ",";	    	
 	    	
-	    	std::cout << TripleRomanDomination::feasible(graph, trd.getSolutionGeneticAlgorithm()) << ",";
-	    	std::cout << TripleRomanDomination::feasible(graph, trd.getSolutionACO()) << '\n';	
+	    	std::cout << feasible(graph, trd.getSolutionGeneticAlgorithm()) << ",";
+	    	std::cout << feasible(graph, trd.getSolutionACO()) << '\n';	
  		}
- 	
 	}
 	
     return EXIT_SUCCESS;
