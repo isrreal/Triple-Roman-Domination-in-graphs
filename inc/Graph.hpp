@@ -7,7 +7,6 @@
 #include <list>
 #include <unordered_map>
 #include <queue>
-#include <stack>
 #include <sstream>
 #include <fstream>
 
@@ -31,7 +30,8 @@ public:
     Graph(const std::string& filename, bool isDirected);
     Graph(size_t order, bool isDirected);	
     Graph(const Graph& graph);
-    Graph();
+
+    Graph() = default;
     ~Graph() = default;
  
     size_t getSize() const;

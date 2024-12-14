@@ -2,73 +2,71 @@
 #define ANT_COLONY_OPTIMIZATION_HPP
 
 #include "Graph.hpp"
+#include "util_functions.hpp"
 #include <vector>
 
 class AntColonyOptimization {
     private:
         Graph graph;
-        std::vector<float> graphPheromone;
-        size_t numberOfAnts;
+        std::vector<float> graph_pheromones;
+        size_t number_of_ants;
         size_t iterations;
     
-        std::vector<int> bestSolution;
+        std::vector<int> best_solution;
          
-        float convergenceFactor;
-        float evaporationRate;
+        float convergence_factor;
+        float evaporation_rate;
 
-        float minDestructionRate;
-        float maxDestructionRate;
-        size_t currentRVNSnumber;
-        size_t maxRVNSfunctions;
-        size_t maxRVNSiterations;
-        size_t maxRVNSnoImprovementIterations;
-        float addVerticesRate;
-        float selectionVertexRateExtendSolution;
+        float min_destruction_rate;
+        float max_destruction_rate;
+        size_t current_rvns_number;
+        size_t max_rvns_functions;
+        size_t max_rvns_iterations;
+        size_t max_rvns_no_improvement_iterations;
+        float add_vertices_rate;
+        float selection_vertex_rate_extend_solution;
 			
-        void initializePheromones(std::vector<float>& graphPheromone);
+        inline void initializePheromones(std::vector<float>& graph_pheromones);
         void constructSolution(std::vector<int>& solution);
         
-        void extendSolution(std::vector<int>& solution);
-        void reduceSolution(std::vector<int>& solution);
+        inline void extendSolution(std::vector<int>& solution);
+        inline void reduceSolution(std::vector<int>& solution);
         void RVNS(std::vector<int>& solution);
         
         size_t chooseVertex(const Graph& temp);
-        size_t chooseVertex(const std::vector<int>& twoOrZeroLabeledVertices);
+        size_t chooseVertex(const std::vector<int>& two_or_zero_labeled_vertices);
         
         size_t rouletteWheelSelection(const Graph& temp);
-        size_t rouletteWheelSelection(const std::vector<int>& twoOrZeroLabeledVertices);
+        size_t rouletteWheelSelection(const std::vector<int>& two_or_zero_labeled_vertices);
                                                                                       
-        void destroySolution(std::vector<int>& solution);
+        inline void destroySolution(std::vector<int>& solution);
         
-        void updatePheromones(std::vector<int>& currentBestSolution, std::vector<int>& bestSolution);
+        inline void updatePheromones(std::vector<int>& current_best_solution, std::vector<int>& best_solution);
 
-        float computeConvergence(const std::vector<float>& graphPheromone);
+        inline float computeConvergence(const std::vector<float>& graph_pheromones);
 
-        static bool feasible(const Graph& graph, const std::vector<int>& solution);
-
-        size_t summation(const std::vector<int>& solution);
+        inline size_t summation(const std::vector<int>& solution);
         
-     	bool delta(const std::vector<int>& solution, size_t vertex);
+     	inline bool delta(const std::vector<int>& solution, size_t vertex);
         
-        float getMinPheromoneValue(const std::vector<float>& graphPheromone);
+        inline float getMinPheromoneValue(const std::vector<float>& graph_pheromones);
         
-        float getMaxPheromoneValue(const std::vector<float>& graphPheromone);   
+        inline float getMaxPheromoneValue(const std::vector<float>& graph_pheromones);   
         
     public:
 
-        AntColonyOptimization(Graph& graph, size_t iterations, size_t numberOfAnts):
-             graph(graph), graphPheromone(graph.getOrder(), 0.0),
-             numberOfAnts(numberOfAnts), iterations(iterations),
-             convergenceFactor(0), evaporationRate(0.2),
-             minDestructionRate(0.2), maxDestructionRate(0.5),
-             currentRVNSnumber(1), maxRVNSfunctions(5), maxRVNSiterations(150),
-             maxRVNSnoImprovementIterations(50),
-             addVerticesRate(0.05),
-             selectionVertexRateExtendSolution(0.7) {}
+        AntColonyOptimization(Graph& graph, size_t iterations, size_t number_of_ants):
+             graph(graph), graph_pheromones(graph.getOrder(), 0.0),
+             number_of_ants(number_of_ants), iterations(iterations),
+             convergence_factor(0), evaporation_rate(0.2),
+             min_destruction_rate(0.2), max_destruction_rate(0.5),
+             current_rvns_number(1), max_rvns_functions(5), max_rvns_iterations(150),
+             max_rvns_no_improvement_iterations(50),
+             add_vertices_rate(0.05),
+             selection_vertex_rate_extend_solution(0.7) {}
 
         ~AntColonyOptimization() {} 
         
-        static void toggleLabels(const Graph& graph, std::vector<int>& solution);
         std::vector<int> getBestSolution();
        
         void run();
