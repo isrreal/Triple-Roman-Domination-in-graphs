@@ -31,9 +31,7 @@ public:
           genetic_algorithm_best_fitness(0),
           aco_best_fitness(0) {}
           
-  	TripleRomanDomination(Graph& graph, size_t population_size, size_t genes_size, size_t generations,
-                          float mutation_rate, float elitism_rate, float cross_over_rate,
-                          size_t number_of_ants, size_t iterations) = default;
+  	TripleRomanDomination() = default;
 
     ~TripleRomanDomination() = default;
 
