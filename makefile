@@ -1,34 +1,30 @@
 CPPFLAGS=-std=c++17 -Wall -Wextra -O3
 IPATH=-Iinc/
-SRC=src/
-OBJ=obj/
+SRC_FOLDER=src/
+OBJ_FOLDER=obj/
+
+SOURCES= $(SRC_FOLDER)main.cpp $(SRC_FOLDER)GeneticAlgorithm.cpp $(SRC_FOLDER)Chromosome.cpp \
+         $(SRC_FOLDER)Graph.cpp $(SRC_FOLDER)TripleRomanDomination.cpp $(SRC_FOLDER)AntColonyOptimization.cpp \
+         $(SRC_FOLDER)util_functions.cpp
+
+OBJECTS= $(SOURCES:$(SRC_FOLDER)%.cpp=$(OBJ_FOLDER)%.gch)
 
 all: create_obj_dir app
 
-app: main.gch GeneticAlgorithm.gch Chromosome.gch Graph.gch TripleRomanDomination.gch AntColonyOptimization.gch
-	g++ $(OBJ)main.gch $(OBJ)GeneticAlgorithm.gch $(OBJ)Chromosome.gch $(OBJ)Graph.gch $(OBJ)TripleRomanDomination.gch $(OBJ)AntColonyOptimization.gch -o app
+app: $(OBJECTS)
+	g++ $(OBJECTS) -o app
 
-main.gch: $(SRC)main.cpp
-	g++ $(CPPFLAGS) $(IPATH) -c $(SRC)main.cpp -o $(OBJ)main.gch
-
-GeneticAlgorithm.gch: $(SRC)GeneticAlgorithm.cpp                         
-	g++ $(CPPFLAGS) $(IPATH) -c $(SRC)GeneticAlgorithm.cpp -o $(OBJ)GeneticAlgorithm.gch
-
-AntColonyOptimization.gch: $(SRC)AntColonyOptimization.cpp                         
-	g++ $(CPPFLAGS) $(IPATH) -c $(SRC)AntColonyOptimization.cpp -o $(OBJ)AntColonyOptimization.gch
-
-TripleRomanDomination.gch: $(SRC)TripleRomanDomination.cpp 
-	g++ $(CPPFLAGS) $(IPATH) -c $(SRC)TripleRomanDomination.cpp -o $(OBJ)TripleRomanDomination.gch
-
-Chromosome.gch: $(SRC)Chromosome.cpp 
-	g++ $(CPPFLAGS) $(IPATH) -c $(SRC)Chromosome.cpp -o $(OBJ)Chromosome.gch
-	
-Graph.gch: $(SRC)Graph.cpp 
-	g++ $(CPPFLAGS) $(IPATH) -c $(SRC)Graph.cpp -o $(OBJ)Graph.gch
+$(OBJ_FOLDER)%.gch: $(SRC_FOLDER)%.cpp
+	g++ $(CPPFLAGS) $(IPATH) -c $< -o $@
 
 create_obj_dir:
-	mkdir -p $(OBJ)
+	mkdir -p $(OBJ_FOLDER)
+	
+.PHONY: clean_cache
+
+clean_cache:
+	ccache --clear
 
 clean:
-	rm -rf $(OBJ)*.gch app
+	rm -rf $(OBJ_FOLDER) app
 
