@@ -17,26 +17,16 @@ void GeneticAlgorithm::createPopulation(
 
     if (!generateChromosomeHeuristics.empty()) {
         if (heuristic == 4) {
-        
-            for (size_t i {0}; i <= population_size - 5; ++i) {
-                this->population[i] = generateChromosomeHeuristics[0](graph);
+            for (size_t i {0}; i < population_size; ++i) {
+                this->population[i] = generateChromosomeHeuristics[getRandomInt(0, 2)](graph);
             }
-
-            this->population[population_size - 4] = generateChromosomeHeuristics[1](graph);
-            this->population[population_size - 3] = generateChromosomeHeuristics[1](graph);
-            this->population[population_size - 2] = generateChromosomeHeuristics[2](graph);
-            this->population[population_size - 1] = generateChromosomeHeuristics[2](graph);
-				
-			std::random_device randomNumber; 
-    		std::mt19937 seed(randomNumber());
-    		
-			std::shuffle(population.begin(), population.end(), randomNumber);
         } 
         
         else if (heuristic > 0 && heuristic < 4) {
             Chromosome func { generateChromosomeHeuristics[heuristic - 1](graph) } ;
-            for (size_t i {0}; i < population_size; ++i) 
+            for (size_t i {0}; i < population_size; ++i) {
                 this->population[i] = func;          
+            }
         }
     } 
     
