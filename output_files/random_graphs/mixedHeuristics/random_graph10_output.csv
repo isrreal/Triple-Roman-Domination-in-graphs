@@ -1,0 +1,11 @@
+graph_name,graph_order,graph_size,graph_min_degree,graph_max_degree,GA_fitness_heuristic4,ACO_fitness_5_10,lower_bound,upper_bound,elapsed_time_GA(seconds),elapsed_time_ACO(seconds),is_3RDF_GA,is_3RDF_ACO
+random_graph10,100,953,9,28,39,36,13,150,0.102853,0.146051,1,1
+random_graph10,100,953,9,28,42,43,13,150,0.141016,0.0317201,1,1
+random_graph10,100,953,9,28,43,43,13,150,0.121723,0.0287295,1,1
+random_graph10,100,953,9,28,42,44,13,150,0.114118,0.0318928,1,1
+random_graph10,100,953,9,28,46,44,13,150,0.0892993,0.0298929,1,1
+random_graph10,100,953,9,28,46,44,13,150,0.102973,0.0315642,1,1
+random_graph10,100,953,9,28,46,44,13,150,0.0847159,0.0274159,1,1
+random_graph10,100,953,9,28,46,43,13,150,0.080691,0.0277809,1,1
+random_graph10,100,953,9,28,44,44,13,150,0.0715643,0.0281981,1,1
+random_graph10,100,953,9,28,44,44,13,150,0.0769113,0.0288298,1,1
