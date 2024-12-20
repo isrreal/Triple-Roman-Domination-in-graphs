@@ -1,0 +1,11 @@
+graph_name,graph_order,graph_size,graph_min_degree,graph_max_degree,GA_fitness_heuristic3,ACO_fitness_20_10,lower_bound,upper_bound,elapsed_time_GA(seconds),elapsed_time_ACO(seconds)
+./representative_set/will57.txt,57,127,1,10,70,70,21,85,9.17427,1.45629
+./representative_set/will57.txt,57,127,1,10,61,73,21,85,8.71976,0.452226
+./representative_set/will57.txt,57,127,1,10,63,69,21,85,8.91521,0.430675
+./representative_set/will57.txt,57,127,1,10,70,55,21,85,8.61728,0.410396
+./representative_set/will57.txt,57,127,1,10,68,55,21,85,8.82255,0.414608
+./representative_set/will57.txt,57,127,1,10,69,66,21,85,8.74693,0.421912
+./representative_set/will57.txt,57,127,1,10,71,66,21,85,8.90399,0.437112
+./representative_set/will57.txt,57,127,1,10,70,67,21,85,8.7177,0.443335
+./representative_set/will57.txt,57,127,1,10,72,67,21,85,8.76133,0.442702
+./representative_set/will57.txt,57,127,1,10,66,73,21,85,8.80754,0.450413

@@ -1,0 +1,11 @@
+graph_name,graph_order,graph_size,graph_min_degree,graph_max_degree,GA_fitness_heuristic2,ACO_fitness_20_10,lower_bound,upper_bound,elapsed_time_GA(seconds),elapsed_time_ACO(seconds)
+./representative_set/cycle19.txt,19,19,2,2,36,29,26,28,5.17483,0.419833
+./representative_set/cycle19.txt,19,19,2,2,32,29,26,28,6.13661,0.145237
+./representative_set/cycle19.txt,19,19,2,2,32,28,26,28,4.92713,0.149868
+./representative_set/cycle19.txt,19,19,2,2,32,28,26,28,5.68639,0.149467
+./representative_set/cycle19.txt,19,19,2,2,36,28,26,28,5.25469,0.145676
+./representative_set/cycle19.txt,19,19,2,2,36,27,26,28,5.0205,0.137169
+./representative_set/cycle19.txt,19,19,2,2,36,27,26,28,5.58711,0.141217
+./representative_set/cycle19.txt,19,19,2,2,32,27,26,28,5.38852,0.136747
+./representative_set/cycle19.txt,19,19,2,2,32,27,26,28,5.71279,0.139879
+./representative_set/cycle19.txt,19,19,2,2,32,30,26,28,4.99335,0.134534
