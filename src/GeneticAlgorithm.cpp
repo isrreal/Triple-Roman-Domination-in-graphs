@@ -14,12 +14,23 @@ void GeneticAlgorithm::createPopulation(
     std::vector<std::function<Chromosome(const Graph&)>> generateChromosomeHeuristics, 
     const Graph& graph, 
     size_t heuristic) {
+    
+	if (!generateChromosomeHeuristics.empty()) {
+        if (heuristic == 4) { 
+            size_t portion_size { static_cast<size_t>(population_size / 3) };
+			size_t index {0};
 
-    if (!generateChromosomeHeuristics.empty()) {
-        if (heuristic == 4) {
-            for (size_t i {0}; i < population_size; ++i) {
-                this->population[i] = generateChromosomeHeuristics[getRandomInt(0, 2)](graph);
-            }
+			for (size_t i {0}; i < 3; ++i) {
+				for (size_t j {0}; j < portion_size; ++j) { 
+					this->population[index++] = generateChromosomeHeuristics[i](graph);
+				}
+			}
+			
+			this->population[index] = generateChromosomeHeuristics[getRandomInt(0, 2)](graph);
+				
+			std::random_device random_engine; 
+    		
+			std::shuffle(population.begin(), population.end(), random_engine);		
         } 
         
         else if (heuristic > 0 && heuristic < 4) {
@@ -28,13 +39,11 @@ void GeneticAlgorithm::createPopulation(
                 this->population[i] = func;          
             }
         }
+        
+     	else {
+		    throw population;
+    	}
     } 
-    
-    else {
-        for (size_t i {0}; i < population_size; ++i) {
-            this->population[i] = Chromosome(genes_size);
-        }
-    }
 }
 
 
