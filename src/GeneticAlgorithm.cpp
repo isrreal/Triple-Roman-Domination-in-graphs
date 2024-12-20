@@ -18,23 +18,21 @@ void GeneticAlgorithm::createPopulation(
 	if (!generateChromosomeHeuristics.empty()) {
         if (heuristic == 4) { 
             size_t portion_size { static_cast<size_t>(population_size / 3) };
+			size_t remainder { population_size % 3 }; 
 			size_t index {0};
-			
-			
+
 			for (size_t i {0}; i < 3; ++i) {
 				for (size_t j {0}; j < portion_size; ++j) {
-        			this->population[index++] = generateChromosomeHeuristics[i](graph);
+					this->population[index++] = generateChromosomeHeuristics[i](graph);
 				}
 			}
-			
-			if (population_size % 2 == 0) {
-				population[index] = generateChromosomeHeuristics[getRandomInt(0, 2)](graph);
+
+			for (size_t i {0}; i < remainder; ++i) {
+				this->population[index++] = generateChromosomeHeuristics[i](graph);
 			}
-				
-			std::random_device rd;
 			
-			std::mt19937 random_engine(rd()); 
-    		
+			std::random_device rd;
+			std::mt19937 random_engine(rd());
 			std::shuffle(population.begin(), population.end(), random_engine);		
         } 
         
