@@ -28,7 +28,7 @@ void GeneticAlgorithm::createPopulation(
 			}
 
 			for (size_t i {0}; i < remainder; ++i) {
-				this->population[index++] = generateChromosomeHeuristics[i](graph);
+				this->population[index++] = generateChromosomeHeuristics[getRandomInt(0, 2)](graph);
 			}
 			
 			std::random_device rd;
@@ -58,19 +58,16 @@ void GeneticAlgorithm::createPopulation(
  */
 
 std::vector<Chromosome>& GeneticAlgorithm::createNewPopulation() {
-    std::vector<Chromosome> temp {population};
    	
    	this->elitism(this->elitism_rate);
-    
-    temp.reserve(population_size);
     
     Chromosome selected1;
     Chromosome selected2;
     Chromosome offspring;
     
     while (population.size() < population_size) {          
-        selected1 = tournamentSelection(temp); 
-        selected2 = tournamentSelection(temp);      	
+        selected1 = tournamentSelection(population); 
+        selected2 = tournamentSelection(population);      	
        	
        	if (getRandomFloat(0.0, 1.0) <= crossover_rate) {  		
         	offspring = this->twoPointCrossOver(selected1, selected2);
@@ -84,8 +81,6 @@ std::vector<Chromosome>& GeneticAlgorithm::createNewPopulation() {
 		
         population.emplace_back(offspring);       
     }
-	
-    population.swap(temp);
     
     return population;
 }
