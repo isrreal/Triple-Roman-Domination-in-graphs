@@ -19,7 +19,9 @@ class GeneticAlgorithm {
         float mutation_rate;
         float elitism_rate;
         float crossover_rate;
+		float selection_chromosome_rate;
 		size_t max_no_improvement_iterations;
+
 
 		inline void createPopulation(std::vector<std::function<Chromosome(const Graph&)>> generateChromosomeHeuristics,
 		 	const Graph& graph, size_t heuristic);
@@ -34,19 +36,21 @@ class GeneticAlgorithm {
                 	
         inline Chromosome& mutation(Chromosome& chromosome);
         
-		inline static Chromosome& tournamentSelection(const std::vector<Chromosome>& population);
+		inline Chromosome& tournamentSelection(const std::vector<Chromosome>& population);
 		
 		inline static Chromosome& chooseBestSolution(Chromosome& chromosome1, Chromosome& chromosome2);
         inline static Chromosome& chooseWorstSolution(Chromosome& chromosome1, Chromosome& chromosome2);
 
 	public:
 		GeneticAlgorithm(Graph& graph, size_t population_size, size_t genes_size, size_t generations,
-			float mutation_rate, float elitism_rate, float crossover_rate):
+			float mutation_rate, float elitism_rate, float crossover_rate,
+			float selection_chromosome_rate):
 			  population_size(population_size), genes_size(genes_size), 
 			  population(population_size), generations(generations), 
 			  graph(graph), best_solution(), 
 			  mutation_rate(mutation_rate), elitism_rate(elitism_rate),
 			  crossover_rate(crossover_rate),
+			  selection_chromosome_rate(selection_chromosome_rate),
               max_no_improvement_iterations(100) {}               
 
 		~GeneticAlgorithm() {}

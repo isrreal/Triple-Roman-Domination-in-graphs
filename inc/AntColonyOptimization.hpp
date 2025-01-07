@@ -23,9 +23,10 @@ class AntColonyOptimization {
         size_t max_rvns_functions;
         size_t max_rvns_iterations;
         size_t max_rvns_no_improvement_iterations;
-        float add_vertices_rate;
+     	float selection_vertex_rate_construct_solution;
         float selection_vertex_rate_extend_solution;
-			
+        float add_vertices_rate_extend_solution;
+        			
         inline void initializePheromones(std::vector<float>& graph_pheromones);
         void constructSolution(std::vector<int>& solution);
         
@@ -55,15 +56,21 @@ class AntColonyOptimization {
         
     public:
 
-        AntColonyOptimization(Graph& graph, size_t iterations, size_t number_of_ants):
+        AntColonyOptimization(Graph& graph, size_t number_of_ants, size_t iterations, float evaporation_rate,
+			  	float min_destruction_rate,  float max_destruction_rate, 
+			  	size_t max_rvns_functions, size_t max_rvns_iterations, size_t max_rvns_no_improvement_iterations,
+			  	float selection_vertex_rate_extend_solution, float selection_vertex_rate_construct_solution,
+			  	float add_vertices_rate_extend_solution):
+			  	
              graph(graph), graph_pheromones(graph.getOrder(), 0.0),
              number_of_ants(number_of_ants), iterations(iterations),
-             convergence_factor(0), evaporation_rate(0.2),
-             min_destruction_rate(0.2), max_destruction_rate(0.5),
-             current_rvns_number(1), max_rvns_functions(5), max_rvns_iterations(150),
-             max_rvns_no_improvement_iterations(50),
-             add_vertices_rate(0.05),
-             selection_vertex_rate_extend_solution(0.7) {}
+             convergence_factor(0), evaporation_rate(evaporation_rate),
+             min_destruction_rate(min_destruction_rate), max_destruction_rate(max_destruction_rate),
+             current_rvns_number(1), max_rvns_functions(max_rvns_functions), max_rvns_iterations(max_rvns_iterations),
+             max_rvns_no_improvement_iterations(max_rvns_no_improvement_iterations),
+             selection_vertex_rate_construct_solution(selection_vertex_rate_construct_solution),  
+             selection_vertex_rate_extend_solution(selection_vertex_rate_extend_solution),
+             add_vertices_rate_extend_solution(add_vertices_rate_extend_solution) {}
 
         ~AntColonyOptimization() {} 
         

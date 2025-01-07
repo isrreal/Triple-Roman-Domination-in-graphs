@@ -167,15 +167,13 @@ Chromosome& GeneticAlgorithm::twoPointCrossOver(const Chromosome& chromosome1, c
    return chooseBestSolution(solution1, solution2);
 }
 
-Chromosome& GeneticAlgorithm::tournamentSelection(const std::vector<Chromosome>& population) {
-    constexpr float parameter { 0.75f }; 
-    
+Chromosome& GeneticAlgorithm::tournamentSelection(const std::vector<Chromosome>& population) {    
     const Chromosome& c1 { population[getRandomInt(0, population.size() - 1)] };
     const Chromosome& c2 { population[getRandomInt(0, population.size() - 1)] };
 
     float probability { getRandomFloat(0.0, 1.0) };
 
-    if (probability < parameter) {
+    if (probability < selection_chromosome_rate) {
         return chooseBestSolution(const_cast<Chromosome&>(c1), const_cast<Chromosome&>(c2));
     } 
     else {

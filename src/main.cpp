@@ -54,28 +54,49 @@ auto main(int argc, char** argv) -> int {
             return -1;
         }
                      
-    	constexpr size_t trial = 10;
-        size_t populationSize = static_cast<size_t>(graph.getOrder() / 1.5);
-        constexpr size_t generations = 1000;
+    	constexpr size_t trial {10};
+    	
+    	// Genetic Algorithm parameters
+    	
+        size_t population_size = static_cast<size_t>(graph.getOrder() / 1.5);
+        constexpr size_t generations {1000};
         short heuristic = std::stoi(argv[3]);
-        constexpr float mutationRate = 0.2;
-        constexpr float elitismRate = 0.1;
-        constexpr float crossOverRate = 0.7;
-        constexpr size_t numberOfAnts = 5;
-        constexpr size_t iterations = 10;
+        constexpr float mutation_rate { 0.2 };
+        constexpr float elitism_rate {0.1};
+        constexpr float cross_over_rate {0.7};
+        constexpr float selection_chromosome_rate {0.75};
         
-        int upperBound { 0 };
-    	int lowerBound { 0 };
+        // ACO parameters
         
-        size_t Delta = graph.getMaxDegree();
-       	size_t delta = graph.getMinDegree();
+        constexpr size_t number_of_ants {5};
+        constexpr size_t iterations {10};
+        constexpr float evaporation_rate {0.2};
+        constexpr float min_destruction_rate {0.2};
+        constexpr float max_destruction_rate {0.7};
+        constexpr size_t max_rvns_functions {5};
+        constexpr size_t max_rvns_iterations {150};
+        constexpr size_t max_rvns_no_improvement_iterations {50};
+        constexpr float selection_vertex_rate_extend_solution {0.7};
+        constexpr float selection_vertex_rate_construct_solution {0.9};
+        constexpr float add_vertices_rate_extend_solution {0.05};
+        int upperBound {0};
+    	int lowerBound {0};
+        
+        size_t Delta { graph.getMaxDegree() };
+       	size_t delta { graph.getMinDegree() };
        	
        // graph, populationSize, genesSize, generations, heuristic, mutation rate, elitism rate, numberOfAnts, iterations
-        TripleRomanDomination trd(graph, populationSize, graph.getOrder(), generations,
-                mutationRate, elitismRate, crossOverRate, numberOfAnts, iterations);
+        TripleRomanDomination trd(graph, population_size, graph.getOrder(), generations,
+            	mutation_rate, elitism_rate, cross_over_rate, selection_chromosome_rate,
+            	
+            	number_of_ants, iterations, evaporation_rate,
+			  	min_destruction_rate,  max_destruction_rate, 
+			  	max_rvns_functions, max_rvns_iterations, max_rvns_no_improvement_iterations,
+			  	selection_vertex_rate_extend_solution, selection_vertex_rate_construct_solution,
+			  	add_vertices_rate_extend_solution);
                  
         std::cout << "graph_name,graph_order,graph_size,graph_min_degree,graph_max_degree,GA_fitness_heuristic" << heuristic;
-	    std::cout << ",ACO_fitness_" << numberOfAnts << "_" << iterations; 
+	    std::cout << ",ACO_fitness_" << number_of_ants << "_" << iterations; 
         std::cout << ",lower_bound,upper_bound,elapsed_time_GA(seconds)" << ",elapsed_time_ACO(seconds),is_3RDF_GA,is_3RDF_ACO\n";
 
        for (size_t i {0}; i < trial; ++i) {         	
@@ -87,7 +108,7 @@ auto main(int argc, char** argv) -> int {
 	        
 	        std::chrono::duration<double> elapsedGA;
 	    	std::chrono::duration<double> elapsedACO;
-	    		
+	   	
 	    	std::thread gaThread([&]() {
 	    		auto startGA = std::chrono::high_resolution_clock::now();
 	    		trd.runGeneticAlgorithm(heuristic);

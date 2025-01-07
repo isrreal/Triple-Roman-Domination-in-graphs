@@ -74,7 +74,7 @@ void AntColonyOptimization::extendSolution(std::vector<int>& solution) {
         }
     }
 
-    itr = static_cast<size_t>(add_vertices_rate * two_or_zero_labeled_vertices.size());
+    itr = static_cast<size_t>(add_vertices_rate_extend_solution * two_or_zero_labeled_vertices.size());
 
     while (itr != 0 && !two_or_zero_labeled_vertices.empty()) {          
         vertex = chooseVertex(two_or_zero_labeled_vertices);         
@@ -180,7 +180,6 @@ void AntColonyOptimization::RVNS(std::vector<int>& solution) {
 }
 
 size_t AntColonyOptimization::chooseVertex(const Graph& temp) {
-    float selection_vertex_rate_construct_solution { 0.7f };    
     
     float number { getRandomFloat(0.0, 1.0) }; 
     
@@ -223,8 +222,6 @@ size_t AntColonyOptimization::chooseVertex(const Graph& temp) {
  */
 
 size_t AntColonyOptimization::chooseVertex(const std::vector<int>& two_or_zero_labeled_vertices) {
-    constexpr float selection_vertex_rate_extend_solution {0.9f};
-
     size_t chosen_index { getRandomInt(0, two_or_zero_labeled_vertices.size() - 1) };
 
     if (getRandomFloat(0.0, 1.0) > selection_vertex_rate_extend_solution) {
