@@ -44,14 +44,14 @@ class GeneticAlgorithm {
 	public:
 		GeneticAlgorithm(Graph& graph, size_t population_size, size_t genes_size, size_t generations,
 			float mutation_rate, float elitism_rate, float crossover_rate,
-			float selection_chromosome_rate):
+			float selection_chromosome_rate, size_t max_no_improvement_iterations):
 			  population_size(population_size), genes_size(genes_size), 
 			  population(population_size), generations(generations), 
 			  graph(graph), best_solution(), 
 			  mutation_rate(mutation_rate), elitism_rate(elitism_rate),
 			  crossover_rate(crossover_rate),
 			  selection_chromosome_rate(selection_chromosome_rate),
-              max_no_improvement_iterations(100) {}               
+              max_no_improvement_iterations(max_no_improvement_iterations) {}               
 
 		~GeneticAlgorithm() {}
 		

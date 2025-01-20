@@ -59,26 +59,27 @@ auto main(int argc, char** argv) -> int {
     	// Genetic Algorithm parameters
     	
         size_t population_size = static_cast<size_t>(graph.getOrder() / 1.5);
-        constexpr size_t generations {1000};
+        size_t generations {1000};
         short heuristic = std::stoi(argv[3]);
-        constexpr float mutation_rate { 0.2 };
-        constexpr float elitism_rate {0.1};
-        constexpr float cross_over_rate {0.7};
-        constexpr float selection_chromosome_rate {0.75};
+        float mutation_rate { 0.2 };
+        float elitism_rate {0.1};
+        float cross_over_rate {0.7};
+        float selection_chromosome_rate {0.75};
+        size_t max_no_improvement_iterations {50};
         
         // ACO parameters
         
-        constexpr size_t number_of_ants {5};
-        constexpr size_t iterations {10};
-        constexpr float evaporation_rate {0.2};
-        constexpr float min_destruction_rate {0.2};
-        constexpr float max_destruction_rate {0.7};
-        constexpr size_t max_rvns_functions {5};
-        constexpr size_t max_rvns_iterations {150};
-        constexpr size_t max_rvns_no_improvement_iterations {50};
-        constexpr float selection_vertex_rate_extend_solution {0.7};
-        constexpr float selection_vertex_rate_construct_solution {0.9};
-        constexpr float add_vertices_rate_extend_solution {0.05};
+        size_t number_of_ants {5};
+        size_t iterations {10};
+        float evaporation_rate {0.2};
+        float min_destruction_rate {0.2};
+        float max_destruction_rate {0.7};
+        size_t max_rvns_functions {5};
+        size_t max_rvns_iterations {150};
+        size_t max_rvns_no_improvement_iterations {50};
+        float selection_vertex_rate_extend_solution {0.7};
+        float selection_vertex_rate_construct_solution {0.9};
+        float add_vertices_rate_extend_solution {0.05};
         int upperBound {0};
     	int lowerBound {0};
         
@@ -88,6 +89,7 @@ auto main(int argc, char** argv) -> int {
        // graph, populationSize, genesSize, generations, heuristic, mutation rate, elitism rate, numberOfAnts, iterations
         TripleRomanDomination trd(graph, population_size, graph.getOrder(), generations,
             	mutation_rate, elitism_rate, cross_over_rate, selection_chromosome_rate,
+            	max_no_improvement_iterations,
             	
             	number_of_ants, iterations, evaporation_rate,
 			  	min_destruction_rate,  max_destruction_rate, 
