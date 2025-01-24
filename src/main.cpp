@@ -58,28 +58,28 @@ auto main(int argc, char** argv) -> int {
     	
     	// Genetic Algorithm parameters
     	
-        size_t population_size = static_cast<size_t>(graph.getOrder() / 1.5);
-        size_t generations {1000};
+        size_t population_size = static_cast<size_t>(graph.getOrder() / 3);
+        constexpr size_t generations {144};
         short heuristic = std::stoi(argv[3]);
-        float mutation_rate { 0.2 };
-        float elitism_rate {0.1};
-        float cross_over_rate {0.7};
-        float selection_chromosome_rate {0.75};
-        size_t max_no_improvement_iterations {50};
+        constexpr float mutation_rate {0.5013};
+        constexpr float elitism_rate {0.2534};
+        constexpr float cross_over_rate {0.9719};
+        constexpr float selection_chromosome_rate {0.6035};
+        constexpr size_t max_no_improvement_iterations {75};
         
         // ACO parameters
         
-        size_t number_of_ants {5};
-        size_t iterations {10};
-        float evaporation_rate {0.2};
-        float min_destruction_rate {0.2};
-        float max_destruction_rate {0.7};
-        size_t max_rvns_functions {5};
-        size_t max_rvns_iterations {150};
-        size_t max_rvns_no_improvement_iterations {50};
-        float selection_vertex_rate_extend_solution {0.7};
-        float selection_vertex_rate_construct_solution {0.9};
-        float add_vertices_rate_extend_solution {0.05};
+        constexpr size_t number_of_ants {6};
+        constexpr size_t iterations {1};
+        constexpr float evaporation_rate {0.4922};
+        constexpr float min_destruction_rate {0.214};
+        constexpr float max_destruction_rate {0.9};
+        constexpr size_t max_rvns_functions {10};
+        constexpr size_t max_rvns_iterations {150};
+        constexpr size_t max_rvns_no_improvement_iterations {95};
+        constexpr float selection_vertex_rate_extend_solution {0.3};
+        constexpr float selection_vertex_rate_construct_solution {0.5};
+        constexpr float add_vertices_rate_extend_solution {0.05};
         int upperBound {0};
     	int lowerBound {0};
         
