@@ -18,4 +18,8 @@ void toggleLabels(const Graph&, std::vector<int>&);
 
 Chromosome& fitness(Chromosome&);
 
+int computeRightLowerBound(const Graph&, int);
+
+int computeRightUpperBound(Graph&, int);
+
 #endif
