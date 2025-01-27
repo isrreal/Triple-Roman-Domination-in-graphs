@@ -178,3 +178,43 @@ Chromosome& fitness(Chromosome& chromosome) {
         		
  	return chromosome; 
 }
+
+int computeRightLowerBound(const Graph& graph, int lowerBound) {
+    lowerBound = -1; 
+    if (graph.getMaxDegree() >= 3 && graph.getOrder() >= 2) {
+        lowerBound = std::ceil(static_cast<size_t>(4.0 * graph.getOrder() / (graph.getMaxDegree() + 1.0)));
+	}
+	
+    return lowerBound;
+}
+
+int computeRightUpperBound(Graph& graph, int upperBound) {
+    upperBound = -1;
+    auto components { graph.connectedComponents() };
+    
+    if(components.size() == 1 && graph.getMinDegree() >= 2) {
+        upperBound = std::floor(3.0 * graph.getOrder() / 2.0);
+    }
+    else if (components.size() == 1 && graph.getOrder() >= 3) {
+        upperBound = std::floor(7.0 * graph.getOrder() / 4.0);
+    }
+    else if (components.size() > 1 && graph.getOrder() >= 3) {
+        upperBound = 0;
+        for (auto& par: components) {
+            if(par.first == 1) {
+                upperBound += 3;
+            }
+            else if(par.first == 2) {
+                upperBound += 4;
+            }            
+            else if(par.first >= 3 && par.second >= 2) {
+                upperBound += std::floor(static_cast<size_t>(3.0 * par.first / 2.0));
+            }           
+            else if(par.first >= 3) {
+                upperBound += std::floor(static_cast<size_t>(7.0 * par.first / 4.0));
+            }
+        }
+    }
+
+    return upperBound;
+}
