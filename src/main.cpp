@@ -8,18 +8,20 @@
 
 void printGeneticAlgorithmLog(short heuristic) {
 	std::cout << "graph_name,graph_order,graph_size,graph_min_degree,graph_max_degree,fitness_heuristic_" << heuristic;
-    std::cout << ",lower_bound,upper_bound,elapsed_time(seconds)\n";
+    std::cout << ",lower_bound,upper_bound,graph_density,elapsed_time(seconds)\n";
 }
 
 void printAntColonyOptimizationLog(size_t number_of_ants, size_t iterations) {
 	std::cout << "graph_name,graph_order,graph_size,graph_min_degree,graph_max_degree,fitness_" << number_of_ants << '_' << iterations;
-    std::cout << ",lower_bound,upper_bound,elapsed_time(seconds)\n";
+    std::cout << ",lower_bound,upper_bound,graph_density,elapsed_time(seconds)\n";
 }
 
 void computeAntColonyOptimization(TripleRomanDomination& trd, int upper_bound, int lower_bound) {
     
     std::chrono::duration<double> elapsed_time;
-	   	
+    
+   	double graph_density = static_cast<double>(2 * trd.getGraph().getSize()) / (trd.getGraph().getOrder() * (trd.getGraph().getOrder() - 1));
+   	
 	auto start = std::chrono::high_resolution_clock::now();
 	trd.runACO();
 	auto end = std::chrono::high_resolution_clock::now();
@@ -32,12 +34,15 @@ void computeAntColonyOptimization(TripleRomanDomination& trd, int upper_bound, i
 	std::cout << trd.getACOBestFitness() << ',';
 	std::cout << lower_bound << ',';
     std::cout << upper_bound << ',';  	
+    std::cout << graph_density << ',';
 	std::cout << elapsed_time.count() << '\n';
 }
 
 void computeGeneticAlgorithm(TripleRomanDomination& trd, short heuristic, int upper_bound, int lower_bound) {
     
     std::chrono::duration<double> elapsed_time;
+    
+   	double graph_density = static_cast<double>(2 * trd.getGraph().getSize()) / (trd.getGraph().getOrder() * (trd.getGraph().getOrder() - 1));
 	   	
 	auto start = std::chrono::high_resolution_clock::now();
 	trd.runGeneticAlgorithm(heuristic);
@@ -51,6 +56,7 @@ void computeGeneticAlgorithm(TripleRomanDomination& trd, short heuristic, int up
 	std::cout << trd.getGeneticAlgorithmBestFitness() << ',';
 	std::cout << lower_bound << ',';
     std::cout << upper_bound << ',';  	
+    std::cout << graph_density << ',';
 	std::cout << elapsed_time.count() << '\n';
 }
 
@@ -104,7 +110,7 @@ auto main(int argc, char** argv) -> int {
 			  	max_rvns_functions, max_rvns_iterations, max_rvns_no_improvement_iterations,
 			  	selection_vertex_rate_extend_solution, selection_vertex_rate_construct_solution,
 			  	add_vertices_rate_extend_solution);
-			  	
+		
         if (std::stoi(argv[4]) == 1) {
         	printAntColonyOptimizationLog(number_of_ants, iterations);
         }
