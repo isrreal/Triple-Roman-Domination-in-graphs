@@ -18,7 +18,7 @@ executable="../app"
 
 input_directory="../input_files/$input_folder_name"
 
-output_directory="../output_files/$input_folder_name/$output_folder_name"
+output_directory="../output_files/ant_colony_optimization_outputs/$output_folder_name"
 
 mkdir -p "$output_directory"
 
@@ -28,7 +28,7 @@ for input_file in "$input_directory"/*.txt; do
 		
         output_file="$output_directory/$(basename "$input_file" .txt)_output.csv"
 		
-        $executable "$input_file" "$(basename "$input_file" .txt)" "$heuristic" > "$output_file"
+        $executable "$input_file" "$(basename "$input_file" .txt)" "$heuristic" 1 > "$output_file"
 
         echo "Results written to: $output_file"
     else
