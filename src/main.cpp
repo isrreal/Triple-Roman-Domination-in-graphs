@@ -6,48 +6,56 @@
 #include <thread>
 #include <chrono>
 
-int computeRightLowerBound(const Graph& graph, int lowerBound) {
-    lowerBound = -1; 
-    if (graph.getMaxDegree() >= 3 && graph.getOrder() >= 2) {
-        lowerBound = std::ceil(static_cast<size_t>(4.0 * graph.getOrder() / (graph.getMaxDegree() + 1.0)));
-	}
-	
-    return lowerBound;
+void printGeneticAlgorithmLog(short heuristic) {
+	std::cout << "graph_name,graph_order,graph_size,graph_min_degree,graph_max_degree,fitness_heuristic_" << heuristic;
+    std::cout << ",lower_bound,upper_bound,elapsed_time(seconds)\n";
 }
 
-int computeRightUpperBound(Graph& graph, int upperBound) {
-    upperBound = -1;
-    auto components { graph.connectedComponents() };
-    
-    if(components.size() == 1 && graph.getMinDegree() >= 2) {
-        upperBound = std::floor(3.0 * graph.getOrder() / 2.0);
-    }
-    else if (components.size() == 1 && graph.getOrder() >= 3) {
-        upperBound = std::floor(7.0 * graph.getOrder() / 4.0);
-    }
-    else if (components.size() > 1 && graph.getOrder() >= 3) {
-        upperBound = 0;
-        for (auto& par: components) {
-            if(par.first == 1) {
-                upperBound += 3;
-            }
-            else if(par.first == 2) {
-                upperBound += 4;
-            }            
-            else if(par.first >= 3 && par.second >= 2) {
-                upperBound += std::floor(static_cast<size_t>(3.0 * par.first / 2.0));
-            }           
-            else if(par.first >= 3) {
-                upperBound += std::floor(static_cast<size_t>(7.0 * par.first / 4.0));
-            }
-        }
-    }
+void printAntColonyOptimizationLog(size_t number_of_ants, size_t iterations) {
+	std::cout << "graph_name,graph_order,graph_size,graph_min_degree,graph_max_degree,fitness_" << number_of_ants << '_' << iterations;
+    std::cout << ",lower_bound,upper_bound,elapsed_time(seconds)\n";
+}
 
-    return upperBound;
+void computeAntColonyOptimization(TripleRomanDomination& trd, int upper_bound, int lower_bound) {
+    
+    std::chrono::duration<double> elapsed_time;
+	   	
+	auto start = std::chrono::high_resolution_clock::now();
+	trd.runACO();
+	auto end = std::chrono::high_resolution_clock::now();
+	elapsed_time = end - start;
+  	    	
+	upper_bound = computeRightUpperBound(trd.getGraph(), upper_bound);
+
+	lower_bound = computeRightLowerBound(trd.getGraph(), lower_bound);
+
+	std::cout << trd.getACOBestFitness() << ',';
+	std::cout << lower_bound << ',';
+    std::cout << upper_bound << ',';  	
+	std::cout << elapsed_time.count() << '\n';
+}
+
+void computeGeneticAlgorithm(TripleRomanDomination& trd, short heuristic, int upper_bound, int lower_bound) {
+    
+    std::chrono::duration<double> elapsed_time;
+	   	
+	auto start = std::chrono::high_resolution_clock::now();
+	trd.runGeneticAlgorithm(heuristic);
+	auto end = std::chrono::high_resolution_clock::now();
+	elapsed_time = end - start;
+  	    	
+	upper_bound = computeRightUpperBound(trd.getGraph(), upper_bound);
+
+	lower_bound = computeRightLowerBound(trd.getGraph(), lower_bound);
+
+	std::cout << trd.getGeneticAlgorithmBestFitness() << ',';
+	std::cout << lower_bound << ',';
+    std::cout << upper_bound << ',';  	
+	std::cout << elapsed_time.count() << '\n';
 }
 
 auto main(int argc, char** argv) -> int {
-    if (argc > 3) {
+    if (argc > 4) {
         Graph graph(argv[1], false);
         
         if (graph.getOrder() == 0) {
@@ -80,8 +88,8 @@ auto main(int argc, char** argv) -> int {
         constexpr float selection_vertex_rate_extend_solution {0.3};
         constexpr float selection_vertex_rate_construct_solution {0.5};
         constexpr float add_vertices_rate_extend_solution {0.05};
-        int upperBound {0};
-    	int lowerBound {0};
+        int upper_bound {0};
+    	int lower_bound {0};
         
         size_t Delta { graph.getMaxDegree() };
        	size_t delta { graph.getMinDegree() };
@@ -92,58 +100,36 @@ auto main(int argc, char** argv) -> int {
             	max_no_improvement_iterations,
             	
             	number_of_ants, iterations, evaporation_rate,
-			  	min_destruction_rate,  max_destruction_rate, 
+			  	min_destruction_rate, max_destruction_rate, 
 			  	max_rvns_functions, max_rvns_iterations, max_rvns_no_improvement_iterations,
 			  	selection_vertex_rate_extend_solution, selection_vertex_rate_construct_solution,
 			  	add_vertices_rate_extend_solution);
-                 
-        std::cout << "graph_name,graph_order,graph_size,graph_min_degree,graph_max_degree,GA_fitness_heuristic" << heuristic;
-	    std::cout << ",ACO_fitness_" << number_of_ants << "_" << iterations; 
-        std::cout << ",lower_bound,upper_bound,elapsed_time_GA(seconds)" << ",elapsed_time_ACO(seconds),is_3RDF_GA,is_3RDF_ACO\n";
-
-       for (size_t i {0}; i < trial; ++i) {         	
-	        std::cout << argv[2] << ",";
-	        std::cout << graph.getOrder() << ",";
-	        std::cout << graph.getSize() << ",";
-	        std::cout << delta << ",";
-	        std::cout << Delta << ",";
+			  	
+        if (std::stoi(argv[4]) == 1) {
+        	printAntColonyOptimizationLog(number_of_ants, iterations);
+        }
+        else {
+        	printGeneticAlgorithmLog(heuristic);
+        }
+        
+       	for (size_t i {0}; i < trial; ++i) {         	
+        	std::cout << argv[2] << ',';
+	        std::cout << graph.getOrder() << ',';
+	        std::cout << graph.getSize() << ',';
+	        std::cout << delta << ',';
+	        std::cout << Delta << ',';
 	        
-	        std::chrono::duration<double> elapsedGA;
-	    	std::chrono::duration<double> elapsedACO;
-	   	
-	    	std::thread gaThread([&]() {
-	    		auto startGA = std::chrono::high_resolution_clock::now();
-	    		trd.runGeneticAlgorithm(heuristic);
-	    		auto endGA = std::chrono::high_resolution_clock::now();
-	    		elapsedGA = endGA - startGA;
-	    	});		
-	    	
-    		std::thread acoThread([&]() {
-	    		auto startACO = std::chrono::high_resolution_clock::now();
-	    		trd.runACO();
-	    		auto endACO = std::chrono::high_resolution_clock::now();
-	    		elapsedACO = endACO - startACO;
-	    	});
-	    	
-	    	gaThread.join();
-  	    	acoThread.join();
-  	    	
-        	upperBound = computeRightUpperBound(graph, upperBound);
-
-        	lowerBound = computeRightLowerBound(graph, lowerBound);
-
-	    	std::cout << trd.getGeneticAlgorithmBestFitness() << ",";
-	     	std::cout << trd.getACOBestFitness() << ",";
-	    	std::cout << lowerBound << ",";
-            std::cout << upperBound << ","; 
-	    	
-	    	std::cout << elapsedGA.count() << ",";
-	    	std::cout << elapsedACO.count() << ",";	    	
-	    	
-	    	std::cout << feasible(graph, trd.getSolutionGeneticAlgorithm()) << ",";
-	    	std::cout << feasible(graph, trd.getSolutionACO()) << '\n';	
+		 	if (std::stoi(argv[4]) == 1) {
+                computeAntColonyOptimization(trd, upper_bound, lower_bound);
+            } 
+            else {
+                computeGeneticAlgorithm(trd, heuristic, upper_bound, lower_bound);
+            }
  		}
+ 		
+    	return EXIT_SUCCESS;
 	}
 	
-    return EXIT_SUCCESS;
+	return -1;
+	
 }
