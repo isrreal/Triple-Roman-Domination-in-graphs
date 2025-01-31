@@ -129,7 +129,7 @@ size_t Graph::computeMinVertexDegree() {
 }
 
 size_t Graph::getVertexDegree(size_t vertex) const {
-    return !vertexExists(vertex) ? 0 : const_cast<const std::unordered_map<size_t, std::list<size_t>>&>(adjList).at(vertex).size();
+    return !vertexExists(vertex) ? 0 : const_cast<const std::unordered_map<size_t, std::vector<size_t>>&>(adjList).at(vertex).size();
 }
 
 size_t Graph::getMaxDegree() const { return Delta; }
@@ -140,9 +140,9 @@ size_t Graph::getSize() const { return this->size; }
 
 size_t Graph::getOrder() const { return this->order; }
 
-const std::unordered_map<size_t, std::list<size_t>>& Graph::getAdjacencyList() const { return this->adjList; }
+const std::unordered_map<size_t, std::vector<size_t>>& Graph::getAdjacencyList() const { return this->adjList; }
 
-const std::list<size_t>& Graph::getAdjacencyList(size_t vertex) const { return this->adjList.at(vertex); }
+const std::vector<size_t>& Graph::getAdjacencyList(size_t vertex) const { return this->adjList.at(vertex); }
 
 bool Graph::vertexExists(size_t vertex) const { return adjList.find(vertex) != adjList.end(); }
 
@@ -198,15 +198,21 @@ void Graph::deleteAdjacencyList(size_t vertex) {
         currentVertex = toDelete.front();
         toDelete.pop();
 
-        for (const auto& it: this->adjList[currentVertex]) {
-        	this->adjList[it].remove(currentVertex);
-       	}
+        for (auto& [v, neighbors] : this->adjList) {
+        	neighbors.erase(std::remove(neighbors.begin(), neighbors.end(), vertex), neighbors.end());
+    	}
        	
        	deleteVertex(currentVertex);
     }
 }
 
 void Graph::deleteVertex(size_t vertex) {
+    // Remove todas as arestas que apontam para o vértice que está sendo deletado
+    for (auto& [v, neighbors] : this->adjList) {
+        neighbors.erase(std::remove(neighbors.begin(), neighbors.end(), vertex), neighbors.end());
+    }
+
+    // Remove o vértice da lista de adjacências
     this->size -= this->adjList[vertex].size();
     this->adjList.erase(vertex);
     --this->order;

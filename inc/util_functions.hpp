@@ -12,6 +12,8 @@ float getRandomFloat(float, float);
 
 bool feasible(const Graph&, const std::vector<int>&);
 
+bool feasible(const Graph&, const std::vector<int>&, size_t);
+
 Chromosome& feasibilityCheck(const Graph& , Chromosome&);
 
 void toggleLabels(const Graph&, std::vector<int>&);

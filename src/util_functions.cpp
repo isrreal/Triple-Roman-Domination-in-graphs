@@ -1,4 +1,5 @@
-#include "util_functions.hpp"
+
+#include "util_functions.hpp"  
 
 std::random_device rd;
 std::mt19937 seed(rd());
@@ -14,18 +15,26 @@ float getRandomFloat(float start, float end) {
 }
 
 bool feasible(const Graph& graph, const std::vector<int>& solution) {
+	std::vector<bool> visited(solution.size(), false);
+	
     bool is_valid {false};
     bool has_neighbor_at_least_2 {false};
     
     for (size_t i {0}; i < solution.size(); ++i) {
-
+    
+		if (visited[i] == true) { continue; }
+		
         is_valid = false;
 
         if (solution[i] == 0) {                                 
             size_t count_neighbors_2 {0};
-            size_t count_neighbors_3 = {0};
+            size_t count_neighbors_3 {0};
             
-            for (auto& neighbor : graph.getAdjacencyList(i)) {          
+            for (auto& neighbor : graph.getAdjacencyList(i)) {          	
+            	if (solution[neighbor] == 4) {
+                    is_valid = true;
+                    break;
+                }         
 
                 if ((count_neighbors_2 == 1 && solution[neighbor] >= 3) ||
                     (count_neighbors_2 == 2 && solution[neighbor] >= 2)) {
@@ -38,14 +47,11 @@ bool feasible(const Graph& graph, const std::vector<int>& solution) {
                      break;
                 }
 
-                if (solution[neighbor] == 4) {
-                    is_valid = true;
-                    break;
-                }
-                
                 if (solution[neighbor] == 3) { ++count_neighbors_3; }
                     
                 if (solution[neighbor] == 2) { ++count_neighbors_2; }
+                
+                visited[neighbor] = true;
             }
             
             if (!is_valid) { return false; }
@@ -62,10 +68,64 @@ bool feasible(const Graph& graph, const std::vector<int>& solution) {
 
             if (!has_neighbor_at_least_2) { return false; }     
         }
+        
+        visited[i] = true;
     }
     
     return true;    
 }
+
+bool feasible(const Graph& graph, const std::vector<int>& solution, size_t vertex) {
+    bool is_valid {false};
+    bool has_neighbor_at_least_2 {false};
+    
+    is_valid = false;
+
+    if (solution[vertex] == 0) {                                 
+        size_t count_neighbors_2 {0};
+        size_t count_neighbors_3 {0};
+        
+        for (auto& neighbor : graph.getAdjacencyList(vertex)) {          	
+            if (solution[neighbor] == 4) {
+                is_valid = true;
+                break;
+            }         
+
+            if ((count_neighbors_2 == 1 && solution[neighbor] >= 3) ||
+                (count_neighbors_2 == 2 && solution[neighbor] >= 2)) {
+                is_valid = true;
+                break;
+            }
+
+            if (count_neighbors_3 == 1 && solution[neighbor] >= 2) {
+                 is_valid = true;
+                 break;
+            }
+
+            if (solution[neighbor] == 3) { ++count_neighbors_3; }
+                
+            if (solution[neighbor] == 2) { ++count_neighbors_2; }
+            
+        }
+        
+        if (!is_valid) { return false; }
+    } 
+
+    else if (solution[vertex] == 2) {
+        has_neighbor_at_least_2 = false;
+        for (auto& neighbor : graph.getAdjacencyList(vertex)) {
+            if (solution[neighbor] >= 2) {
+                has_neighbor_at_least_2 = true;
+                break; 
+            }
+        }
+
+        if (!has_neighbor_at_least_2) { return false; }     
+    }
+    
+    return true;    
+}
+
 
 /**
  * @brief Checks the feasibility of a chromosome and adjusts if it isn't feasible.
@@ -77,13 +137,17 @@ bool feasible(const Graph& graph, const std::vector<int>& solution) {
  */
 
 Chromosome& feasibilityCheck(const Graph& graph, Chromosome& chromosome) {  
+	std::vector<bool> visited(chromosome.genes_size, false);
     bool is_valid {false};
     bool has_neighbor_at_least_2 {false};
                                                            
     for (size_t i {0}; i < chromosome.genes_size; ++i) {
+    
+ 		if (visited[i] == true) { continue; }
+ 		
     	is_valid = false;
-    	 
-        if (chromosome.genes[i] == 0) {                                 
+ 		
+        if (chromosome.genes[i] == 0) {    
             size_t count_neighbors_2 {0};
             size_t count_neighbors_3 {0};
             
@@ -143,6 +207,8 @@ Chromosome& feasibilityCheck(const Graph& graph, Chromosome& chromosome) {
                 chromosome.genes[i] = 3;
             }           
         }
+        
+    	visited[i] = true;
     }
     
     return chromosome;
@@ -150,20 +216,20 @@ Chromosome& feasibilityCheck(const Graph& graph, Chromosome& chromosome) {
 
 void toggleLabels(const Graph& graph, std::vector<int>& solution) {
 	size_t init_label {0};
-	
-	for (size_t i {0}; i < graph.getOrder(); ++i) {
-	    if (solution[i] == 4 || solution[i] == 3) { 
-			init_label = solution[i];
-			solution[i] = 0;
+
+	for (const auto& vertex : solution) {
+	    if (solution[vertex] == 4 || solution[vertex] == 3) { 
+			init_label = solution[vertex];
+			solution[vertex] = 0;
 				
-			if (!feasible(graph, solution)) {
-	    		solution[i] = 2;
+			if (!feasible(graph, solution, vertex)) {
+	    		solution[vertex] = 2;
 	    		
-	    		if (!feasible(graph, solution)) {
-	    			solution[i] = 3;
+	    		if (!feasible(graph, solution, vertex)) {
+	    			solution[vertex] = 3;
 	        		
-	        		if (!feasible(graph, solution)) {
-	            		solution[i] = init_label;
+	        		if (!feasible(graph, solution, vertex)) {
+	            		solution[vertex] = init_label;
 	            	}        
 	    		}
 			}

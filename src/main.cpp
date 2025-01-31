@@ -16,21 +16,16 @@ void printAntColonyOptimizationLog(size_t number_of_ants, size_t iterations) {
     std::cout << ",lower_bound,upper_bound,graph_density,elapsed_time(seconds)\n";
 }
 
-void computeAntColonyOptimization(TripleRomanDomination& trd, int upper_bound, int lower_bound) {
-    
+void computeAntColonyOptimization(TripleRomanDomination& trd, int upper_bound, int lower_bound, double graph_density) {   
     std::chrono::duration<double> elapsed_time;
-    
-   	double graph_density = static_cast<double>(2 * trd.getGraph().getSize()) / (trd.getGraph().getOrder() * (trd.getGraph().getOrder() - 1));
    	
 	auto start = std::chrono::high_resolution_clock::now();
+	
 	trd.runACO();
+	
 	auto end = std::chrono::high_resolution_clock::now();
 	elapsed_time = end - start;
-  	    	
-	upper_bound = computeRightUpperBound(trd.getGraph(), upper_bound);
-
-	lower_bound = computeRightLowerBound(trd.getGraph(), lower_bound);
-
+  	    
 	std::cout << trd.getACOBestFitness() << ',';
 	std::cout << lower_bound << ',';
     std::cout << upper_bound << ',';  	
@@ -38,21 +33,17 @@ void computeAntColonyOptimization(TripleRomanDomination& trd, int upper_bound, i
 	std::cout << elapsed_time.count() << '\n';
 }
 
-void computeGeneticAlgorithm(TripleRomanDomination& trd, short heuristic, int upper_bound, int lower_bound) {
-    
+void computeGeneticAlgorithm(TripleRomanDomination& trd, short heuristic, int upper_bound, int lower_bound, double graph_density) {
     std::chrono::duration<double> elapsed_time;
-    
-   	double graph_density = static_cast<double>(2 * trd.getGraph().getSize()) / (trd.getGraph().getOrder() * (trd.getGraph().getOrder() - 1));
-	   	
+  
 	auto start = std::chrono::high_resolution_clock::now();
+	
 	trd.runGeneticAlgorithm(heuristic);
+	
 	auto end = std::chrono::high_resolution_clock::now();
+	
 	elapsed_time = end - start;
-  	    	
-	upper_bound = computeRightUpperBound(trd.getGraph(), upper_bound);
-
-	lower_bound = computeRightLowerBound(trd.getGraph(), lower_bound);
-
+  	    
 	std::cout << trd.getGeneticAlgorithmBestFitness() << ',';
 	std::cout << lower_bound << ',';
     std::cout << upper_bound << ',';  	
@@ -96,9 +87,15 @@ auto main(int argc, char** argv) -> int {
         constexpr float add_vertices_rate_extend_solution {0.05};
         int upper_bound {0};
     	int lower_bound {0};
-        
+    	
+		upper_bound = computeRightUpperBound(graph, upper_bound);
+
+		lower_bound = computeRightLowerBound(graph, lower_bound);
+
         size_t Delta { graph.getMaxDegree() };
        	size_t delta { graph.getMinDegree() };
+       	
+   	   	double graph_density { static_cast<double>(2 * graph.getSize()) / (graph.getOrder() * (graph.getOrder() - 1)) };
        	
        // graph, populationSize, genesSize, generations, heuristic, mutation rate, elitism rate, numberOfAnts, iterations
         TripleRomanDomination trd(graph, population_size, graph.getOrder(), generations,
@@ -126,10 +123,10 @@ auto main(int argc, char** argv) -> int {
 	        std::cout << Delta << ',';
 	        
 		 	if (std::stoi(argv[4]) == 1) {
-                computeAntColonyOptimization(trd, upper_bound, lower_bound);
+                computeAntColonyOptimization(trd, upper_bound, lower_bound, graph_density);
             } 
             else {
-                computeGeneticAlgorithm(trd, heuristic, upper_bound, lower_bound);
+                computeGeneticAlgorithm(trd, heuristic, upper_bound, lower_bound, graph_density);
             }
  		}
  		

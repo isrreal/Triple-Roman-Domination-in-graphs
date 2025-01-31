@@ -122,7 +122,7 @@ Chromosome TripleRomanDomination::heuristic2(const Graph& graph) {
 	
     while (temp.getOrder() > 0) {
      	valid_vertices.clear();
-        for (const auto& [i, j] : temp.getAdjacencyList()) {
+        for (const auto& [i, _] : temp.getAdjacencyList()) {
             valid_vertices.push_back(i);
         }
        

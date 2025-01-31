@@ -32,7 +32,7 @@ class AntColonyOptimization {
         
         inline void extendSolution(std::vector<int>& solution);
         inline void reduceSolution(std::vector<int>& solution);
-        void RVNS(std::vector<int>& solution);
+        inline void RVNS(std::vector<int>& solution);
         
         size_t chooseVertex(const Graph& temp);
         size_t chooseVertex(const std::vector<int>& two_or_zero_labeled_vertices);

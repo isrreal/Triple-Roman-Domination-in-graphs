@@ -18,7 +18,7 @@ private:
     size_t delta; 
     size_t Delta;
     
-    std::unordered_map<size_t, std::list<size_t>> adjList;
+    std::unordered_map<size_t, std::vector<size_t>> adjList;
     void addVertex(size_t source);
     void addEdge(size_t source, size_t destination);
     Graph readGraph(const std::string& filename);
@@ -40,9 +40,9 @@ public:
     size_t getMaxDegree() const;
     size_t getMinDegree() const;
     
-    const std::unordered_map<size_t, std::list<size_t>>& getAdjacencyList() const;
+    const std::unordered_map<size_t, std::vector<size_t>>& getAdjacencyList() const;
     
-    const std::list<size_t>& getAdjacencyList(size_t vertex) const;
+    const std::vector<size_t>& getAdjacencyList(size_t vertex) const;
     
     bool edgeExists(size_t u, size_t v) const;
     
