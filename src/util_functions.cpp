@@ -218,7 +218,7 @@ void toggleLabels(const Graph& graph, std::vector<int>& solution) {
 	size_t init_label {0};
 
 	for (const auto& vertex : solution) {
-	    if (solution[vertex] == 4 || solution[vertex] == 3) { 
+	    if (solution[vertex] == 4 || solution[vertex] == 3 || solution[vertex] == 2) { 
 			init_label = solution[vertex];
 			solution[vertex] = 0;
 				
@@ -233,6 +233,24 @@ void toggleLabels(const Graph& graph, std::vector<int>& solution) {
 	            	}        
 	    		}
 			}
+		}
+	}
+}
+
+void toggleLabel(const Graph& graph, std::vector<int>& solution, size_t vertex) {
+	size_t init_label { vertex };
+	
+	solution[vertex] = 0;
+		
+	if (!feasible(graph, solution, vertex)) {
+		solution[vertex] = 2;
+		
+		if (!feasible(graph, solution, vertex)) {
+			solution[vertex] = 3;
+    		
+    		if (!feasible(graph, solution, vertex)) {
+        		solution[vertex] = init_label;
+        	}        
 		}
 	}
 }
