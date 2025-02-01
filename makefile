@@ -1,4 +1,4 @@
-CPPFLAGS=-std=c++17 -Wall -Wextra -O3
+CPPFLAGS=-std=c++17 -Wall -Wextra -Ofast -finline-functions -march=native
 IPATH=-Iinc/
 SRC_FOLDER=src/
 OBJ_FOLDER=obj/
