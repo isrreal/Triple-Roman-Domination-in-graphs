@@ -127,7 +127,10 @@ void AntColonyOptimization::reduceSolution(std::vector<int>& solution) {
         if (solution[sorted_vertices[chosen_vertex]] == 4 ||
          	solution[sorted_vertices[chosen_vertex]] == 3 ||
          	solution[sorted_vertices[chosen_vertex]] == 2) {
-			toggleLabels(this->graph, solution);
+         	
+			toggleLabel(this->graph, solution, sorted_vertices[chosen_vertex]);
+			
+			//std::cout << "DEBUG: " << feasible(graph, solution, sorted_vertices[chosen_vertex]) << '\n';
 		}
 		        	
         temp.deleteAdjacencyList(sorted_vertices[chosen_vertex++]);
@@ -153,7 +156,7 @@ void AntColonyOptimization::reduceSolution(std::vector<int>& solution) {
 
 void AntColonyOptimization::RVNS(std::vector<int>& solution) {
     size_t current_no_improvement_iteration {0};
-    size_t max_iterations = max_rvns_iterations;
+    size_t max_iterations { max_rvns_iterations };
     std::vector<int> temp { solution };
     current_rvns_number = 1;
 	
@@ -457,10 +460,13 @@ void AntColonyOptimization::run() {
     std::vector<int> current_best_solution(graph.getOrder(), 4);
     std::vector<int> best_solution(graph.getOrder(), 4);
     std::vector<int> solution(graph.getOrder(), -1);
-    
+     
     initializePheromones(graph_pheromones);
     
-    while (iteration > 0) {
+    while (iteration > 0) {	
+		current_best_solution.assign(graph.getOrder(), 4); 
+        solution.assign(graph.getOrder(), -1);  
+
         for (size_t i {0}; i < number_of_ants; ++i) {
             constructSolution(solution);
 			extendSolution(solution);
