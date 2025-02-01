@@ -112,11 +112,10 @@ void AntColonyOptimization::reduceSolution(std::vector<int>& solution) {
             return temp.getVertexDegree(a) <  
             temp.getVertexDegree(b);                                                                             
         });
-        
 
     while ((temp.getOrder() > 0) && (chosen_vertex < sorted_vertices.size())) {
 
-        if (chosen_vertex >= sorted_vertices.size()) { break; } ;
+        if (chosen_vertex >= sorted_vertices.size()) { break; };
 
         while (chosen_vertex < sorted_vertices.size() && 
             	(!temp.vertexExists(sorted_vertices[chosen_vertex]))) {
@@ -174,7 +173,7 @@ void AntColonyOptimization::RVNS(std::vector<int>& solution) {
             ++current_rvns_number;
             ++current_no_improvement_iteration;
 
-            if (current_rvns_number > max_iterations) {
+            if (current_rvns_number > max_rvns_functions) {
                 current_rvns_number = 1;
             }
         }
