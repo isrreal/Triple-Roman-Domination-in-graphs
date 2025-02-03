@@ -1,6 +1,6 @@
 #include "Chromosome.hpp"
 
-Chromosome::Chromosome(std::vector<int> genes) {
+Chromosome::Chromosome(const std::vector<int>& genes) {
 	this->genes_size = genes.size();
 	this->genes = genes;
 	this->fitness  = 0;
@@ -12,7 +12,7 @@ Chromosome::Chromosome(size_t genes_size) {
     this->fitness  = 0;
 } 
 
-Chromosome::Chromosome(std::vector<int> first_half, std::vector<int> second_half) {
+Chromosome::Chromosome(const std::vector<int>& first_half, const std::vector<int>& second_half) {
     this->genes_size = first_half.size() + second_half.size(); 
     this->genes = first_half;
     this->genes.insert(this->genes.end(), second_half.begin(), second_half.end());
@@ -22,7 +22,17 @@ Chromosome::Chromosome(std::vector<int> first_half, std::vector<int> second_half
 Chromosome::Chromosome(const Chromosome& chromosome) {
     this->genes_size = chromosome.genes_size;
     this->genes = chromosome.genes;
-    this->fitness  = chromosome.fitness ;
+    this->fitness = chromosome.fitness ;
+}
+
+Chromosome& Chromosome::operator=(const Chromosome& chromosome) {
+	if (this != &chromosome) { 
+	    genes_size = chromosome.genes_size;
+	    genes = chromosome.genes;
+	    fitness = chromosome.fitness;
+	}
+	    
+	return *this;
 }
 
 std::ostream& operator<<(std::ostream& os, const Chromosome& chromosome) {
