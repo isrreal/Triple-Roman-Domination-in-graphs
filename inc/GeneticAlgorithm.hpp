@@ -4,6 +4,7 @@
 #include <iostream>
 #include <random>
 #include <vector>
+#include <functional>
 #include "Chromosome.hpp"
 #include "util_functions.hpp"
 
