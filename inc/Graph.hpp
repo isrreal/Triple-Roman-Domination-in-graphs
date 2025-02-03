@@ -18,11 +18,10 @@ private:
     std::unordered_map<size_t, std::vector<size_t>> adjList;
     void addVertex(size_t source);
     void addEdge(size_t source, size_t destination);
-    Graph readGraph(const std::string& filename);
-    size_t computeMaxVertexDegree();
-    size_t computeMinVertexDegree();
     void DFSVisit(size_t u, std::vector<bool>& discovered, size_t& numberOfVertices, size_t& minDegree);
-    void deleteAdjacencyList(size_t vertex);
+    size_t computeMaxVertexDegree() const;
+    size_t computeMinVertexDegree() const;
+    
 public:	
     Graph(const std::string& filename);
     Graph(size_t order);	
@@ -30,15 +29,13 @@ public:
 
     Graph() = default;
     ~Graph() = default;
- 
-    size_t getSize() const;
+ 	
     size_t getOrder() const;
+    size_t getSize() const;
     size_t getVertexDegree(size_t vertex) const;
-    size_t getMaxDegree() const;
     size_t getMinDegree() const;
-    
+    size_t getMaxDegree() const;
     const std::unordered_map<size_t, std::vector<size_t>>& getAdjacencyList() const;
-    
     const std::vector<size_t>& getAdjacencyList(size_t vertex) const;
     
     bool edgeExists(size_t u, size_t v) const;
@@ -48,6 +45,8 @@ public:
     std::vector<std::pair<int, int>> connectedComponents();
     
     void deleteVertex(size_t vertex);
+    
+    void deleteAdjacencyList(size_t vertex);
     
     friend std::ostream& operator<< (std::ostream& os, const Graph& graph);
 };
