@@ -22,7 +22,7 @@ private:
 public:
     TripleRomanDomination(Graph& graph, size_t population_size, size_t genes_size, size_t generations,
                 float mutation_rate, float elitism_rate, float cross_over_rate,
-                float selection_chromosome_rate, size_t max_no_improvement_iterations,
+                float tournament_population_size, size_t max_no_improvement_iterations,
                 
                 size_t number_of_ants, size_t iterations, float evaporation_rate,
 			  	float min_destruction_rate,  float max_destruction_rate, 
@@ -30,7 +30,7 @@ public:
 			  	float selection_vertex_rate_extend_solution, float selection_vertex_rate_construct_solution,
 			  	float add_vertices_rate_extend_solution)
         : graph(std::move(graph)),
-          genetic_algorithm(graph, population_size, genes_size, generations, mutation_rate, elitism_rate, cross_over_rate, selection_chromosome_rate, max_no_improvement_iterations),
+          genetic_algorithm(graph, population_size, genes_size, generations, mutation_rate, elitism_rate, cross_over_rate, tournament_population_size, max_no_improvement_iterations),
           
           ACO(graph, number_of_ants, iterations, evaporation_rate,
 			  	min_destruction_rate,  max_destruction_rate, 

@@ -74,8 +74,8 @@ std::vector<Chromosome>& GeneticAlgorithm::createNewPopulation() {
     Chromosome offspring;
     
     while (population.size() < population_size) {          
-        selected1 = tournamentSelection(population); 
-        selected2 = tournamentSelection(population);      	
+        selected1 = tournamentSelection(population, tournament_population_size); 
+        selected2 = tournamentSelection(population, tournament_population_size);      	
        	
        	if (getRandomFloat(0.0, 1.0) <= crossover_rate) {  		
         	offspring = this->twoPointCrossOver(selected1, selected2);
@@ -175,51 +175,42 @@ Chromosome& GeneticAlgorithm::twoPointCrossOver(const Chromosome& chromosome1, c
    return chooseBestSolution(solution1, solution2);
 }
 
-Chromosome& GeneticAlgorithm::tournamentSelection(const std::vector<Chromosome>& population) {    
-    const Chromosome& c1 { population[getRandomInt(0, population.size() - 1)] };
-    const Chromosome& c2 { population[getRandomInt(0, population.size() - 1)] };
-
-    float probability { getRandomFloat(0.0, 1.0) };
-
-    if (probability < selection_chromosome_rate) {
-        return chooseBestSolution(const_cast<Chromosome&>(c1), const_cast<Chromosome&>(c2));
-    } 
-    else {
-        return chooseWorstSolution(const_cast<Chromosome&>(c1), const_cast<Chromosome&>(c2));
+const Chromosome& GeneticAlgorithm::tournamentSelection(const std::vector<Chromosome>& population, size_t individuals_size) {    
+    std::vector<size_t> tournament_individuals_indices;  // Correção do erro de sintaxe
+    tournament_individuals_indices.reserve(individuals_size);
+    size_t random_index {0};
+    
+    for (size_t i {0}; i < individuals_size; ++i) {
+        random_index = getRandomInt(0, population.size() - 1);
+        tournament_individuals_indices.push_back(random_index);
     }
+	
+    size_t best_index = tournament_individuals_indices[0];
+	
+    for (size_t idx : tournament_individuals_indices) {
+        if (population[idx].fitness < population[best_index].fitness) {
+            best_index = idx;
+        }
+    }
+		
+    return population[best_index]; // Retorna referência constante
 }
 
 
 Chromosome& GeneticAlgorithm::chooseBestSolution(Chromosome& chromosome1, Chromosome& chromosome2) {
     return (chromosome1.fitness < chromosome2.fitness ? chromosome1 : chromosome2);
 }
-
-Chromosome& GeneticAlgorithm::chooseWorstSolution(Chromosome& chromosome1, Chromosome& chromosome2) {
-    return (chromosome1.fitness > chromosome2.fitness ? chromosome1 : chromosome2);
-}
 		
 // public methods 
 
-std::vector<Chromosome> GeneticAlgorithm::getPopulation() { return population; }
-
-size_t GeneticAlgorithm::getPopulationSize() { return population_size; }
-
-size_t GeneticAlgorithm::getGenesSize() { return genes_size; }
-
 size_t GeneticAlgorithm::getGenerations() { return generations; }
-
-double GeneticAlgorithm::getMutationRate() { return mutation_rate; }
-
-double GeneticAlgorithm::getElitismRate() { return elitism_rate; }
-
-Graph GeneticAlgorithm::getGraph() { return graph; }
 
 std::vector<int> GeneticAlgorithm::getBestSolution() { return best_solution; }
 
 void GeneticAlgorithm::run(size_t generations, std::vector<std::function<Chromosome(const Graph&)>> heuristics, size_t chosen_heuristic) { 
    this->createPopulation(heuristics, graph, chosen_heuristic);
    
-   Chromosome current_best_solution { tournamentSelection(this->population) };   
+   Chromosome current_best_solution { tournamentSelection(this->population, tournament_population_size) };   
    
    Chromosome best_solution { current_best_solution };
    
@@ -230,7 +221,7 @@ void GeneticAlgorithm::run(size_t generations, std::vector<std::function<Chromos
    
 		this->population.swap(createNewPopulation());
        	
-        current_best_solution = tournamentSelection(population);                                       
+        current_best_solution = tournamentSelection(population, tournament_population_size);                                       
 		
         ++iteration;
         ++current_no_improvement_iteration;

@@ -112,8 +112,6 @@ const std::unordered_map<size_t, std::vector<size_t>>& Graph::getAdjacencyList()
 const std::vector<size_t>& Graph::getAdjacencyList(size_t vertex) const { return this->adjList.at(vertex); }
 
 
-
-
 bool Graph::edgeExists(size_t u, size_t v) const {
     return std::find(adjList.at(u).begin(), adjList.at(u).end(), v) != adjList.at(u).end();
 }

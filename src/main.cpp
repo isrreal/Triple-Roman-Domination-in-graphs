@@ -69,7 +69,7 @@ auto main(int argc, char** argv) -> int {
         constexpr float mutation_rate {0.5013};
         constexpr float elitism_rate {0.2534};
         constexpr float cross_over_rate {0.9719};
-        constexpr float selection_chromosome_rate {0.6035};
+        constexpr size_t tournament_population_size {5};
         constexpr size_t max_no_improvement_iterations {75};
         
         // ACO parameters
@@ -99,7 +99,7 @@ auto main(int argc, char** argv) -> int {
        	
        // graph, populationSize, genesSize, generations, heuristic, mutation rate, elitism rate, numberOfAnts, iterations
         TripleRomanDomination trd(graph, population_size, graph.getOrder(), generations,
-            	mutation_rate, elitism_rate, cross_over_rate, selection_chromosome_rate,
+            	mutation_rate, elitism_rate, cross_over_rate, tournament_population_size,
             	max_no_improvement_iterations,
             	
             	number_of_ants, iterations, evaporation_rate,

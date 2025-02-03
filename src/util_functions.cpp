@@ -256,6 +256,7 @@ void toggleLabel(const Graph& graph, std::vector<int>& solution, size_t vertex) 
 }
 
 Chromosome& fitness(Chromosome& chromosome) {
+	chromosome.fitness = 0;
 	for (auto& gene: chromosome.genes) {
 		chromosome.fitness += gene;
 	}
