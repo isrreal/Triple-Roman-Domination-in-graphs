@@ -13,26 +13,18 @@ struct Chromosome {
 
     Chromosome() = default;
 
-    Chromosome(std::vector<int> genes);
+    Chromosome(const std::vector<int>& genes);
 
     Chromosome(size_t genes_size);
 
-    Chromosome(std::vector<int> first_half, std::vector<int> second_half);
+    Chromosome(const std::vector<int>& first_half, const std::vector<int>& second_half);
 
     Chromosome(const Chromosome& chromosome);
 	
-    Chromosome& operator=(const Chromosome& chromosome) {
-        if (this != &chromosome) { 
-            genes_size = chromosome.genes_size;
-            genes = chromosome.genes;
-            fitness = chromosome.fitness;
-        }
-        
-        return *this;
-    }
-
     ~Chromosome() = default;
-
+	
+    Chromosome& operator=(const Chromosome& chromosome);
+	
     friend std::ostream& operator<<(std::ostream& os, const Chromosome& chromosome);
 };
 
