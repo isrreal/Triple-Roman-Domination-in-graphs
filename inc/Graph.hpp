@@ -14,9 +14,6 @@ class Graph {
 private:
     size_t order;
     size_t size;
-    bool isDirected; 
-    size_t delta; 
-    size_t Delta;
     
     std::unordered_map<size_t, std::vector<size_t>> adjList;
     void addVertex(size_t source);
@@ -24,11 +21,11 @@ private:
     Graph readGraph(const std::string& filename);
     size_t computeMaxVertexDegree();
     size_t computeMinVertexDegree();
+    void DFSVisit(size_t u, std::vector<bool>& discovered, size_t& numberOfVertices, size_t& minDegree);
+    void deleteAdjacencyList(size_t vertex);
 public:	
-
-    Graph(size_t order, bool isDirected, float probabilityOfEdge);	
-    Graph(const std::string& filename, bool isDirected);
-    Graph(size_t order, bool isDirected);	
+    Graph(const std::string& filename);
+    Graph(size_t order);	
     Graph(const Graph& graph);
 
     Graph() = default;
@@ -48,17 +45,7 @@ public:
     
     bool vertexExists(size_t vertex) const;	
 
-    void breadthFirstSearch();  
-    
-    void setVertexLabel(size_t vertex, int label);
-    
-    void setAdjacenciesLabel(size_t vertex, int label);
-    
-    void DFSVisit(size_t u, std::vector<bool>& discovered, size_t& numberOfVertices, size_t& minDegree);
-
     std::vector<std::pair<int, int>> connectedComponents();
-    
-    void deleteAdjacencyList(size_t vertex);
     
     void deleteVertex(size_t vertex);
     

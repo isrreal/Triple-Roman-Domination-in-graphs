@@ -1,47 +1,7 @@
 #include "Graph.hpp"
 
-Graph::Graph(size_t order, bool isDirected, float probabilityOfEdge): 
-	order(order), size(0), isDirected(isDirected), delta(0), Delta(0) {
-
-    size_t connectedVertex {0};
-    float probability {0.0};
-
-    std::random_device randomNumber;
-    std::mt19937 seed(randomNumber());
-    std::uniform_int_distribution<int> gap(0, order - 1);
-    std::uniform_real_distribution<float> probabilityGap(0.0, 1.0);
-
-    for (size_t i {0}; i < order; ++i) {
-        adjList[i] = {};
-    }
-
-    for (size_t i {0}; i < order; ++i) {
-        connectedVertex = gap(seed);
-
-        while (i == connectedVertex) {
-            connectedVertex = gap(seed);
-		}
-		
-        if (!edgeExists(i, connectedVertex)) {
-            addEdge(i, connectedVertex);
-        }
-
-        for (size_t j {i + 1}; j < order; ++j) {
-            if (!edgeExists(i, j)) {
-                probability = probabilityGap(seed);
-                if (probabilityOfEdge >= probability) {
-                    addEdge(i, j);
-                }
-           }
-        }
-    }
-    
-    delta = computeMinVertexDegree();
-    Delta = computeMaxVertexDegree();
-}
-
-Graph::Graph(const std::string& filename, bool isDirected): 
-	order(0), size(0), isDirected(isDirected), delta(0), Delta(0) {
+Graph::Graph(const std::string& filename): 
+	order(0), size(0), delta(0), Delta(0) {
 	
     std::ifstream file(filename);
     
@@ -69,8 +29,7 @@ Graph::Graph(const std::string& filename, bool isDirected):
     file.close();
 }
 
-Graph::Graph(const Graph& graph): order(graph.order), size(graph.size),
-	isDirected(graph.isDirected), delta(graph.delta),
+Graph::Graph(const Graph& graph): order(graph.order), size(graph.size), delta(graph.delta),
 	Delta(graph.Delta), adjList(graph.adjList) {}
 	
 void Graph::addVertex(size_t source) {
@@ -83,15 +42,8 @@ void Graph::addVertex(size_t source) {
 void Graph::addEdge(size_t source, size_t destination) {
 	if (source == destination) { return; }
 	
-    if (this->isDirected == false) {
-        this->adjList[source].push_back(destination);
-        this->adjList[destination].push_back(source);            
-    }
-    
-    else {
-        this->adjList[source].push_back(destination);
-    }
- 
+    this->adjList[source].push_back(destination);
+    this->adjList[destination].push_back(source);            
     this->size += 1;
 }
 
@@ -100,7 +52,7 @@ bool Graph::edgeExists(size_t u, size_t v) const {
 }
 
 size_t Graph::computeMaxVertexDegree() {
-	size_t maxDegree = getVertexDegree(getAdjacencyList().begin()->first);
+	size_t maxDegree { getVertexDegree(getAdjacencyList().begin()->first) };
     size_t temp {0};
     
     for (const auto& [i, _] : getAdjacencyList()) {
@@ -115,7 +67,7 @@ size_t Graph::computeMaxVertexDegree() {
 
 
 size_t Graph::computeMinVertexDegree() {
- 	size_t minDegree = getVertexDegree(getAdjacencyList().begin()->first);
+ 	size_t minDegree { getVertexDegree(getAdjacencyList().begin()->first) };
     size_t temp {0};
     
     for (const auto& [i, _] : getAdjacencyList()) {
@@ -188,7 +140,7 @@ void Graph::deleteAdjacencyList(size_t vertex) {
     std::queue<size_t> toDelete;
     toDelete.push(vertex);
     
-    int currentVertex { -1 };
+    int currentVertex {-1};
 
     for (const auto& it: this->adjList[vertex]) {
     	toDelete.push(it);
