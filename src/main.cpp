@@ -53,7 +53,7 @@ void computeGeneticAlgorithm(TripleRomanDomination& trd, short heuristic, int up
 
 auto main(int argc, char** argv) -> int {
     if (argc > 4) {
-        Graph graph(argv[1], false);
+        Graph graph(argv[1]);
         
         if (graph.getOrder() == 0) {
             return -1;
