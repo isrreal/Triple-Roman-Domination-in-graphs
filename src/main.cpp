@@ -63,14 +63,14 @@ auto main(int argc, char** argv) -> int {
     	
     	// Genetic Algorithm parameters
     	
-        size_t population_size = static_cast<size_t>(graph.getOrder() / 3);
-        constexpr size_t generations {144};
+        size_t population_size { static_cast<size_t>(graph.getOrder() / 4) };
+        constexpr size_t generations {623};
         short heuristic = std::stoi(argv[3]);
-        constexpr float mutation_rate {0.5013};
-        constexpr float elitism_rate {0.2534};
-        constexpr float cross_over_rate {0.9719};
-        constexpr size_t tournament_population_size {5};
-        constexpr size_t max_no_improvement_iterations {75};
+        constexpr float mutation_rate {0.2248};
+        constexpr float elitism_rate {0.3095};
+        constexpr float cross_over_rate {0.4995};
+        constexpr size_t tournament_population_size { static_cast<size_t>(graph.getOrder() / 4) };
+        constexpr size_t max_no_improvement_iterations {33};
         
         // ACO parameters
         
