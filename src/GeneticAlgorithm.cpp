@@ -96,24 +96,12 @@ std::vector<Chromosome>& GeneticAlgorithm::createNewPopulation() {
 std::vector<Chromosome>& GeneticAlgorithm::elitism(float elitism_rate) {
     size_t iterations { static_cast<size_t>(std::ceil(this->population_size * elitism_rate)) };
 
-    Chromosome best_solution = [&]() {
-		Chromosome best_solution { population[getRandomInt(0, population_size - 1)] };
-		Chromosome solution;
-		for (const auto& chromosome: population) {
-			solution = chromosome;		
-			if (chromosome.fitness > best_solution.fitness) {
-				best_solution = chromosome;
-			}
-		}
-		return best_solution;
-	}();
+	std::sort(population.begin(), population.end(), 
+            [](const Chromosome& a, const Chromosome& b){
+                return a.fitness < b.fitness;
+    		});
     
-    population.clear();
-  	population.reserve(iterations);
-  	
-    for (size_t i {0}; i < iterations; ++i) {
-    	this->population.emplace_back(best_solution);
-	}
+	this->population.resize(iterations);
 	
     return this->population;
 }
@@ -176,7 +164,7 @@ Chromosome& GeneticAlgorithm::twoPointCrossOver(const Chromosome& chromosome1, c
 }
 
 const Chromosome& GeneticAlgorithm::tournamentSelection(const std::vector<Chromosome>& population, size_t individuals_size) {    
-    std::vector<size_t> tournament_individuals_indices;  // Correção do erro de sintaxe
+    std::vector<size_t> tournament_individuals_indices; 
     tournament_individuals_indices.reserve(individuals_size);
     size_t random_index {0};
     
@@ -187,15 +175,14 @@ const Chromosome& GeneticAlgorithm::tournamentSelection(const std::vector<Chromo
 	
     size_t best_index = tournament_individuals_indices[0];
 	
-    for (size_t idx : tournament_individuals_indices) {
-        if (population[idx].fitness < population[best_index].fitness) {
-            best_index = idx;
+    for (auto index : tournament_individuals_indices) {
+        if (population[index].fitness < population[best_index].fitness) {
+            best_index = index;
         }
     }
 		
-    return population[best_index]; // Retorna referência constante
+    return population[best_index];
 }
-
 
 Chromosome& GeneticAlgorithm::chooseBestSolution(Chromosome& chromosome1, Chromosome& chromosome2) {
     return (chromosome1.fitness < chromosome2.fitness ? chromosome1 : chromosome2);
@@ -210,7 +197,20 @@ std::vector<int> GeneticAlgorithm::getBestSolution() { return best_solution; }
 void GeneticAlgorithm::run(size_t generations, std::vector<std::function<Chromosome(const Graph&)>> heuristics, size_t chosen_heuristic) { 
    this->createPopulation(heuristics, graph, chosen_heuristic);
    
-   Chromosome current_best_solution { tournamentSelection(this->population, tournament_population_size) };   
+	Chromosome current_best_solution = [&] {
+		Chromosome best_solution { population[0] };
+		Chromosome solution;
+	
+		for (const auto& chromosome: population) {
+			solution = chromosome;		
+			
+			if (best_solution.fitness > chromosome.fitness) {
+				best_solution = chromosome;
+			}
+		}
+	
+		return best_solution; 
+   }();   
    
    Chromosome best_solution { current_best_solution };
    
