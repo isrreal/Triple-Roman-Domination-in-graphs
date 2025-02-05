@@ -130,7 +130,6 @@ void AntColonyOptimization::reduceSolution(std::vector<int>& solution) {
          	
 			toggleLabel(this->graph, solution, sorted_vertices[chosen_vertex]);
 			
-			//std::cout << "DEBUG: " << feasible(graph, solution, sorted_vertices[chosen_vertex]) << '\n';
 		}
 		        	
         temp.deleteAdjacencyList(sorted_vertices[chosen_vertex++]);
@@ -362,8 +361,8 @@ void AntColonyOptimization::updatePheromones(std::vector<int>& current_best_solu
 	}        
 	
 	else if (convergence_factor >= 0.6 && convergence_factor < 0.8) {
-		weight_current_best_solution = static_cast<short>(2 / 3);
-    	weight_best_solution = static_cast<short>(1 / 3);
+		weight_current_best_solution = static_cast<short>(1 / 3);
+    	weight_best_solution = static_cast<short>(2 / 3);
 	}                   
 	
 	else {
@@ -371,7 +370,7 @@ void AntColonyOptimization::updatePheromones(std::vector<int>& current_best_solu
     	weight_best_solution = 1;
    	}         
     
-    float equation { 0.0 };        
+    float equation {0.0};        
 	
     for (size_t vertex {0}; vertex < graph_pheromones.size(); ++vertex) {  
         equation = weight_current_best_solution * delta(current_best_solution, vertex) + 
@@ -463,10 +462,7 @@ void AntColonyOptimization::run() {
      
     initializePheromones(graph_pheromones);
     
-    while (iteration > 0) {	
-		current_best_solution.assign(graph.getOrder(), 4); 
-        solution.assign(graph.getOrder(), -1);  
-
+    while (iteration > 0) {	  
         for (size_t i {0}; i < number_of_ants; ++i) {
             constructSolution(solution);
 			extendSolution(solution);
