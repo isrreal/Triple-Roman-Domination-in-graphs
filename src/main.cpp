@@ -69,7 +69,7 @@ auto main(int argc, char** argv) -> int {
         constexpr float mutation_rate {0.2248};
         constexpr float elitism_rate {0.3095};
         constexpr float cross_over_rate {0.4995};
-        constexpr size_t tournament_population_size { static_cast<size_t>(graph.getOrder() / 4) };
+        size_t tournament_population_size { static_cast<size_t>(graph.getOrder() / 4) };
         constexpr size_t max_no_improvement_iterations {33};
         
         // ACO parameters
