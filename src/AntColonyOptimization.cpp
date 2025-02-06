@@ -329,7 +329,7 @@ void AntColonyOptimization::destroySolution(std::vector<int>& solution) {
                 / (max_rvns_functions - 1)) };
                 
     Graph temp { this->graph };
-    size_t itr { static_cast<size_t>(solution.size() * destruction_rate) }; 
+    int itr { static_cast<size_t>(solution.size() * destruction_rate) }; 
     size_t vertex {0};
     
     while (itr != 0 && (temp.getOrder() > 0)) {
