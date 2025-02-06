@@ -76,6 +76,7 @@ Chromosome TripleRomanDomination::heuristic1(const Graph& graph) {
         }
 
         temp.deleteAdjacencyList(chosen_vertex);
+        temp.deleteVertex(chosen_vertex);
 
         std::vector<size_t> vertices_to_remove;
         
@@ -143,6 +144,7 @@ Chromosome TripleRomanDomination::heuristic2(const Graph& graph) {
 		}
 		
         temp.deleteAdjacencyList(chosen_vertex);
+        temp.deleteVertex(chosen_vertex);
 
        	std::vector<size_t> vertices_to_remove;
         
@@ -223,6 +225,7 @@ Chromosome TripleRomanDomination::heuristic3(const Graph& graph) {
 	    }
 
 	    temp.deleteAdjacencyList(sorted_vertices[chosen_vertex++]);
+        temp.deleteVertex(sorted_vertices[chosen_vertex++]);
 
 	    std::vector<size_t> vertices_to_remove;
         

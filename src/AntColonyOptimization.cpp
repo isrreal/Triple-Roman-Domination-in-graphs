@@ -33,6 +33,7 @@ void AntColonyOptimization::constructSolution(std::vector<int>& solution) {
         }
 
         temp.deleteAdjacencyList(vertex);
+        temp.deleteVertex(vertex);
         
         std::vector<size_t> vertices_to_remove;
         
@@ -67,12 +68,13 @@ void AntColonyOptimization::extendSolution(std::vector<int>& solution) {
     size_t itr {0};
     size_t vertex {0};
     std::vector<int> two_or_zero_labeled_vertices;
+    two_or_zero_labeled_vertices.reserve(solution.size());
     
-    for (const auto& it: solution) {
-        if ((solution[it] == 0) ||
-         	(solution[it] == 2) ||
-         	(solution[it] == 3)) {
-            two_or_zero_labeled_vertices.push_back(it);
+    for (size_t i {0}; i < solution.size(); ++i) {
+        if (solution[i] == 0) ||
+         	(solution[i] == 2) ||
+         	(solution[i] == 3)) {
+            two_or_zero_labeled_vertices.push_back(i);
         }
     }
 
@@ -131,8 +133,8 @@ void AntColonyOptimization::reduceSolution(std::vector<int>& solution) {
 			toggleLabel(this->graph, solution, sorted_vertices[chosen_vertex]);
 			
 		}
-		        	
-        temp.deleteAdjacencyList(sorted_vertices[chosen_vertex++]);
+		temp.deleteAdjacencyList(sorted_vertices[chosen_vertex++]);
+        temp.deleteVertex(sorted_vertices[chosen_vertex++]);       		
     }
 }
 

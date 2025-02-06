@@ -148,7 +148,6 @@ void Graph::deleteAdjacencyList(size_t vertex) {
     if (adjList.find(vertex) == adjList.end()) { return; }
 
     std::queue<size_t> toDelete;
-    toDelete.push(vertex);
     
     int currentVertex {-1};
 
@@ -159,10 +158,6 @@ void Graph::deleteAdjacencyList(size_t vertex) {
     while (!toDelete.empty()) {
         currentVertex = toDelete.front();
         toDelete.pop();
-
-        for (auto& [v, neighbors] : this->adjList) {
-        	neighbors.erase(std::remove(neighbors.begin(), neighbors.end(), vertex), neighbors.end());
-    	}
        	
        	deleteVertex(currentVertex);
     }
