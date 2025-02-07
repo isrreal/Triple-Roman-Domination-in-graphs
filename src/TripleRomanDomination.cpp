@@ -185,16 +185,15 @@ Chromosome TripleRomanDomination::heuristic3(const Graph& graph) {
     Chromosome solution(Chromosome(graph.getOrder()));
     
     std::vector<size_t> sorted_vertices;
-    std::vector<size_t> valid_vertices;
     
     sorted_vertices.reserve(graph.getOrder());	
-    valid_vertices.reserve(graph.getOrder());	
     
     Graph temp {graph};
     
-   	for (const auto& [i, j] : graph.getAdjacencyList()) {
+    size_t chosen_vertex {0};
+    
+   	for (const auto& [i, _] : graph.getAdjacencyList()) {
         sorted_vertices.emplace_back(i);
-        valid_vertices.emplace_back(i);
     }
 
     std::sort(sorted_vertices.begin(), sorted_vertices.end(),
@@ -202,28 +201,31 @@ Chromosome TripleRomanDomination::heuristic3(const Graph& graph) {
             return graph.getVertexDegree(a) < graph.getVertexDegree(b);
     });
 
-    while (temp.getOrder() > 0) {
-    	valid_vertices.clear();
-        for (const auto& [i, _] : temp.getAdjacencyList()) {
-            valid_vertices.push_back(i);
+    while ((temp.getOrder() > 0) && (chosen_vertex < sorted_vertices.size())) {
+
+        while (chosen_vertex < sorted_vertices.size() && 
+            	(!temp.vertexExists(sorted_vertices[chosen_vertex]))) {
+            ++chosen_vertex;
         }
 
-	    if (temp.getVertexDegree(valid_vertices[0]) == 0) {
-	        solution.genes[valid_vertices[0]] = 3;
+        if (chosen_vertex >= sorted_vertices.size()) { break; };
+
+	    if (temp.getVertexDegree(sorted_vertices[chosen_vertex]) == 0) {
+	        solution.genes[sorted_vertices[chosen_vertex]] = 3;
 	    }
 	    
 	    else {
-	        solution.genes[valid_vertices[0]] = 4;
+	        solution.genes[sorted_vertices[chosen_vertex]] = 4;
 
-	        for (const auto& it : temp.getAdjacencyList(valid_vertices[0])) {
+	        for (const auto& it : temp.getAdjacencyList(sorted_vertices[chosen_vertex])) {
 	            if (solution.genes[it] == -1) {
                 	solution.genes[it] = 0;
                 }
 	        }
 	    }
 
-	    temp.deleteAdjacencyList(valid_vertices[0]);
-        temp.deleteVertex(valid_vertices[0]);
+	    temp.deleteAdjacencyList(sorted_vertices[chosen_vertex]);
+        temp.deleteVertex(sorted_vertices[chosen_vertex++]); 
 
 	    std::vector<size_t> vertices_to_remove;
         

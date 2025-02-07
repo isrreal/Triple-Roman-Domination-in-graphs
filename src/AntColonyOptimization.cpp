@@ -115,8 +115,6 @@ void AntColonyOptimization::reduceSolution(std::vector<int>& solution) {
 
     while ((temp.getOrder() > 0) && (chosen_vertex < sorted_vertices.size())) {
 
-        if (chosen_vertex >= sorted_vertices.size()) { break; };
-
         while (chosen_vertex < sorted_vertices.size() && 
             	(!temp.vertexExists(sorted_vertices[chosen_vertex]))) {
             ++chosen_vertex;
@@ -131,7 +129,8 @@ void AntColonyOptimization::reduceSolution(std::vector<int>& solution) {
 			toggleLabel(this->graph, solution, sorted_vertices[chosen_vertex]);
 			
 		}
-		temp.deleteAdjacencyList(sorted_vertices[chosen_vertex++]);
+		
+		temp.deleteAdjacencyList(sorted_vertices[chosen_vertex]);
         temp.deleteVertex(sorted_vertices[chosen_vertex++]);       		
     }
 }
