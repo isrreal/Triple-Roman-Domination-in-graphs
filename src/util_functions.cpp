@@ -14,6 +14,29 @@ float getRandomFloat(float start, float end) {
     return gap(seed);
 }
 
+/**
+ * @brief Checks the feasibility of the entire solution based on the Triple Roman Domination rules.
+ * @details This function checks the feasibility of all vertex labels in the given solution. It iterates over each vertex
+ * and evaluates the feasibility based on the current vertex label and its neighbors. 
+ * The feasibility criteria are:
+ * 
+ * - For vertices with label `0`:
+ *   - The vertex is valid if it has at least one neighbor with label `4`, or if it has neighbors 
+ *     with labels `>=3` or `>=2` in specific patterns.
+ * - For vertices with label `2`:
+ *   - The vertex is valid if it has at least one neighbor with label `>=2`.
+ * 
+ * If any vertex does not satisfy its feasibility conditions, the function returns `false`, indicating 
+ * that the solution is not feasible. If all vertices are feasible, it returns `true`.
+ * 
+ * Additionally, the function ensures that each vertex is only visited once, using a `visited` vector 
+ * to track already processed vertices.
+ * 
+ * @param graph The graph used to check the adjacency of each vertex.
+ * @param solution The current solution containing labels for all vertices.
+ * @return `true` if all vertices in the solution are feasible, `false` otherwise.
+ */
+
 bool feasible(const Graph& graph, const std::vector<int>& solution) {
 	std::vector<bool> visited(solution.size(), false);
 	
@@ -75,6 +98,26 @@ bool feasible(const Graph& graph, const std::vector<int>& solution) {
     return true;    
 }
 
+/**
+ * @brief Checks if a vertex label in the solution is feasible based on its neighbors.
+ * @details This function checks the feasibility of a vertex label in the solution according to the rules 
+ * for Triple Roman Domination. The feasibility criteria depend on the current label of the vertex and 
+ * the labels of its neighbors. The function works as follows:
+ * 
+ * - If the vertex has label `0`:
+ *   - The vertex is considered valid if it has at least one neighbor with label `4`, or if it has neighbors 
+ *     with labels `>=3` or `>=2` in specific patterns.
+ * - If the vertex has label `2`:
+ *   - The vertex is valid if it has at least one neighbor with label `>=2`.
+ * 
+ * The function returns `true` if the vertex label is feasible, and `false` otherwise.
+ * 
+ * @param graph The graph used to check the adjacency of the vertex.
+ * @param solution The current solution where vertex labels are stored.
+ * @param vertex The index of the vertex to be checked.
+ * @return `true` if the vertex label is feasible, `false` otherwise.
+ */
+ 
 bool feasible(const Graph& graph, const std::vector<int>& solution, size_t vertex) {
     bool is_valid {false};
     bool has_neighbor_at_least_2 {false};
@@ -214,6 +257,25 @@ Chromosome& feasibilityCheck(const Graph& graph, Chromosome& chromosome) {
     return chromosome;
 }
 
+/**
+ * @brief Toggles the label of a vertex in the solution based on feasibility checks.
+ * 
+ * This function attempts to set the label of a vertex to 0. If the solution becomes
+ * infeasible, it tries to set the label to 2, and if still infeasible, to 3. If none
+ * of these labels lead to a feasible solution, it reverts the label back to its initial
+ * value. The function performs feasibility checks after each label modification to ensure
+ * the solution remains valid.
+ * 
+ * @param graph The graph that contains the vertices whose labels are being modified.
+ * @param solution The vector representing the current labeling of the solution, where 
+ *                 each element corresponds to the label of a vertex in the graph.
+ * 
+ * @note This function modifies the solution vector in place and checks the feasibility
+ *       of the solution after each label change. If a label is not feasible, it tries
+ *       a different label, ensuring that the final solution is a feasible one or reverts
+ *       to the original label if no valid configuration is found.
+ */
+ 
 void toggleLabels(const Graph& graph, std::vector<int>& solution) {
 	size_t init_label {0};
 
@@ -236,6 +298,24 @@ void toggleLabels(const Graph& graph, std::vector<int>& solution) {
 		}
 	}
 }
+
+/**
+ * @brief Attempts to change the label of a vertex in the solution while ensuring feasibility.
+ * 
+ * This function modifies the label of a specific vertex to 0 and checks if the solution 
+ * remains feasible. If the solution becomes infeasible, it tries setting the vertex label 
+ * to 2, and if still infeasible, to 3. If none of these labels result in a feasible solution, 
+ * it reverts the vertex label to its initial value.
+ * 
+ * @param graph The graph that contains the vertex whose label is being modified.
+ * @param solution The vector representing the current labeling of the solution, where each element 
+ *                 corresponds to the label of a vertex in the graph.
+ * @param vertex The index of the vertex whose label is being toggled.
+ * 
+ * @note This function modifies the solution vector in place, and ensures that the solution remains 
+ *       feasible after modifying the label of the vertex. If no feasible configuration is found, 
+ *       the vertex's label is reverted to its initial value.
+ */
 
 void toggleLabel(const Graph& graph, std::vector<int>& solution, size_t vertex) {
 	size_t init_label { vertex };
