@@ -71,9 +71,7 @@ void AntColonyOptimization::extendSolution(std::vector<int>& solution) {
     two_or_zero_labeled_vertices.reserve(solution.size());
     
     for (size_t i {0}; i < solution.size(); ++i) {
-        if (solution[i] == 0) ||
-         	(solution[i] == 2) ||
-         	(solution[i] == 3)) {
+        if (solution[i] <= 3) {
             two_or_zero_labeled_vertices.push_back(i);
         }
     }
@@ -329,7 +327,7 @@ void AntColonyOptimization::destroySolution(std::vector<int>& solution) {
                 / (max_rvns_functions - 1)) };
                 
     Graph temp { this->graph };
-    int itr { static_cast<size_t>(solution.size() * destruction_rate) }; 
+    size_t itr { static_cast<size_t>(solution.size() * destruction_rate) }; 
     size_t vertex {0};
     
     while (itr != 0 && (temp.getOrder() > 0)) {
