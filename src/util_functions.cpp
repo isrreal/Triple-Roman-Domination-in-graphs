@@ -82,7 +82,7 @@ bool feasible(const Graph& graph, const std::vector<int>& solution) {
  
 bool feasible(const Graph& graph, const std::vector<int>& solution, size_t vertex) {
 	size_t active {0};
-	size_t sum_weight { solution[vertex] };
+	size_t sum_weight = solution[vertex];
 	
 	for (const auto& it: graph.getAdjacencyList(vertex)) {
 		++active;
@@ -211,7 +211,7 @@ void toggleLabels(const Graph& graph, std::vector<int>& solution) {
  */
 
 void toggleLabel(const Graph& graph, std::vector<int>& solution, size_t vertex) {
-	size_t init_label { solution[vertex] };
+	size_t init_label = solution[vertex];
 	
 	if (init_label == 2) {
 		solution[vertex] = 0;

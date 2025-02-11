@@ -451,7 +451,7 @@ float AntColonyOptimization::getMaxPheromoneValue(const std::vector<float>& grap
 
 std::vector<int> AntColonyOptimization::getBestSolution() { return this->best_solution; }
 
-void AntColonyOptimization::run() {
+void AntColonyOptimization::run(bool with_RVNS) {
     size_t iteration { iterations };
     
     std::vector<int> current_best_solution(graph.getOrder(), 4);
@@ -465,7 +465,10 @@ void AntColonyOptimization::run() {
             constructSolution(solution);
 			extendSolution(solution);
 			reduceSolution(solution);
-			RVNS(solution);
+			
+			if (with_RVNS) {
+				RVNS(solution);
+			}
 			
             if (summation(solution) < summation(current_best_solution)) {
                 current_best_solution.swap(solution);

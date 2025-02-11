@@ -54,7 +54,7 @@ public:
     size_t getACOBestFitness();
 
     void runGeneticAlgorithm(short int heuristic);
-    void runACO();
+    void runACO(bool with_RVNS);
 
     static Chromosome heuristic1(const Graph& graph);
     static Chromosome heuristic2(const Graph& graph);

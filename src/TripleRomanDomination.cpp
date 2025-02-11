@@ -26,10 +26,10 @@ void TripleRomanDomination::runGeneticAlgorithm(short int heuristic) {
     this->genetic_algorithm_best_fitness = std::accumulate(solution_genetic_algorithm.begin(), solution_genetic_algorithm.end(), 0);
 }
 
-void TripleRomanDomination::runACO() {
+void TripleRomanDomination::runACO(bool with_RVNS) {
    this->aco_best_fitness = 0;
    
-   this->ACO.run();
+   this->ACO.run(with_RVNS);
    
    solution_aco = this->ACO.getBestSolution();
 

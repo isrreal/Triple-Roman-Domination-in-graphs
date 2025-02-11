@@ -76,7 +76,7 @@ class AntColonyOptimization {
         
         std::vector<int> getBestSolution();
        
-        void run();
+        void run(bool with_RVNS);
 };
 
 #endif
