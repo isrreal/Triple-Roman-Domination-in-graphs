@@ -100,7 +100,10 @@ size_t Graph::getOrder() const { return this->order; }
 size_t Graph::getSize() const { return this->size; }
 
 size_t Graph::getVertexDegree(size_t vertex) const {
-    return !vertexExists(vertex) ? 0 : const_cast<const std::unordered_map<size_t, std::vector<size_t>>&>(adjList).at(vertex).size();
+    if (!vertexExists(vertex)) {
+        throw std::out_of_range("This vertex do not exists in the graph");
+    }
+    return adjList.at(vertex).size();
 }
 
 size_t Graph::getMinDegree() const { return computeMinVertexDegree(); }
