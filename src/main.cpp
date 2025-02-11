@@ -7,12 +7,12 @@
 
 void printGeneticAlgorithmLog(short heuristic) {
 	std::cout << "graph_name,graph_order,graph_size,graph_min_degree,graph_max_degree,fitness_heuristic_" << heuristic;
-    std::cout << ",lower_bound,upper_bound,graph_density,elapsed_time(seconds)\n";
+    std::cout << ",lower_bound,upper_bound,graph_density,elapsed_time(seconds),is_feasible\n";
 }
 
 void printAntColonyOptimizationLog(size_t number_of_ants, size_t iterations) {
 	std::cout << "graph_name,graph_order,graph_size,graph_min_degree,graph_max_degree,fitness_" << number_of_ants << '_' << iterations;
-    std::cout << ",lower_bound,upper_bound,graph_density,elapsed_time(seconds)\n";
+    std::cout << ",lower_bound,upper_bound,graph_density,elapsed_time(seconds),is_feasible\n";
 }
 
 void computeAntColonyOptimization(TripleRomanDomination& trd, int upper_bound, int lower_bound, double graph_density) {   
@@ -29,7 +29,8 @@ void computeAntColonyOptimization(TripleRomanDomination& trd, int upper_bound, i
 	std::cout << lower_bound << ',';
     std::cout << upper_bound << ',';  	
     std::cout << graph_density << ',';
-	std::cout << elapsed_time.count() << '\n';
+	std::cout << elapsed_time.count() << ',';
+	std::cout << feasible(trd.getGraph(), trd.getSolutionACO()) << '\n';
 }
 
 void computeGeneticAlgorithm(TripleRomanDomination& trd, short heuristic, int upper_bound, int lower_bound, double graph_density) {
@@ -42,12 +43,13 @@ void computeGeneticAlgorithm(TripleRomanDomination& trd, short heuristic, int up
 	auto end = std::chrono::high_resolution_clock::now();
 	
 	elapsed_time = end - start;
-  	    
+  	   
 	std::cout << trd.getGeneticAlgorithmBestFitness() << ',';
 	std::cout << lower_bound << ',';
     std::cout << upper_bound << ',';  	
     std::cout << graph_density << ',';
-	std::cout << elapsed_time.count() << '\n';
+	std::cout << elapsed_time.count() << ',';
+	std::cout << feasible(trd.getGraph(), trd.getSolutionGeneticAlgorithm()) << '\n';
 }
 
 auto main(int argc, char** argv) -> int {
@@ -58,18 +60,18 @@ auto main(int argc, char** argv) -> int {
             return -1;
         }
                      
-    	constexpr size_t trial {10};
+    	constexpr size_t trial {15};
     	
     	// Genetic Algorithm parameters
     	
-        size_t population_size { static_cast<size_t>(graph.getOrder() / 9) };
-        constexpr size_t generations {396};
+        size_t population_size { static_cast<size_t>(graph.getOrder() / 5) };
+        constexpr size_t generations {449};
         short heuristic = std::stoi(argv[3]);
-        constexpr float mutation_rate {0.5334};
-        constexpr float elitism_rate {0.1143};
-        constexpr float cross_over_rate {0.4817};
-        size_t tournament_population_size { static_cast<size_t>(graph.getOrder() / 2) };
-        constexpr size_t max_no_improvement_iterations {76};
+        constexpr float mutation_rate {0.5544};
+        constexpr float elitism_rate {0.4938};
+        constexpr float cross_over_rate {0.4266};
+        size_t tournament_population_size { graph.getOrder() / 5 };
+        constexpr size_t max_no_improvement_iterations {58};
         
         // ACO parameters
         

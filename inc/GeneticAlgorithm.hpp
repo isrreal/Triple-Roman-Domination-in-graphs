@@ -29,11 +29,11 @@ class GeneticAlgorithm {
 	
         inline std::vector<Chromosome>& createNewPopulation();    
         
-     	inline std::vector<Chromosome>& elitism(float elitism_rate);	
+     	inline void elitism(std::vector<Chromosome>& population, float elitism_rate);	
         
-		inline Chromosome& onePointCrossOver(const Chromosome& chromosome1, const Chromosome& cromossomo2); 
+		inline Chromosome onePointCrossOver(const Chromosome& chromosome1, const Chromosome& cromossomo2); 
                 	
-    	inline Chromosome& twoPointCrossOver(const Chromosome& chromosome1, const Chromosome& cromossomo2);
+    	inline Chromosome twoPointCrossOver(const Chromosome& chromosome1, const Chromosome& cromossomo2);
                 	
         inline Chromosome& mutation(Chromosome& chromosome);
         

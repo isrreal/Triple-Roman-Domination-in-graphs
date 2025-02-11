@@ -125,13 +125,12 @@ void AntColonyOptimization::reduceSolution(std::vector<int>& solution) {
         if (solution[sorted_vertices[chosen_vertex]] == 4 ||
          	solution[sorted_vertices[chosen_vertex]] == 3 ||
          	solution[sorted_vertices[chosen_vertex]] == 2) {
-         	
+
 			toggleLabel(this->graph, solution, sorted_vertices[chosen_vertex]);
-			
 		}
 		
 		temp.deleteAdjacencyList(sorted_vertices[chosen_vertex]);
-        temp.deleteVertex(sorted_vertices[chosen_vertex++]);       		
+        temp.deleteVertex(sorted_vertices[chosen_vertex++]);    
     }
 }
 
@@ -458,7 +457,7 @@ void AntColonyOptimization::run() {
     std::vector<int> current_best_solution(graph.getOrder(), 4);
     std::vector<int> best_solution(graph.getOrder(), 4);
     std::vector<int> solution(graph.getOrder(), -1);
-     
+	
     initializePheromones(graph_pheromones);
     
     while (iteration > 0) {	  

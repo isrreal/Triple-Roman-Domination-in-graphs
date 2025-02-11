@@ -66,8 +66,7 @@ void GeneticAlgorithm::createPopulation(
  */
 
 std::vector<Chromosome>& GeneticAlgorithm::createNewPopulation() {
-   	
-   	this->elitism(this->elitism_rate);
+   	this->elitism(population, elitism_rate);
     
     Chromosome selected1;
     Chromosome selected2;
@@ -75,35 +74,34 @@ std::vector<Chromosome>& GeneticAlgorithm::createNewPopulation() {
     
     while (population.size() < population_size) {          
         selected1 = tournamentSelection(population, tournament_population_size); 
-        selected2 = tournamentSelection(population, tournament_population_size);      	
-       	
+        
+        selected2 = tournamentSelection(population, tournament_population_size);      
+
        	if (getRandomFloat(0.0, 1.0) <= crossover_rate) {  		
         	offspring = this->twoPointCrossOver(selected1, selected2);
-        } 
+		} 
         
-        else {      
+		else {      
         	offspring = this->onePointCrossOver(selected1, selected2);     
-        }
-        
+    	}
+
 	    mutation(offspring);	    
-		
+    	
         population.emplace_back(offspring);       
     }
     
     return population;
 }
 
-std::vector<Chromosome>& GeneticAlgorithm::elitism(float elitism_rate) {
-    size_t iterations { static_cast<size_t>(std::ceil(this->population_size * elitism_rate)) };
-
+void GeneticAlgorithm::elitism(std::vector<Chromosome>& population, float elitism_rate) {
+    size_t iterations { static_cast<size_t>(std::ceil(population.size() * elitism_rate)) };
+	
 	std::sort(population.begin(), population.end(), 
             [](const Chromosome& a, const Chromosome& b){
-                return a.fitness < b.fitness;
-    		});
-    
-	this->population.resize(iterations);
+            	return a.fitness < b.fitness;
+	});
 	
-    return this->population;
+	population.resize(iterations);
 }
    
 Chromosome& GeneticAlgorithm::mutation(Chromosome& chromosome) {	
@@ -119,7 +117,7 @@ Chromosome& GeneticAlgorithm::mutation(Chromosome& chromosome) {
 	return chromosome;   
 }
 
-Chromosome& GeneticAlgorithm::onePointCrossOver(const Chromosome& chromosome1, const Chromosome& chromosome2) {
+Chromosome GeneticAlgorithm::onePointCrossOver(const Chromosome& chromosome1, const Chromosome& chromosome2) {
   
    size_t index { getRandomInt(0, genes_size - 1) };
    
@@ -132,38 +130,32 @@ Chromosome& GeneticAlgorithm::onePointCrossOver(const Chromosome& chromosome1, c
    
    feasibilityCheck(this->graph, solution1);
    feasibilityCheck(this->graph, solution2);
-   
-   fitness(solution1);
-   fitness(solution2);
     
    return chooseBestSolution(solution1, solution2);
 }
 
-Chromosome& GeneticAlgorithm::twoPointCrossOver(const Chromosome& chromosome1, const Chromosome& chromosome2) {
-   size_t range1 { getRandomInt(0, genes_size - 1) };
-   size_t range2 { getRandomInt(0, genes_size - 1) };
-   
-   Chromosome solution1 { chromosome1 };
-   Chromosome solution2 { chromosome2 };
+Chromosome GeneticAlgorithm::twoPointCrossOver(const Chromosome& chromosome1, const Chromosome& chromosome2) {
+	size_t range1 { getRandomInt(0, genes_size - 1) };
+	size_t range2 { getRandomInt(0, genes_size - 1) };
 
-   if (range1 > range2) {
-        std::swap(range1, range2);
-   }
-   
-   for (size_t i {range1} ; i <= range2; ++i) {
+	Chromosome solution1 { chromosome1 };
+	Chromosome solution2 { chromosome2 };
+
+	if (range1 > range2) {
+		std::swap(range1, range2);
+	}
+
+	for (size_t i {range1}; i <= range2; ++i) {
 		std::swap(solution1.genes[i], solution2.genes[i]);
-   }
-        
-   feasibilityCheck(this->graph, solution1);
-   feasibilityCheck(this->graph, solution2);
-   
-   fitness(solution1);
-   fitness(solution2);
-    
-   return chooseBestSolution(solution1, solution2);
+	}
+	
+	feasibilityCheck(this->graph, solution1);
+	feasibilityCheck(this->graph, solution2);
+
+	return chooseBestSolution(solution1, solution2);
 }
 
-const Chromosome& GeneticAlgorithm::tournamentSelection(const std::vector<Chromosome>& population, size_t individuals_size) {    
+const Chromosome& GeneticAlgorithm::tournamentSelection(const std::vector<Chromosome>& population, size_t individuals_size) {  
     std::vector<size_t> tournament_individuals_indices; 
     tournament_individuals_indices.reserve(individuals_size);
     size_t random_index {0};
@@ -217,11 +209,11 @@ void GeneticAlgorithm::run(size_t generations, std::vector<std::function<Chromos
    size_t iteration {0};
    size_t current_no_improvement_iteration {0};
    
-   while ((iteration < generations) && (current_no_improvement_iteration < max_no_improvement_iterations)) {
+  	while ((iteration < generations) && (current_no_improvement_iteration < max_no_improvement_iterations)) {
    
 		this->population.swap(createNewPopulation());
-       	
-        current_best_solution = tournamentSelection(population, tournament_population_size);                                       
+		
+        current_best_solution = tournamentSelection(population, tournament_population_size);     
 		
         ++iteration;
         ++current_no_improvement_iteration;
@@ -230,7 +222,8 @@ void GeneticAlgorithm::run(size_t generations, std::vector<std::function<Chromos
             best_solution = current_best_solution;       
             current_no_improvement_iteration = 1;
         }
-   }
+        
+   	}
 
-    this->best_solution = best_solution.genes;
+    this->best_solution.swap(best_solution.genes);
 }

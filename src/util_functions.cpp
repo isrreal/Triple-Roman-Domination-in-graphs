@@ -38,65 +38,27 @@ float getRandomFloat(float start, float end) {
  */
 
 bool feasible(const Graph& graph, const std::vector<int>& solution) {
-	std::vector<bool> visited(solution.size(), false);
-	
-    bool is_valid {false};
-    bool has_neighbor_at_least_2 {false};
+    std::vector<bool> covered(solution.size(), false); // Marca quais vértices são dominados
     
-    for (size_t i {0}; i < solution.size(); ++i) {
-    
-		if (visited[i] == true) { continue; }
-		
-        is_valid = false;
-
-        if (solution[i] == 0) {                                 
-            size_t count_neighbors_2 {0};
-            size_t count_neighbors_3 {0};
-            
-            for (auto& neighbor : graph.getAdjacencyList(i)) {          	
-            	if (solution[neighbor] == 4) {
-                    is_valid = true;
-                    break;
-                }         
-
-                if ((count_neighbors_2 == 1 && solution[neighbor] >= 3) ||
-                    (count_neighbors_2 == 2 && solution[neighbor] >= 2)) {
-                    is_valid = true;
-                    break;
-                }
-
-                if (count_neighbors_3 == 1 && solution[neighbor] >= 2) {
-                     is_valid = true;
-                     break;
-                }
-
-                if (solution[neighbor] == 3) { ++count_neighbors_3; }
-                    
-                if (solution[neighbor] == 2) { ++count_neighbors_2; }
-                
-                visited[neighbor] = true;
+    for (size_t vertex = 0; vertex < solution.size(); ++vertex) {
+        if (solution[vertex] > 0) {
+            covered[vertex] = true;
+            for (const auto& neighbor : graph.getAdjacencyList(vertex)) {
+                covered[neighbor] = true;
             }
-            
-            if (!is_valid) { return false; }
-        } 
-
-        else if (solution[i] == 2) {
-            has_neighbor_at_least_2 = false;
-            for (auto& neighbor : graph.getAdjacencyList(i)) {
-                if (solution[neighbor] >= 2) {
-                    has_neighbor_at_least_2 = true;
-                    break; 
-                }
-            }
-
-            if (!has_neighbor_at_least_2) { return false; }     
         }
-        
-        visited[i] = true;
     }
-    
-    return true;    
+
+    for (size_t vertex = 0; vertex < solution.size(); ++vertex) {
+        if (!covered[vertex]) {
+            return false;
+        }
+    }
+
+    return true;
 }
+
+
 
 /**
  * @brief Checks if a vertex label in the solution is feasible based on its neighbors.
@@ -119,54 +81,21 @@ bool feasible(const Graph& graph, const std::vector<int>& solution) {
  */
  
 bool feasible(const Graph& graph, const std::vector<int>& solution, size_t vertex) {
-    bool is_valid {false};
-    bool has_neighbor_at_least_2 {false};
-    
-    is_valid = false;
-
-    if (solution[vertex] == 0) {                                 
-        size_t count_neighbors_2 {0};
-        size_t count_neighbors_3 {0};
-        
-        for (auto& neighbor : graph.getAdjacencyList(vertex)) {          	
-            if (solution[neighbor] == 4) {
-                is_valid = true;
-                break;
-            }         
-
-            if ((count_neighbors_2 == 1 && solution[neighbor] >= 3) ||
-                (count_neighbors_2 == 2 && solution[neighbor] >= 2)) {
-                is_valid = true;
-                break;
-            }
-
-            if (count_neighbors_3 == 1 && solution[neighbor] >= 2) {
-                 is_valid = true;
-                 break;
-            }
-
-            if (solution[neighbor] == 3) { ++count_neighbors_3; }
-                
-            if (solution[neighbor] == 2) { ++count_neighbors_2; }
-            
-        }
-        
-        if (!is_valid) { return false; }
-    } 
-
-    else if (solution[vertex] == 2) {
-        has_neighbor_at_least_2 = false;
-        for (auto& neighbor : graph.getAdjacencyList(vertex)) {
-            if (solution[neighbor] >= 2) {
-                has_neighbor_at_least_2 = true;
-                break; 
-            }
-        }
-
-        if (!has_neighbor_at_least_2) { return false; }     
-    }
-    
-    return true;    
+	size_t active {0};
+	size_t sum_weight { solution[vertex] };
+	
+	for (const auto& it: graph.getAdjacencyList(vertex)) {
+		++active;
+		sum_weight += solution[it];
+	}
+	
+	if (sum_weight < 3 + active) {
+		return false;
+	}
+	
+	else { 
+		return true;
+	}	
 }
 
 
@@ -257,45 +186,9 @@ Chromosome& feasibilityCheck(const Graph& graph, Chromosome& chromosome) {
     return chromosome;
 }
 
-/**
- * @brief Toggles the label of a vertex in the solution based on feasibility checks.
- * 
- * This function attempts to set the label of a vertex to 0. If the solution becomes
- * infeasible, it tries to set the label to 2, and if still infeasible, to 3. If none
- * of these labels lead to a feasible solution, it reverts the label back to its initial
- * value. The function performs feasibility checks after each label modification to ensure
- * the solution remains valid.
- * 
- * @param graph The graph that contains the vertices whose labels are being modified.
- * @param solution The vector representing the current labeling of the solution, where 
- *                 each element corresponds to the label of a vertex in the graph.
- * 
- * @note This function modifies the solution vector in place and checks the feasibility
- *       of the solution after each label change. If a label is not feasible, it tries
- *       a different label, ensuring that the final solution is a feasible one or reverts
- *       to the original label if no valid configuration is found.
- */
- 
 void toggleLabels(const Graph& graph, std::vector<int>& solution) {
-	size_t init_label {0};
-
 	for (const auto& vertex : solution) {
-	    if (solution[vertex] == 4 || solution[vertex] == 3 || solution[vertex] == 2) { 
-			init_label = solution[vertex];
-			solution[vertex] = 0;
-				
-			if (!feasible(graph, solution, vertex)) {
-	    		solution[vertex] = 2;
-	    		
-	    		if (!feasible(graph, solution, vertex)) {
-	    			solution[vertex] = 3;
-	        		
-	        		if (!feasible(graph, solution, vertex)) {
-	            		solution[vertex] = init_label;
-	            	}        
-	    		}
-			}
-		}
+	    toggleLabel(graph, solution, vertex);
 	}
 }
 
@@ -318,19 +211,40 @@ void toggleLabels(const Graph& graph, std::vector<int>& solution) {
  */
 
 void toggleLabel(const Graph& graph, std::vector<int>& solution, size_t vertex) {
-	size_t init_label { vertex };
+	size_t init_label { solution[vertex] };
 	
-	solution[vertex] = 0;
-		
-	if (!feasible(graph, solution, vertex)) {
-		solution[vertex] = 2;
+	if (init_label == 2) {
+		solution[vertex] = 0;
 		
 		if (!feasible(graph, solution, vertex)) {
-			solution[vertex] = 3;
-    		
-    		if (!feasible(graph, solution, vertex)) {
-        		solution[vertex] = init_label;
-        	}        
+    		solution[vertex] = init_label;      
+		}
+	}
+	
+	if (init_label == 3) {
+		solution[vertex] = 0;
+		
+		if (!feasible(graph, solution, vertex)) {
+				solution[vertex] = 2;
+	
+					
+			if (!feasible(graph, solution, vertex)) {
+				solution[vertex] = init_label;      
+			}
+		}
+	}
+		
+	if (init_label == 4 || init_label == 3) {
+		if (!feasible(graph, solution, vertex)) {
+			solution[vertex] = 2;
+
+			if (!feasible(graph, solution, vertex)) {
+				solution[vertex] = 3;
+				
+				if (!feasible(graph, solution, vertex)) {
+		    		solution[vertex] = init_label;      
+				}
+			}
 		}
 	}
 }
