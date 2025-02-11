@@ -3,7 +3,6 @@
 #include "Graph.hpp"             
 #include "AntColonyOptimization.hpp"
 #include "util_functions.hpp"
-#include <thread>
 #include <chrono>
 
 void printGeneticAlgorithmLog(short heuristic) {
@@ -63,27 +62,27 @@ auto main(int argc, char** argv) -> int {
     	
     	// Genetic Algorithm parameters
     	
-        size_t population_size { static_cast<size_t>(graph.getOrder() / 4) };
-        constexpr size_t generations {623};
+        size_t population_size { static_cast<size_t>(graph.getOrder() / 9) };
+        constexpr size_t generations {396};
         short heuristic = std::stoi(argv[3]);
-        constexpr float mutation_rate {0.2248};
-        constexpr float elitism_rate {0.3095};
-        constexpr float cross_over_rate {0.4995};
-        size_t tournament_population_size { static_cast<size_t>(graph.getOrder() / 4) };
-        constexpr size_t max_no_improvement_iterations {33};
+        constexpr float mutation_rate {0.5334};
+        constexpr float elitism_rate {0.1143};
+        constexpr float cross_over_rate {0.4817};
+        size_t tournament_population_size { static_cast<size_t>(graph.getOrder() / 2) };
+        constexpr size_t max_no_improvement_iterations {76};
         
         // ACO parameters
         
-        constexpr size_t number_of_ants {6};
-        constexpr size_t iterations {1};
-        constexpr float evaporation_rate {0.4922};
-        constexpr float min_destruction_rate {0.214};
-        constexpr float max_destruction_rate {0.9};
-        constexpr size_t max_rvns_functions {10};
-        constexpr size_t max_rvns_iterations {150};
-        constexpr size_t max_rvns_no_improvement_iterations {95};
-        constexpr float selection_vertex_rate_extend_solution {0.3};
-        constexpr float selection_vertex_rate_construct_solution {0.5};
+        constexpr size_t number_of_ants {3};
+        constexpr size_t iterations {11};
+        constexpr float evaporation_rate {0.2501};
+        constexpr float min_destruction_rate {0.2949};
+        constexpr float max_destruction_rate {0.5};
+        constexpr size_t max_rvns_functions {3};
+        constexpr size_t max_rvns_iterations {50};
+        constexpr size_t max_rvns_no_improvement_iterations {10};
+        constexpr float selection_vertex_rate_extend_solution {0.1};
+        constexpr float selection_vertex_rate_construct_solution {0.3};
         constexpr float add_vertices_rate_extend_solution {0.05};
         int upper_bound {0};
     	int lower_bound {0};
