@@ -109,11 +109,11 @@ bool feasible(const Graph& graph, const std::vector<int>& solution, size_t verte
  */
 
 Chromosome& feasibilityCheck(const Graph& graph, Chromosome& chromosome) {  
-	std::vector<bool> visited(chromosome.genes_size, false);
+	std::vector<bool> visited(chromosome.genes.size(), false);
     bool is_valid {false};
     bool has_neighbor_at_least_2 {false};
                                                            
-    for (size_t i {0}; i < chromosome.genes_size; ++i) {
+    for (size_t i {0}; i < chromosome.genes.size(); ++i) {
     
  		if (visited[i] == true) { continue; }
  		
@@ -188,9 +188,9 @@ Chromosome& feasibilityCheck(const Graph& graph, Chromosome& chromosome) {
     return chromosome;
 }
 
-void toggleLabels(const Graph& graph, std::vector<int>& solution) {
+void decreaseLabels(const Graph& graph, std::vector<int>& solution) {
 	for (const auto& vertex : solution) {
-	    toggleLabel(graph, solution, vertex);
+	    decreaseLabel(graph, solution, vertex);
 	}
 }
 
@@ -205,14 +205,14 @@ void toggleLabels(const Graph& graph, std::vector<int>& solution) {
  * @param graph The graph that contains the vertex whose label is being modified.
  * @param solution The vector representing the current labeling of the solution, where each element 
  *                 corresponds to the label of a vertex in the graph.
- * @param vertex The index of the vertex whose label is being toggled.
+ * @param vertex The index of the vertex whose label is being decreased.
  * 
  * @note This function modifies the solution vector in place, and ensures that the solution remains 
  *       feasible after modifying the label of the vertex. If no feasible configuration is found, 
  *       the vertex's label is reverted to its initial value.
  */
 
-void toggleLabel(const Graph& graph, std::vector<int>& solution, size_t vertex) {
+void decreaseLabel(const Graph& graph, std::vector<int>& solution, size_t vertex) {
 	size_t init_label = solution[vertex];
 	
 	if (init_label == 2) {

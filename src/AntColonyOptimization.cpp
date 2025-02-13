@@ -126,7 +126,7 @@ void AntColonyOptimization::reduceSolution(std::vector<int>& solution) {
          	solution[sorted_vertices[chosen_vertex]] == 3 ||
          	solution[sorted_vertices[chosen_vertex]] == 2) {
 
-			toggleLabel(this->graph, solution, sorted_vertices[chosen_vertex]);
+			decreaseLabel(this->graph, solution, sorted_vertices[chosen_vertex]);
 		}
 		
 		temp.deleteAdjacencyList(sorted_vertices[chosen_vertex]);

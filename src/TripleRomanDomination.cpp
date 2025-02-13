@@ -163,7 +163,7 @@ Chromosome TripleRomanDomination::heuristic2(const Graph& graph) {
         }
     }
     
-    toggleLabels(graph, solution.genes);
+    decreaseLabels(graph, solution.genes);
     
     fitness(solution);
 	
@@ -243,7 +243,7 @@ Chromosome TripleRomanDomination::heuristic3(const Graph& graph) {
         }
 	}
     
-    toggleLabels(graph, solution.genes);
+    decreaseLabels(graph, solution.genes);
 	
     fitness(solution);
 	
