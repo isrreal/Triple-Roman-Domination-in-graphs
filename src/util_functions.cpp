@@ -183,6 +183,8 @@ Chromosome& feasibilityCheck(const Graph& graph, Chromosome& chromosome) {
     	visited[i] = true;
     }
     
+    fitness(chromosome);
+    
     return chromosome;
 }
 
