@@ -29,6 +29,7 @@ class AntColonyOptimization {
         			
         inline void initializePheromones(std::vector<float>& graph_pheromones);
         void constructSolution(std::vector<int>& solution);
+        void constructSolutionRVNS(std::vector<int>& solution);
         
         inline void extendSolution(std::vector<int>& solution);
         inline void reduceSolution(std::vector<int>& solution);

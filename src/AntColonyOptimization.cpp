@@ -52,6 +52,20 @@ void AntColonyOptimization::constructSolution(std::vector<int>& solution) {
     }  
 }
 
+void AntColonyOptimization::constructSolutionRVNS(std::vector<int>& solution) {
+    Graph temp(this->graph);
+    std::vector<int> destroyed_vertices;
+    destroyed_vertices.resize(temp.getOrder());
+	
+    for (size_t i {0}; i < solution.size(); ++i) {
+    	if (solution[i] == -1) {
+			solution[i] = 0;
+    	}    
+    }  
+    
+	feasibilityCheck(temp, solution);
+}
+
 /**
  * @brief Increases the labels of selected vertices in the input solution.
  * 
@@ -109,7 +123,7 @@ void AntColonyOptimization::reduceSolution(std::vector<int>& solution) {
 
     std::sort(sorted_vertices.begin(), sorted_vertices.end(),
         [&](size_t a, size_t b) {
-            return temp.getVertexDegree(a) <  
+            return temp.getVertexDegree(a) >  
             temp.getVertexDegree(b);                                                                             
         });
 
@@ -139,6 +153,7 @@ void AntColonyOptimization::reduceSolution(std::vector<int>& solution) {
  * 
  * @details This function takes a previously computed solution and applies the following subroutines:
  * - @subroutine destroySolution
+ * - @subroutine constructSolutionRVNS
  * - @subroutine extendSolution
  * - @subroutine reduceSolution
  * 
@@ -159,7 +174,7 @@ void AntColonyOptimization::RVNS(std::vector<int>& solution) {
 	
     while ((current_no_improvement_iteration < max_rvns_no_improvement_iterations) && (max_iterations > 0)) {
         destroySolution(temp);
-        constructSolution(temp);
+        constructSolutionRVNS(temp);
         extendSolution(temp);
         reduceSolution(temp);
 		

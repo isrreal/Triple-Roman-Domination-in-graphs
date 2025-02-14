@@ -31,6 +31,12 @@ void computeAntColonyOptimization(TripleRomanDomination& trd, int upper_bound, i
     std::cout << graph_density << ',';
 	std::cout << elapsed_time.count() << ',';
 	std::cout << feasible(trd.getGraph(), trd.getSolutionACO()) << '\n';
+	
+	for (const auto& it: trd.getSolutionACO()) {
+		std::cout << it << " ";
+	}
+	
+	std::cout << '\n';
 }
 
 void computeGeneticAlgorithm(TripleRomanDomination& trd, short heuristic, int upper_bound, int lower_bound, double graph_density) {
@@ -91,6 +97,19 @@ auto main(int argc, char** argv) -> int {
         constexpr float add_vertices_rate_extend_solution {0.05};
         int upper_bound {0};
     	int lower_bound {0};
+    	
+    	std::vector<int> teste = {0, 2, 2, 2, 0, 0, 0, 3, 3, 3};
+    	//decreaseLabel(graph, teste, 0);
+    	
+    	
+    	for (const auto& it: teste) {
+			std::cout << it << " ";
+		}
+	
+		//std::cout << "\n\n";
+		
+		//std::cout << feasible(graph, teste);
+    	
     	
 		upper_bound = computeRightUpperBound(graph, upper_bound);
 

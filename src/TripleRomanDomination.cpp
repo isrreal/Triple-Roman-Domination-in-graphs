@@ -198,7 +198,7 @@ Chromosome TripleRomanDomination::heuristic3(const Graph& graph) {
 
     std::sort(sorted_vertices.begin(), sorted_vertices.end(),
         [&](size_t a, size_t b) {
-            return graph.getVertexDegree(a) < graph.getVertexDegree(b);
+            return graph.getVertexDegree(a) > graph.getVertexDegree(b);
     });
 
     while ((temp.getOrder() > 0) && (chosen_vertex < sorted_vertices.size())) {
