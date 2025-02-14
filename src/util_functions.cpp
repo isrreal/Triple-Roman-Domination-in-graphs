@@ -85,8 +85,10 @@ bool feasible(const Graph& graph, const std::vector<int>& solution, size_t verte
 	size_t sum_weight = solution[vertex];
 	
 	for (const auto& it: graph.getAdjacencyList(vertex)) {
-		++active;
-		sum_weight += solution[it];
+		if (solution[it] > 0) {
+			++active;
+			sum_weight += solution[it];
+		}
 	}
 	
 	if (sum_weight < 3 + active) {
@@ -109,14 +111,10 @@ bool feasible(const Graph& graph, const std::vector<int>& solution, size_t verte
  */
 
 Chromosome& feasibilityCheck(const Graph& graph, Chromosome& chromosome) {  
-	std::vector<bool> visited(chromosome.genes.size(), false);
     bool is_valid {false};
     bool has_neighbor_at_least_2 {false};
                                                            
-    for (size_t i {0}; i < chromosome.genes.size(); ++i) {
-    
- 		if (visited[i] == true) { continue; }
- 		
+    for (size_t i {0}; i < chromosome.genes.size(); ++i) {		
     	is_valid = false;
  		
         if (chromosome.genes[i] == 0) {    
@@ -179,8 +177,6 @@ Chromosome& feasibilityCheck(const Graph& graph, Chromosome& chromosome) {
                 chromosome.genes[i] = 3;
             }           
         }
-        
-    	visited[i] = true;
     }
     
     fitness(chromosome);
@@ -223,11 +219,11 @@ void decreaseLabel(const Graph& graph, std::vector<int>& solution, size_t vertex
 		}
 	}
 	
-	if (init_label == 3) {
+	else if (init_label == 3) {
 		solution[vertex] = 0;
 		
 		if (!feasible(graph, solution, vertex)) {
-				solution[vertex] = 2;
+			solution[vertex] = 2;
 	
 					
 			if (!feasible(graph, solution, vertex)) {
@@ -236,7 +232,7 @@ void decreaseLabel(const Graph& graph, std::vector<int>& solution, size_t vertex
 		}
 	}
 		
-	if (init_label == 4 || init_label == 3) {
+	else if (init_label == 4) {
 		if (!feasible(graph, solution, vertex)) {
 			solution[vertex] = 2;
 

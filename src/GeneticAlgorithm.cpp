@@ -66,6 +66,7 @@ void GeneticAlgorithm::createPopulation(
  */
 
 std::vector<Chromosome>& GeneticAlgorithm::createNewPopulation() {
+	std::vector<Chromosome> old_population = population;
    	this->elitism(population, elitism_rate);
     
     Chromosome selected1;
@@ -73,9 +74,9 @@ std::vector<Chromosome>& GeneticAlgorithm::createNewPopulation() {
     Chromosome offspring;
     
     while (population.size() < population_size) {          
-        selected1 = tournamentSelection(population, tournament_population_size); 
+        selected1 = tournamentSelection(old_population, tournament_population_size); 
         
-        selected2 = tournamentSelection(population, tournament_population_size);      
+        selected2 = tournamentSelection(old_population, tournament_population_size);      
 
        	if (getRandomFloat(0.0, 1.0) <= crossover_rate) {  		
         	offspring = this->twoPointCrossOver(selected1, selected2);
@@ -184,8 +185,6 @@ Chromosome GeneticAlgorithm::findBestSolution(const std::vector<Chromosome>& pop
 	Chromosome best_solution { population[0] };
 
 	for (const auto& chromosome: population) {
-		best_solution = chromosome;		
-		
 		if (best_solution.fitness > chromosome.fitness) {
 			best_solution = chromosome;
 		}
