@@ -7,7 +7,6 @@
 #include "Graph.hpp"
 
 struct Chromosome {
-    size_t genes_size;
     std::vector<int> genes;
     size_t fitness;
 
