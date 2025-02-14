@@ -40,6 +40,8 @@ class GeneticAlgorithm {
 		inline const Chromosome& tournamentSelection(const std::vector<Chromosome>& population, size_t individuals_size);
 		
 		inline static Chromosome& chooseBestSolution(Chromosome& chromosome1, Chromosome& chromosome2);
+		
+		inline Chromosome findBestSolution(const std::vector<Chromosome>& population); 
 
 	public:
 		GeneticAlgorithm(Graph& graph, size_t population_size, size_t genes_size, size_t generations,

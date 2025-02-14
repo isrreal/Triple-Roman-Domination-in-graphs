@@ -179,6 +179,20 @@ const Chromosome& GeneticAlgorithm::tournamentSelection(const std::vector<Chromo
 Chromosome& GeneticAlgorithm::chooseBestSolution(Chromosome& chromosome1, Chromosome& chromosome2) {
     return (chromosome1.fitness < chromosome2.fitness ? chromosome1 : chromosome2);
 }
+
+Chromosome GeneticAlgorithm::findBestSolution(const std::vector<Chromosome>& population) { 
+	Chromosome best_solution { population[0] };
+
+	for (const auto& chromosome: population) {
+		best_solution = chromosome;		
+		
+		if (best_solution.fitness > chromosome.fitness) {
+			best_solution = chromosome;
+		}
+	}
+
+	return best_solution; 
+}
 		
 // public methods 
 
@@ -187,33 +201,20 @@ size_t GeneticAlgorithm::getGenerations() { return generations; }
 std::vector<int> GeneticAlgorithm::getBestSolution() { return best_solution; }
 
 void GeneticAlgorithm::run(size_t generations, std::vector<std::function<Chromosome(const Graph&)>> heuristics, size_t chosen_heuristic) { 
-   this->createPopulation(heuristics, graph, chosen_heuristic);
+   	this->createPopulation(heuristics, graph, chosen_heuristic);
    
-	Chromosome current_best_solution = [&] {
-		Chromosome best_solution { population[0] };
-		Chromosome solution;
-	
-		for (const auto& chromosome: population) {
-			solution = chromosome;		
-			
-			if (best_solution.fitness > chromosome.fitness) {
-				best_solution = chromosome;
-			}
-		}
-	
-		return best_solution; 
-   }();   
+	Chromosome current_best_solution { findBestSolution(population) };  
    
-   Chromosome best_solution { current_best_solution };
+   	Chromosome best_solution { current_best_solution };
    
-   size_t iteration {0};
-   size_t current_no_improvement_iteration {0};
+   	size_t iteration {0};
+   	size_t current_no_improvement_iteration {0};
    
   	while ((iteration < generations) && (current_no_improvement_iteration < max_no_improvement_iterations)) {
    
 		this->population.swap(createNewPopulation());
 		
-        current_best_solution = tournamentSelection(population, tournament_population_size);     
+        current_best_solution = findBestSolution(population);  
 		
         ++iteration;
         ++current_no_improvement_iteration;
