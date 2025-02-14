@@ -67,27 +67,27 @@ auto main(int argc, char** argv) -> int {
     	
     	// Genetic Algorithm parameters
     	
-        size_t population_size { static_cast<size_t>(graph.getOrder() / 5) };
-        constexpr size_t generations {449};
+        size_t population_size { static_cast<size_t>(graph.getOrder() / 4) };
+        constexpr size_t generations {700};
         short heuristic = std::stoi(argv[3]);
-        constexpr float mutation_rate {0.5544};
-        constexpr float elitism_rate {0.4938};
-        constexpr float cross_over_rate {0.4266};
-        size_t tournament_population_size { graph.getOrder() / 5 };
-        constexpr size_t max_no_improvement_iterations {58};
+        constexpr float mutation_rate {0.5426};
+        constexpr float elitism_rate {0.1988};
+        constexpr float cross_over_rate {0.3979};
+        size_t tournament_population_size {4};
+        constexpr size_t max_no_improvement_iterations {73};
         
         // ACO parameters
         
         constexpr size_t number_of_ants {3};
-        constexpr size_t iterations {11};
-        constexpr float evaporation_rate {0.2501};
-        constexpr float min_destruction_rate {0.2949};
-        constexpr float max_destruction_rate {0.5};
-        constexpr size_t max_rvns_functions {3};
+        constexpr size_t iterations {17};
+        constexpr float evaporation_rate {0.3514};
+        constexpr float min_destruction_rate {0.1359};
+        constexpr float max_destruction_rate {0.9};
+        constexpr size_t max_rvns_functions {5};
         constexpr size_t max_rvns_iterations {50};
-        constexpr size_t max_rvns_no_improvement_iterations {10};
+        constexpr size_t max_rvns_no_improvement_iterations {50};
         constexpr float selection_vertex_rate_extend_solution {0.1};
-        constexpr float selection_vertex_rate_construct_solution {0.3};
+        constexpr float selection_vertex_rate_construct_solution {0.1};
         constexpr float add_vertices_rate_extend_solution {0.05};
         int upper_bound {0};
     	int lower_bound {0};
