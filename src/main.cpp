@@ -31,12 +31,6 @@ void computeAntColonyOptimization(TripleRomanDomination& trd, int upper_bound, i
     std::cout << graph_density << ',';
 	std::cout << elapsed_time.count() << ',';
 	std::cout << feasible(trd.getGraph(), trd.getSolutionACO()) << '\n';
-	
-	for (const auto& it: trd.getSolutionACO()) {
-		std::cout << it << " ";
-	}
-	
-	std::cout << '\n';
 }
 
 void computeGeneticAlgorithm(TripleRomanDomination& trd, short heuristic, int upper_bound, int lower_bound, double graph_density) {
@@ -73,44 +67,31 @@ auto main(int argc, char** argv) -> int {
     	
     	// Genetic Algorithm parameters
     	
-        size_t population_size { static_cast<size_t>(graph.getOrder() / 4) };
-        constexpr size_t generations {700};
+        size_t population_size { static_cast<size_t>(graph.getOrder() / 2) };
+        constexpr size_t generations {532};
         short heuristic = std::stoi(argv[3]);
-        constexpr float mutation_rate {0.5426};
-        constexpr float elitism_rate {0.1988};
-        constexpr float cross_over_rate {0.3979};
-        size_t tournament_population_size {4};
-        constexpr size_t max_no_improvement_iterations {73};
+        constexpr float mutation_rate {0.4886};
+        constexpr float elitism_rate {0.3288};
+        constexpr float cross_over_rate {0.4862};
+        size_t tournament_population_size {2};
+        constexpr size_t max_no_improvement_iterations {86};
         
         // ACO parameters
         
-        constexpr size_t number_of_ants {3};
-        constexpr size_t iterations {17};
-        constexpr float evaporation_rate {0.3514};
-        constexpr float min_destruction_rate {0.1359};
-        constexpr float max_destruction_rate {0.9};
+        constexpr size_t number_of_ants {2};
+        constexpr size_t iterations {2};
+        constexpr float evaporation_rate {0.3807};
+        constexpr float min_destruction_rate {0.1273};
+        constexpr float max_destruction_rate {0.5};
         constexpr size_t max_rvns_functions {5};
-        constexpr size_t max_rvns_iterations {50};
-        constexpr size_t max_rvns_no_improvement_iterations {50};
-        constexpr float selection_vertex_rate_extend_solution {0.1};
+        constexpr size_t max_rvns_iterations {100};
+        constexpr size_t max_rvns_no_improvement_iterations {20};
+        constexpr float selection_vertex_rate_extend_solution {0.3};
         constexpr float selection_vertex_rate_construct_solution {0.1};
         constexpr float add_vertices_rate_extend_solution {0.05};
         int upper_bound {0};
     	int lower_bound {0};
-    	
-    	std::vector<int> teste = {0, 2, 2, 2, 0, 0, 0, 3, 3, 3};
-    	//decreaseLabel(graph, teste, 0);
-    	
-    	
-    	for (const auto& it: teste) {
-			std::cout << it << " ";
-		}
-	
-		//std::cout << "\n\n";
-		
-		//std::cout << feasible(graph, teste);
-    	
-    	
+    
 		upper_bound = computeRightUpperBound(graph, upper_bound);
 
 		lower_bound = computeRightLowerBound(graph, lower_bound);
@@ -122,7 +103,7 @@ auto main(int argc, char** argv) -> int {
    	   	
        	
        // graph, populationSize, genesSize, generations, heuristic, mutation rate, elitism rate, numberOfAnts, iterations
-        TripleRomanDomination trd(graph, population_size, graph.getOrder(), generations,
+    	TripleRomanDomination trd(graph, population_size, graph.getOrder(), generations,
             	mutation_rate, elitism_rate, cross_over_rate, tournament_population_size,
             	max_no_improvement_iterations,
             	
