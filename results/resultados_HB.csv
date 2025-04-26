@@ -1,0 +1,188 @@
+filename,vertex,edge,density,TRD_number,time(seconds),status
+fidap012.txt,3973,38089,0.00483,840.0,8.75,Optimal
+dwt___87.txt,87,227,0.06068,61.0,0.03,Optimal
+rbs480b.txt,480,16400,0.14266,32.0,131.1,Optimal
+str____0.txt,363,2446,0.03723,213.0,1.65,Optimal
+bcspwr02.txt,49,59,0.05017,58.0,0.04,Optimal
+can__144.txt,144,576,0.05594,48.0,0.03,Optimal
+gre_216b.txt,216,660,0.02842,148.0,900.36,Best Found
+fs_183_4.txt,183,701,0.04209,60.0,0.04,Optimal
+sstmodel.txt,3345,9702,0.00173,3660.0,900.41,Best Found
+jagmesh1.txt,936,2664,0.00609,631.0,900.75,Best Found
+fs_183_6.txt,183,701,0.04209,60.0,0.1,Optimal
+fidap003.txt,1821,25419,0.01534,260.0,2.17,Optimal
+bp___200.txt,822,3788,0.01123,398.0,382.95,Optimal
+lund_b.txt,147,1147,0.10689,47.0,0.52,Optimal
+fs_760_1.txt,760,3518,0.0122,336.0,905.18,Best Found
+tols90.txt,90,1449,0.3618,4.0,0.05,Optimal
+dwt__310.txt,310,1069,0.02232,171.0,0.74,Optimal
+nos1.txt,237,390,0.01395,265.0,905.6,Best Found
+fidap031.txt,3909,55695,0.00729,720.0,902.36,Best Found
+rw496.txt,496,1423,0.01159,345.0,907.5,Best Found
+dwt__221.txt,221,704,0.02896,122.0,0.34,Optimal
+bcspwr03.txt,118,179,0.02593,123.0,0.05,Optimal
+bcspwr05.txt,443,590,0.00603,501.0,2.36,Optimal
+fidap002.txt,441,13195,0.136,24.0,0.23,Optimal
+cdde2.txt,961,1860,0.00403,945.0,901.08,Best Found
+fidap014.txt,3251,31698,0.006,640.0,1.23,Optimal
+qc324.txt,324,13203,0.25232,16.0,0.3,Optimal
+nnc261.txt,261,794,0.0234,170.0,75.47,Optimal
+fidap028.txt,2603,37525,0.01108,278.0,3.02,Optimal
+odep400a.txt,400,402,0.00504,532.0,2.45,Optimal
+gre_1107.txt,1107,4557,0.00744,675.0,900.47,Best Found
+olm500.txt,500,997,0.00799,336.0,0.14,Optimal
+dwt__512.txt,512,1495,0.01143,436.0,7.42,Optimal
+tub100.txt,100,148,0.0299,103.0,0.24,Optimal
+str__200.txt,363,3049,0.04641,184.0,20.22,Optimal
+cavity04.txt,317,4237,0.08459,36.0,0.13,Optimal
+jagmesh8.txt,1141,3162,0.00486,795.0,901.91,Best Found
+nos7.txt,729,1944,0.00733,571.0,902.08,Best Found
+gent113.txt,113,549,0.08676,82.0,0.06,Optimal
+zenios.txt,2873,12159,0.00295,4676.0,904.41,Best Found
+orsirr_1.txt,1030,2914,0.0055,763.0,904.33,Best Found
+fidap029.txt,2870,10442,0.00254,1733.0,4.97,Optimal
+bcspwr04.txt,274,669,0.01789,248.0,0.11,Optimal
+pores_1.txt,30,103,0.23678,16.0,0.01,Optimal
+can___24.txt,24,68,0.24638,16.0,0.01,Optimal
+lns__131.txt,131,275,0.0323,142.0,0.02,Optimal
+ash85.txt,85,219,0.06134,59.0,0.08,Optimal
+can___62.txt,62,78,0.04125,73.0,0.1,Optimal
+fs_680_2.txt,680,1464,0.00634,564.0,0.37,Optimal
+ck656.txt,656,1628,0.00758,554.0,2.3,Optimal
+ck104.txt,104,444,0.0829,48.0,0.05,Optimal
+steam2.txt,600,6580,0.03662,124.0,901.16,Best Found
+bcsstk03.txt,112,264,0.04247,84.0,0.17,Optimal
+662_bus.txt,662,906,0.00414,726.0,479.41,Optimal
+dwt__346.txt,346,1440,0.02413,227.0,29.41,Optimal
+pores_2.txt,1224,5822,0.00778,432.0,901.2,Best Found
+cdde4.txt,961,1860,0.00403,945.0,900.38,Best Found
+dwt__503.txt,503,2762,0.02188,203.0,1.5,Optimal
+bcspwr01.txt,39,46,0.06208,49.0,0.02,Optimal
+can__187.txt,187,652,0.03749,88.0,0.11,Optimal
+can__256.txt,256,1330,0.04075,57.0,0.04,Optimal
+steam1.txt,240,1761,0.0614,68.0,0.36,Optimal
+lns__511.txt,511,1425,0.01094,456.0,23.68,Optimal
+saylr3.txt,1000,1375,0.00275,1590.0,902.33,Best Found
+fidap004.txt,1601,15343,0.01198,300.0,0.35,Optimal
+impcol_d.txt,425,1267,0.01406,259.0,903.26,Best Found
+fs_541_1.txt,541,2466,0.01688,4.0,0.08,Optimal
+fs_541_2.txt,541,2466,0.01688,4.0,0.07,Optimal
+bcsstk02.txt,66,2145,1.0,4.0,0.04,Optimal
+dwt__361.txt,361,1296,0.01994,195.0,2.27,Optimal
+can___96.txt,96,336,0.07368,48.0,0.11,Optimal
+ibm32.txt,32,90,0.18145,25.0,0.14,Optimal
+hor__131.txt,434,2138,0.02275,194.0,280.33,Optimal
+fidap001.txt,216,2079,0.08953,47.0,1.21,Optimal
+gre__115.txt,115,267,0.04073,95.0,1.47,Optimal
+fidapm03.txt,2532,23924,0.00747,511.0,755.6,Optimal
+fs_541_3.txt,541,2466,0.01688,4.0,0.15,Optimal
+gre__185.txt,185,650,0.03819,118.0,900.62,Best Found
+e05r0400.txt,236,2847,0.10267,36.0,0.12,Optimal
+gre__512.txt,512,1680,0.01284,343.0,901.65,Best Found
+eris1176.txt,1176,8688,0.01257,926.0,2.46,Optimal
+fidapm02.txt,537,9352,0.06498,72.0,0.25,Optimal
+gre__343.txt,343,1092,0.01862,234.0,911.48,Best Found
+jagmesh2.txt,1009,2928,0.00576,667.0,900.47,Best Found
+fidap024.txt,2283,23225,0.00892,408.0,15.43,Optimal
+fs_541_4.txt,541,2466,0.01688,4.0,0.12,Optimal
+gre_216a.txt,216,660,0.02842,148.0,900.28,Best Found
+fs_680_1.txt,680,1464,0.00634,564.0,0.74,Optimal
+lnsp_131.txt,131,275,0.0323,142.0,0.03,Optimal
+gr_30_30.txt,900,3422,0.00846,400.0,0.72,Optimal
+jgl009.txt,9,32,0.88889,4.0,0.01,Optimal
+impcol_a.txt,207,557,0.02612,158.0,44.75,Optimal
+fidapm10.txt,3046,25398,0.00548,716.0,76.99,Optimal
+jgl011.txt,11,49,0.89091,4.0,0.01,Optimal
+fs_760_2.txt,760,3518,0.0122,336.0,904.91,Best Found
+fs_680_3.txt,680,1464,0.00634,564.0,0.51,Optimal
+fs_183_3.txt,183,701,0.04209,60.0,0.04,Optimal
+impcol_c.txt,137,352,0.03778,97.0,0.52,Optimal
+fidap005.txt,27,126,0.35897,12.0,0.02,Optimal
+impcol_b.txt,59,281,0.16423,35.0,0.2,Optimal
+fs_183_1.txt,183,701,0.04209,60.0,0.05,Optimal
+fidap013.txt,2568,36530,0.01108,356.0,1.13,Optimal
+impcol_e.txt,225,1187,0.0471,81.0,0.06,Optimal
+will57.txt,57,127,0.07957,35.0,0.02,Optimal
+nnc666.txt,666,2148,0.0097,384.0,906.27,Best Found
+rdb200l.txt,200,460,0.02312,160.0,902.14,Best Found
+rdb200.txt,200,460,0.02312,160.0,902.74,Best Found
+lnsp_511.txt,511,1425,0.01094,456.0,12.98,Optimal
+steam3.txt,80,424,0.13418,28.0,0.02,Optimal
+saylr1.txt,238,445,0.01578,223.0,902.41,Best Found
+lshp_406.txt,406,1155,0.01405,267.0,905.17,Best Found
+will199.txt,199,660,0.0335,122.0,904.92,Best Found
+nos4.txt,100,247,0.0499,82.0,9.44,Optimal
+mcca.txt,180,1680,0.10428,149.0,0.43,Optimal
+tols340.txt,340,1649,0.02861,204.0,0.05,Optimal
+shl____0.txt,663,1682,0.00766,366.0,0.78,Optimal
+psmigr_1.txt,3140,410781,0.08335,55.0,871.6,Optimal
+nos2.txt,957,1590,0.00348,1075.0,902.69,Best Found
+mcfe.txt,765,15358,0.05255,180.0,1.3,Optimal
+lop163.txt,163,598,0.04529,90.0,905.32,Best Found
+nos6.txt,675,1290,0.00567,642.0,901.35,Best Found
+mbeause.txt,492,36209,0.29978,7.0,0.45,Optimal
+shl__400.txt,663,1709,0.00779,355.0,0.68,Optimal
+rdb450.txt,450,1065,0.01054,358.0,902.74,Best Found
+pores_3.txt,532,1850,0.0131,391.0,901.95,Best Found
+rbs480a.txt,480,16408,0.14273,32.0,76.13,Optimal
+str__400.txt,363,3124,0.04755,181.0,7.99,Optimal
+plat362.txt,362,2712,0.04151,103.0,4.29,Optimal
+sherman1.txt,1000,1375,0.00275,1590.0,902.74,Best Found
+lund_a.txt,147,1151,0.10726,47.0,2.09,Optimal
+young1c.txt,841,1624,0.0046,817.0,900.77,Best Found
+rgg010.txt,10,45,1.0,4.0,0.02,Optimal
+lshp1009.txt,1009,2928,0.00576,667.0,900.14,Best Found
+utm300.txt,300,2191,0.04885,120.0,0.35,Optimal
+nos3.txt,960,7442,0.01617,246.0,901.35,Best Found
+sherman4.txt,1104,1341,0.0022,2116.0,901.42,Best Found
+nos5.txt,468,2352,0.02152,239.0,905.14,Best Found
+olm100.txt,100,197,0.0398,68.0,0.02,Optimal
+rw136.txt,136,373,0.04063,94.0,20.22,Optimal
+sherman2.txt,1080,14630,0.02511,287.0,901.16,Best Found
+qh768.txt,768,1322,0.00449,782.0,907.04,Best Found
+pde225.txt,225,420,0.01667,214.0,903.81,Best Found
+lshp_265.txt,265,744,0.02127,176.0,903.1,Best Found
+mahindas.txt,1258,7513,0.0095,834.0,901.05,Best Found
+watt__1.txt,1856,4816,0.0028,1644.0,898.43,Best Found
+ck656.txt,656,1628,0.00758,554.0,2.31,Optimal
+e05r0200.txt,236,2847,0.10267,36.0,0.07,Optimal
+dwt__193.txt,193,1650,0.08905,48.0,0.04,Optimal
+curtis54.txt,54,124,0.08665,41.0,0.05,Optimal
+bcspwr07.txt,1612,2106,0.00162,1807.0,903.7,Best Found
+e05r0100.txt,236,2847,0.10267,36.0,0.06,Optimal
+dwt___66.txt,66,127,0.05921,52.0,0.02,Optimal
+young2c.txt,841,1624,0.0046,817.0,900.47,Best Found
+dwt__992.txt,992,7876,0.01602,264.0,2.76,Optimal
+e05r0000.txt,236,2847,0.10267,36.0,0.07,Optimal
+can__229.txt,229,774,0.02965,142.0,0.55,Optimal
+cavity03.txt,317,4237,0.08459,36.0,0.09,Optimal
+cavity02.txt,317,4237,0.08459,36.0,0.08,Optimal
+ash292.txt,292,958,0.02255,165.0,1.28,Optimal
+ck400.txt,400,1244,0.01559,279.0,0.56,Optimal
+dwt___59.txt,59,104,0.06078,58.0,0.21,Optimal
+bp_____0.txt,822,3260,0.00966,449.0,1.86,Optimal
+cdde3.txt,961,1860,0.00403,945.0,900.69,Best Found
+cdde1.txt,961,1860,0.00403,945.0,900.32,Best Found
+can__161.txt,161,608,0.0472,76.0,0.29,Optimal
+dwt__162.txt,162,510,0.03911,104.0,0.08,Optimal
+dwt__198.txt,198,597,0.03061,112.0,0.03,Optimal
+bcspwr06.txt,1454,1923,0.00182,1632.0,904.59,Best Found
+dwt___72.txt,72,75,0.02934,94.0,0.05,Optimal
+bcsstk04.txt,132,1758,0.20333,30.0,0.68,Optimal
+cavity01.txt,317,4237,0.08459,36.0,0.08,Optimal
+can___61.txt,61,248,0.13552,24.0,0.02,Optimal
+e05r0300.txt,236,2847,0.10267,36.0,0.06,Optimal
+dwt__918.txt,918,3233,0.00768,437.0,902.08,Best Found
+dwt__209.txt,209,767,0.03529,112.0,1.19,Optimal
+add20.txt,2395,7462,0.0026,1438.0,1.11,Optimal
+blckhole.txt,2132,6370,0.0028,1401.0,897.38,Best Found
+young3c.txt,841,1671,0.00473,850.0,902.2,Best Found
+bp___400.txt,822,4015,0.0119,384.0,14.25,Optimal
+cdde5.txt,961,1860,0.00403,945.0,900.54,Best Found
+dwt__245.txt,245,608,0.02034,210.0,1.63,Optimal
+dwt__234.txt,234,300,0.011,238.0,0.33,Optimal
+can___73.txt,73,152,0.05784,60.0,0.28,Optimal
+bcsstk01.txt,48,176,0.15603,24.0,0.03,Optimal
+cdde6.txt,961,1860,0.00403,945.0,900.32,Best Found
+dwt__492.txt,492,1332,0.01103,337.0,109.11,Optimal
+dwt__419.txt,419,1572,0.01795,216.0,2.82,Optimal

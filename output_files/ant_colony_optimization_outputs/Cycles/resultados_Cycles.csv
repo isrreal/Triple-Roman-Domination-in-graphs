@@ -1,0 +1,11 @@
+filename,vertex,edge,density,TRD_number,time(miliseconds)
+cycle2-order50.txt,50,50,0.04082,68.0,211.8
+cycle9-order225.txt,225,225,0.00893,300.0,232.51
+cycle4-order100.txt,100,100,0.0202,135.0,402.19
+cycle3-order75.txt,75,75,0.02703,100.0,87.04
+cycle5-order125.txt,125,125,0.01613,168.0,216.71
+cycle10-order250.txt,250,250,0.00803,335.0,470.94
+cycle1-order25.txt,25,25,0.08333,35.0,167.22
+cycle7-order175.txt,175,175,0.01149,235.0,324.23
+cycle8-order200.txt,200,200,0.01005,268.0,343.55
+cycle6-order150.txt,150,150,0.01342,200.0,130.48

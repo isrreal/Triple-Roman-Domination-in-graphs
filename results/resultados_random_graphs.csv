@@ -1,0 +1,31 @@
+filename,vertex,edge,density,TRD_number,time(miliseconds)
+random_graph17-order150-edge_probability-0.5.txt,150,5651,0.50568,15.0,145361.23
+random_graph26-order225-edge_probability-0.5.txt,225,12626,0.50103,No optimal solution found,900402.92
+random_graph21-order175-edge_probability-0.8.txt,175,12195,0.80099,8.0,6404.54
+random_graph30-order250-edge_probability-0.8.txt,250,24941,0.80132,8.0,9390.63
+random_graph9-order75-edge_probability-0.8.txt,75,2206,0.79495,8.0,1268.99
+random_graph12-order100-edge_probability-0.8.txt,100,3968,0.80162,8.0,961.96
+random_graph15-order125-edge_probability-0.8.txt,125,6169,0.796,8.0,1144.39
+random_graph18-order150-edge_probability-0.8.txt,150,8973,0.80295,8.0,4642.13
+random_graph16-order150-edge_probability-0.2.txt,150,2299,0.20573,No optimal solution found,901042.1
+random_graph10-order100-edge_probability-0.2.txt,100,936,0.18909,32.0,286530.06
+random_graph24-order200-edge_probability-0.8.txt,200,15947,0.80136,8.0,4666.72
+random_graph6-order50-edge_probability-0.8.txt,50,976,0.79673,8.0,204.6
+random_graph13-order125-edge_probability-0.2.txt,125,1535,0.19806,No optimal solution found,902802.47
+random_graph27-order225-edge_probability-0.8.txt,225,20015,0.79425,8.0,10847.65
+random_graph4-order50-edge_probability-0.2.txt,50,256,0.20898,24.0,299.73
+random_graph14-order125-edge_probability-0.5.txt,125,3857,0.49768,15.0,45332.28
+random_graph25-order225-edge_probability-0.2.txt,225,5082,0.20167,No optimal solution found,903438.02
+random_graph22-order200-edge_probability-0.2.txt,200,3904,0.19618,No optimal solution found,902422.57
+random_graph28-order250-edge_probability-0.2.txt,250,6249,0.20077,No optimal solution found,901858.22
+random_graph23-order200-edge_probability-0.5.txt,200,9932,0.4991,16.0,814772.02
+random_graph8-order75-edge_probability-0.5.txt,75,1393,0.50198,12.0,516.85
+random_graph3-order25-edge_probability-0.8.txt,25,235,0.78333,7.0,125.64
+random_graph5-order50-edge_probability-0.5.txt,50,637,0.52,12.0,441.5
+random_graph2-order25-edge_probability-0.5.txt,25,159,0.53,10.0,112.15
+random_graph7-order75-edge_probability-0.2.txt,75,549,0.19784,28.0,5280.49
+random_graph19-order175-edge_probability-0.2.txt,175,3029,0.19895,No optimal solution found,902442.0
+random_graph1-order25-edge_probability-0.2.txt,25,61,0.20333,19.0,167.11
+random_graph11-order100-edge_probability-0.5.txt,100,2490,0.50303,14.0,9798.61
+random_graph20-order175-edge_probability-0.5.txt,175,7577,0.49767,16.0,551259.18
+random_graph29-order250-edge_probability-0.5.txt,250,15602,0.50127,No optimal solution found,900489.25

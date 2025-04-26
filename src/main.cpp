@@ -61,34 +61,35 @@ auto main(int argc, char** argv) -> int {
         }
                      
     	constexpr size_t trial {15};
-    	
+    		
     	bool with_RVNS {false};
     	with_RVNS = std::stoi(argv[5]);
     	
     	// Genetic Algorithm parameters
     	
-        size_t population_size { static_cast<size_t>(graph.getOrder() / 2) };
-        constexpr size_t generations {532};
+        size_t population_size { static_cast<size_t>(graph.getOrder() / 1) };
+        constexpr size_t generations {601};
         short heuristic = std::stoi(argv[3]);
-        constexpr float mutation_rate {0.4886};
-        constexpr float elitism_rate {0.3288};
-        constexpr float cross_over_rate {0.4862};
-        size_t tournament_population_size {2};
-        constexpr size_t max_no_improvement_iterations {86};
+        constexpr float elitism_rate {0.4043};
+        constexpr float mutation_rate {0.5362};
+        constexpr float cross_over_rate {0.4095};
+        size_t tournament_population_size {9};
+        constexpr size_t max_no_improvement_iterations {79};
         
         // ACO parameters
         
-        constexpr size_t number_of_ants {2};
-        constexpr size_t iterations {2};
-        constexpr float evaporation_rate {0.3807};
-        constexpr float min_destruction_rate {0.1273};
-        constexpr float max_destruction_rate {0.5};
+        constexpr size_t number_of_ants {1};
+        constexpr size_t iterations {5};
+        constexpr float evaporation_rate {0.2871};
+        constexpr float min_destruction_rate {0.243};
+        constexpr float max_destruction_rate {0.7};
         constexpr size_t max_rvns_functions {5};
-        constexpr size_t max_rvns_iterations {100};
+        constexpr size_t max_rvns_iterations {50};
         constexpr size_t max_rvns_no_improvement_iterations {20};
-        constexpr float selection_vertex_rate_extend_solution {0.3};
         constexpr float selection_vertex_rate_construct_solution {0.1};
+        constexpr float selection_vertex_rate_extend_solution {0.9};
         constexpr float add_vertices_rate_extend_solution {0.05};
+        
         int upper_bound {0};
     	int lower_bound {0};
     

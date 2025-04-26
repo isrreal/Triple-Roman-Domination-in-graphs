@@ -1,0 +1,11 @@
+filename,vertex,edge,density,TRD_number,time(miliseconds)
+path5-order125.txt,125,124,0.016,168.0,196.45
+path1-order25.txt,25,24,0.08,35.0,71.2
+path6-order150.txt,150,149,0.01333,200.0,188.58
+path7-order175.txt,175,174,0.01143,235.0,250.23
+path9-order225.txt,225,224,0.00889,300.0,272.5
+path2-order50.txt,50,49,0.04,68.0,75.43
+path3-order75.txt,75,74,0.02667,99.99999999999997,103.09
+path10-order250.txt,250,249,0.008,335.0,431.81
+path4-order100.txt,100,99,0.02,135.0,183.78
+path8-order200.txt,200,199,0.01,268.0,249.32

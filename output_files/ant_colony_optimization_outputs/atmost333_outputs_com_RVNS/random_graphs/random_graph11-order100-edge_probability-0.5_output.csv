@@ -1,0 +1,16 @@
+graph_name,graph_order,graph_size,graph_min_degree,graph_max_degree,fitness_1_5,lower_bound,upper_bound,graph_density,elapsed_time(seconds),is_feasible
+random_graph11-order100-edge_probability-0.5,100,2490,37,64,19,6,150,0.50303,0.0971094,1
+random_graph11-order100-edge_probability-0.5,100,2490,37,64,20,6,150,0.50303,0.0967693,1
+random_graph11-order100-edge_probability-0.5,100,2490,37,64,19,6,150,0.50303,0.103893,1
+random_graph11-order100-edge_probability-0.5,100,2490,37,64,20,6,150,0.50303,0.0972444,1
+random_graph11-order100-edge_probability-0.5,100,2490,37,64,20,6,150,0.50303,0.0961298,1
+random_graph11-order100-edge_probability-0.5,100,2490,37,64,20,6,150,0.50303,0.0961358,1
+random_graph11-order100-edge_probability-0.5,100,2490,37,64,20,6,150,0.50303,0.0967787,1
+random_graph11-order100-edge_probability-0.5,100,2490,37,64,19,6,150,0.50303,0.0961628,1
+random_graph11-order100-edge_probability-0.5,100,2490,37,64,19,6,150,0.50303,0.0960531,1
+random_graph11-order100-edge_probability-0.5,100,2490,37,64,20,6,150,0.50303,0.110787,1
+random_graph11-order100-edge_probability-0.5,100,2490,37,64,20,6,150,0.50303,0.0993071,1
+random_graph11-order100-edge_probability-0.5,100,2490,37,64,20,6,150,0.50303,0.0961985,1
+random_graph11-order100-edge_probability-0.5,100,2490,37,64,20,6,150,0.50303,0.0968972,1
+random_graph11-order100-edge_probability-0.5,100,2490,37,64,19,6,150,0.50303,0.0961062,1
+random_graph11-order100-edge_probability-0.5,100,2490,37,64,20,6,150,0.50303,0.0961192,1

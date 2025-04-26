@@ -1,0 +1,16 @@
+graph_name,graph_order,graph_size,graph_min_degree,graph_max_degree,fitness_2_5,lower_bound,upper_bound,graph_density,elapsed_time(seconds),is_feasible
+Tina_AskCog,11,27,3,8,10,4,16,0.490909,7.8114e-05,1
+Tina_AskCog,11,27,3,8,10,4,16,0.490909,6.8523e-05,1
+Tina_AskCog,11,27,3,8,10,4,16,0.490909,6.1592e-05,1
+Tina_AskCog,11,27,3,8,10,4,16,0.490909,6.2766e-05,1
+Tina_AskCog,11,27,3,8,10,4,16,0.490909,6.1253e-05,1
+Tina_AskCog,11,27,3,8,10,4,16,0.490909,5.8403e-05,1
+Tina_AskCog,11,27,3,8,11,4,16,0.490909,6.8613e-05,1
+Tina_AskCog,11,27,3,8,10,4,16,0.490909,5.8085e-05,1
+Tina_AskCog,11,27,3,8,10,4,16,0.490909,5.9587e-05,1
+Tina_AskCog,11,27,3,8,10,4,16,0.490909,5.8085e-05,1
+Tina_AskCog,11,27,3,8,10,4,16,0.490909,5.8041e-05,1
+Tina_AskCog,11,27,3,8,10,4,16,0.490909,5.7871e-05,1
+Tina_AskCog,11,27,3,8,10,4,16,0.490909,6.0285e-05,1
+Tina_AskCog,11,27,3,8,10,4,16,0.490909,5.7815e-05,1
+Tina_AskCog,11,27,3,8,10,4,16,0.490909,5.7765e-05,1

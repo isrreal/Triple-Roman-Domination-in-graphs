@@ -1,0 +1,11 @@
+filename,vertex,edge,density,TRD_number,time(miliseconds)
+star2-order50.txt,50,49,0.04,4.0,22.04
+star9-order225.txt,225,224,0.00889,4.0,49.13
+star4-order100.txt,100,99,0.02,4.0,26.22
+star7-order175.txt,175,174,0.01143,4.0,37.34
+star6-order150.txt,150,149,0.01333,4.0,30.97
+star5-order125.txt,125,124,0.016,4.0,27.7
+star10-order250.txt,250,249,0.008,4.0,52.49
+star3-order75.txt,75,74,0.02667,4.0,21.26
+star1-order25.txt,25,24,0.08,4.0,15.08
+star8-order200.txt,200,199,0.01,4.0,36.9

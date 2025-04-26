@@ -59,15 +59,10 @@ bool feasible(const Graph& graph, const std::vector<int>& solution, size_t verte
 	size_t sum_weight = solution[vertex];	
 	for (const auto& it: graph.getAdjacencyList(vertex)) {
 		if (solution[it] > 0) {
-			//std::cout << "solution: " << solution[it] << "\n\n";
 			++active;
 			sum_weight += solution[it];
-			//std::cout << "loop: " << it << '\n';
 		}
 	}
-	
-	//std::cout << sum_weight << '\n';
-	
 
 	if (sum_weight < 3 + active) {
 		return false;

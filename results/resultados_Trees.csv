@@ -1,0 +1,11 @@
+filename,vertex,edge,density,TRD_number,time(miliseconds)
+tree3_order75.txt,75,74,0.02667,97.0,62.38
+tree9_order225.txt,225,224,0.00889,305.0,95.52
+tree8_order200.txt,200,199,0.01,274.0,87.34
+tree5_order125.txt,125,124,0.016,170.0,77.09
+tree6_order150.txt,150,149,0.01333,201.0,101.73
+tree4_order100.txt,100,99,0.02,132.0,60.02
+tree1_order25.txt,25,24,0.08,34.0,20.31
+tree2_order50.txt,50,49,0.04,69.0,54.95
+tree7_order175.txt,175,174,0.01143,239.0,84.27
+tree10_order250.txt,250,249,0.008,354.0,130.42

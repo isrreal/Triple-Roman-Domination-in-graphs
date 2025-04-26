@@ -1,0 +1,16 @@
+graph_name,graph_order,graph_size,graph_min_degree,graph_max_degree,fitness_2_5,lower_bound,upper_bound,graph_density,elapsed_time(seconds),is_feasible
+Tina_AskCal,11,25,3,7,8,5,16,0.454545,8.0806e-05,1
+Tina_AskCal,11,25,3,7,11,5,16,0.454545,6.3617e-05,1
+Tina_AskCal,11,25,3,7,8,5,16,0.454545,6.3361e-05,1
+Tina_AskCal,11,25,3,7,8,5,16,0.454545,6.2974e-05,1
+Tina_AskCal,11,25,3,7,8,5,16,0.454545,5.929e-05,1
+Tina_AskCal,11,25,3,7,8,5,16,0.454545,6.2155e-05,1
+Tina_AskCal,11,25,3,7,8,5,16,0.454545,6.2699e-05,1
+Tina_AskCal,11,25,3,7,8,5,16,0.454545,6.1116e-05,1
+Tina_AskCal,11,25,3,7,10,5,16,0.454545,6.1404e-05,1
+Tina_AskCal,11,25,3,7,8,5,16,0.454545,6.0414e-05,1
+Tina_AskCal,11,25,3,7,8,5,16,0.454545,5.939e-05,1
+Tina_AskCal,11,25,3,7,8,5,16,0.454545,6.6438e-05,1
+Tina_AskCal,11,25,3,7,8,5,16,0.454545,5.7673e-05,1
+Tina_AskCal,11,25,3,7,8,5,16,0.454545,5.7763e-05,1
+Tina_AskCal,11,25,3,7,8,5,16,0.454545,5.814e-05,1

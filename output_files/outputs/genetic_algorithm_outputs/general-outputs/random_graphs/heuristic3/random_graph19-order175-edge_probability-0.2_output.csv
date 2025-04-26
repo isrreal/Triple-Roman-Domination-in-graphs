@@ -1,0 +1,16 @@
+graph_name,graph_order,graph_size,graph_min_degree,graph_max_degree,fitness_heuristic_3,lower_bound,upper_bound,graph_density,elapsed_time(seconds),is_feasible
+random_graph19-order175-edge_probability-0.2,175,3029,20,46,55,14,262,0.198949,0.123705,1
+random_graph19-order175-edge_probability-0.2,175,3029,20,46,56,14,262,0.198949,0.101459,1
+random_graph19-order175-edge_probability-0.2,175,3029,20,46,55,14,262,0.198949,0.173224,1
+random_graph19-order175-edge_probability-0.2,175,3029,20,46,56,14,262,0.198949,0.109762,1
+random_graph19-order175-edge_probability-0.2,175,3029,20,46,55,14,262,0.198949,0.123686,1
+random_graph19-order175-edge_probability-0.2,175,3029,20,46,55,14,262,0.198949,0.10126,1
+random_graph19-order175-edge_probability-0.2,175,3029,20,46,55,14,262,0.198949,0.146123,1
+random_graph19-order175-edge_probability-0.2,175,3029,20,46,56,14,262,0.198949,0.101552,1
+random_graph19-order175-edge_probability-0.2,175,3029,20,46,56,14,262,0.198949,0.108018,1
+random_graph19-order175-edge_probability-0.2,175,3029,20,46,55,14,262,0.198949,0.155178,1
+random_graph19-order175-edge_probability-0.2,175,3029,20,46,55,14,262,0.198949,0.172336,1
+random_graph19-order175-edge_probability-0.2,175,3029,20,46,56,14,262,0.198949,0.10007,1
+random_graph19-order175-edge_probability-0.2,175,3029,20,46,55,14,262,0.198949,0.168686,1
+random_graph19-order175-edge_probability-0.2,175,3029,20,46,56,14,262,0.198949,0.109046,1
+random_graph19-order175-edge_probability-0.2,175,3029,20,46,56,14,262,0.198949,0.133538,1

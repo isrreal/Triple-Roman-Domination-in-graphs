@@ -1,0 +1,16 @@
+graph_name,graph_order,graph_size,graph_min_degree,graph_max_degree,fitness_1_5,lower_bound,upper_bound,graph_density,elapsed_time(seconds),is_feasible
+random_graph20-order175-edge_probability-0.5,175,7577,73,103,24,6,262,0.497668,0.622552,1
+random_graph20-order175-edge_probability-0.5,175,7577,73,103,20,6,262,0.497668,0.714303,1
+random_graph20-order175-edge_probability-0.5,175,7577,73,103,24,6,262,0.497668,0.622082,1
+random_graph20-order175-edge_probability-0.5,175,7577,73,103,20,6,262,0.497668,0.633219,1
+random_graph20-order175-edge_probability-0.5,175,7577,73,103,20,6,262,0.497668,0.711449,1
+random_graph20-order175-edge_probability-0.5,175,7577,73,103,20,6,262,0.497668,0.622244,1
+random_graph20-order175-edge_probability-0.5,175,7577,73,103,24,6,262,0.497668,0.618607,1
+random_graph20-order175-edge_probability-0.5,175,7577,73,103,20,6,262,0.497668,0.643738,1
+random_graph20-order175-edge_probability-0.5,175,7577,73,103,20,6,262,0.497668,0.621535,1
+random_graph20-order175-edge_probability-0.5,175,7577,73,103,24,6,262,0.497668,0.618297,1
+random_graph20-order175-edge_probability-0.5,175,7577,73,103,24,6,262,0.497668,0.619695,1
+random_graph20-order175-edge_probability-0.5,175,7577,73,103,23,6,262,0.497668,0.685401,1
+random_graph20-order175-edge_probability-0.5,175,7577,73,103,24,6,262,0.497668,0.619605,1
+random_graph20-order175-edge_probability-0.5,175,7577,73,103,20,6,262,0.497668,0.640667,1
+random_graph20-order175-edge_probability-0.5,175,7577,73,103,24,6,262,0.497668,0.622082,1

@@ -1,0 +1,16 @@
+graph_name,graph_order,graph_size,graph_min_degree,graph_max_degree,fitness_2_5,lower_bound,upper_bound,graph_density,elapsed_time(seconds),is_feasible
+random_graph25-order225-edge_probability-0.2,225,5082,31,67,52,13,337,0.201667,0.0419828,1
+random_graph25-order225-edge_probability-0.2,225,5082,31,67,58,13,337,0.201667,0.0418208,1
+random_graph25-order225-edge_probability-0.2,225,5082,31,67,58,13,337,0.201667,0.0422299,1
+random_graph25-order225-edge_probability-0.2,225,5082,31,67,56,13,337,0.201667,0.0416683,1
+random_graph25-order225-edge_probability-0.2,225,5082,31,67,56,13,337,0.201667,0.0417547,1
+random_graph25-order225-edge_probability-0.2,225,5082,31,67,60,13,337,0.201667,0.0427332,1
+random_graph25-order225-edge_probability-0.2,225,5082,31,67,62,13,337,0.201667,0.0417169,1
+random_graph25-order225-edge_probability-0.2,225,5082,31,67,57,13,337,0.201667,0.0477688,1
+random_graph25-order225-edge_probability-0.2,225,5082,31,67,51,13,337,0.201667,0.0436858,1
+random_graph25-order225-edge_probability-0.2,225,5082,31,67,53,13,337,0.201667,0.0423783,1
+random_graph25-order225-edge_probability-0.2,225,5082,31,67,57,13,337,0.201667,0.0473309,1
+random_graph25-order225-edge_probability-0.2,225,5082,31,67,48,13,337,0.201667,0.044312,1
+random_graph25-order225-edge_probability-0.2,225,5082,31,67,51,13,337,0.201667,0.04587,1
+random_graph25-order225-edge_probability-0.2,225,5082,31,67,55,13,337,0.201667,0.042446,1
+random_graph25-order225-edge_probability-0.2,225,5082,31,67,56,13,337,0.201667,0.0418207,1

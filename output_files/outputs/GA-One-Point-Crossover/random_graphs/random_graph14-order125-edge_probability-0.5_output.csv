@@ -1,0 +1,16 @@
+graph_name,graph_order,graph_size,graph_min_degree,graph_max_degree,fitness_heuristic_4,lower_bound,upper_bound,graph_density,elapsed_time(seconds),is_feasible
+random_graph14-order125-edge_probability-0.5,125,3857,51,76,23,6,187,0.497677,0.133017,1
+random_graph14-order125-edge_probability-0.5,125,3857,51,76,20,6,187,0.497677,0.177031,1
+random_graph14-order125-edge_probability-0.5,125,3857,51,76,23,6,187,0.497677,0.134261,1
+random_graph14-order125-edge_probability-0.5,125,3857,51,76,23,6,187,0.497677,0.130063,1
+random_graph14-order125-edge_probability-0.5,125,3857,51,76,22,6,187,0.497677,0.13747,1
+random_graph14-order125-edge_probability-0.5,125,3857,51,76,22,6,187,0.497677,0.12057,1
+random_graph14-order125-edge_probability-0.5,125,3857,51,76,24,6,187,0.497677,0.16501,1
+random_graph14-order125-edge_probability-0.5,125,3857,51,76,19,6,187,0.497677,0.198938,1
+random_graph14-order125-edge_probability-0.5,125,3857,51,76,23,6,187,0.497677,0.138332,1
+random_graph14-order125-edge_probability-0.5,125,3857,51,76,23,6,187,0.497677,0.15567,1
+random_graph14-order125-edge_probability-0.5,125,3857,51,76,25,6,187,0.497677,0.154597,1
+random_graph14-order125-edge_probability-0.5,125,3857,51,76,22,6,187,0.497677,0.132596,1
+random_graph14-order125-edge_probability-0.5,125,3857,51,76,20,6,187,0.497677,0.213276,1
+random_graph14-order125-edge_probability-0.5,125,3857,51,76,24,6,187,0.497677,0.148874,1
+random_graph14-order125-edge_probability-0.5,125,3857,51,76,21,6,187,0.497677,0.223791,1

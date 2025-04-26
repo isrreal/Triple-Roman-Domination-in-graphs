@@ -1,0 +1,16 @@
+graph_name,graph_order,graph_size,graph_min_degree,graph_max_degree,fitness_2_5,lower_bound,upper_bound,graph_density,elapsed_time(seconds),is_feasible
+random_graph28-order250-edge_probability-0.2,250,6249,36,66,60,14,375,0.200771,0.0443855,1
+random_graph28-order250-edge_probability-0.2,250,6249,36,66,66,14,375,0.200771,0.0427065,1
+random_graph28-order250-edge_probability-0.2,250,6249,36,66,67,14,375,0.200771,0.0454112,1
+random_graph28-order250-edge_probability-0.2,250,6249,36,66,57,14,375,0.200771,0.0473725,1
+random_graph28-order250-edge_probability-0.2,250,6249,36,66,52,14,375,0.200771,0.048883,1
+random_graph28-order250-edge_probability-0.2,250,6249,36,66,54,14,375,0.200771,0.0501235,1
+random_graph28-order250-edge_probability-0.2,250,6249,36,66,61,14,375,0.200771,0.0504798,1
+random_graph28-order250-edge_probability-0.2,250,6249,36,66,58,14,375,0.200771,0.0540839,1
+random_graph28-order250-edge_probability-0.2,250,6249,36,66,53,14,375,0.200771,0.0556399,1
+random_graph28-order250-edge_probability-0.2,250,6249,36,66,64,14,375,0.200771,0.054307,1
+random_graph28-order250-edge_probability-0.2,250,6249,36,66,52,14,375,0.200771,0.0601753,1
+random_graph28-order250-edge_probability-0.2,250,6249,36,66,62,14,375,0.200771,0.0546276,1
+random_graph28-order250-edge_probability-0.2,250,6249,36,66,67,14,375,0.200771,0.0547771,1
+random_graph28-order250-edge_probability-0.2,250,6249,36,66,62,14,375,0.200771,0.053579,1
+random_graph28-order250-edge_probability-0.2,250,6249,36,66,70,14,375,0.200771,0.0557915,1

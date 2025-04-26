@@ -1,0 +1,16 @@
+graph_name,graph_order,graph_size,graph_min_degree,graph_max_degree,fitness_2_5,lower_bound,upper_bound,graph_density,elapsed_time(seconds),is_feasible
+Tina_DisCal,11,32,4,8,8,4,16,0.581818,8.8693e-05,1
+Tina_DisCal,11,32,4,8,8,4,16,0.581818,9.1703e-05,1
+Tina_DisCal,11,32,4,8,8,4,16,0.581818,6.4843e-05,1
+Tina_DisCal,11,32,4,8,11,4,16,0.581818,7.2055e-05,1
+Tina_DisCal,11,32,4,8,8,4,16,0.581818,6.4431e-05,1
+Tina_DisCal,11,32,4,8,8,4,16,0.581818,6.3017e-05,1
+Tina_DisCal,11,32,4,8,8,4,16,0.581818,6.527e-05,1
+Tina_DisCal,11,32,4,8,8,4,16,0.581818,6.3224e-05,1
+Tina_DisCal,11,32,4,8,8,4,16,0.581818,6.7587e-05,1
+Tina_DisCal,11,32,4,8,8,4,16,0.581818,6.3432e-05,1
+Tina_DisCal,11,32,4,8,8,4,16,0.581818,6.5069e-05,1
+Tina_DisCal,11,32,4,8,8,4,16,0.581818,6.4643e-05,1
+Tina_DisCal,11,32,4,8,8,4,16,0.581818,6.2082e-05,1
+Tina_DisCal,11,32,4,8,8,4,16,0.581818,6.5994e-05,1
+Tina_DisCal,11,32,4,8,8,4,16,0.581818,6.5046e-05,1

@@ -1,0 +1,16 @@
+graph_name,graph_order,graph_size,graph_min_degree,graph_max_degree,fitness_2_5,lower_bound,upper_bound,graph_density,elapsed_time(seconds),is_feasible
+random_graph6-order50-edge_probability-0.8,50,976,31,46,11,4,75,0.796735,0.00346613,1
+random_graph6-order50-edge_probability-0.8,50,976,31,46,8,4,75,0.796735,0.00352795,1
+random_graph6-order50-edge_probability-0.8,50,976,31,46,8,4,75,0.796735,0.00356828,1
+random_graph6-order50-edge_probability-0.8,50,976,31,46,8,4,75,0.796735,0.0035681,1
+random_graph6-order50-edge_probability-0.8,50,976,31,46,8,4,75,0.796735,0.00364219,1
+random_graph6-order50-edge_probability-0.8,50,976,31,46,8,4,75,0.796735,0.00363337,1
+random_graph6-order50-edge_probability-0.8,50,976,31,46,12,4,75,0.796735,0.00356741,1
+random_graph6-order50-edge_probability-0.8,50,976,31,46,8,4,75,0.796735,0.00363085,1
+random_graph6-order50-edge_probability-0.8,50,976,31,46,12,4,75,0.796735,0.00352242,1
+random_graph6-order50-edge_probability-0.8,50,976,31,46,12,4,75,0.796735,0.00346949,1
+random_graph6-order50-edge_probability-0.8,50,976,31,46,8,4,75,0.796735,0.00347096,1
+random_graph6-order50-edge_probability-0.8,50,976,31,46,11,4,75,0.796735,0.00361979,1
+random_graph6-order50-edge_probability-0.8,50,976,31,46,8,4,75,0.796735,0.00353333,1
+random_graph6-order50-edge_probability-0.8,50,976,31,46,8,4,75,0.796735,0.00354781,1
+random_graph6-order50-edge_probability-0.8,50,976,31,46,8,4,75,0.796735,0.0034749,1

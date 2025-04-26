@@ -136,14 +136,11 @@ void AntColonyOptimization::reduceSolution(std::vector<int>& solution) {
 
         if (chosen_vertex >= sorted_vertices.size()) { break; };
 
-        if (solution[sorted_vertices[chosen_vertex]] == 4 ||
-         	solution[sorted_vertices[chosen_vertex]] == 3 ||
-         	solution[sorted_vertices[chosen_vertex]] == 2) {
+        if (solution[sorted_vertices[chosen_vertex]] >= 2){
 
 			decreaseLabel(this->graph, solution, sorted_vertices[chosen_vertex]);
 		}
 		
-		temp.deleteAdjacencyList(sorted_vertices[chosen_vertex]);
         temp.deleteVertex(sorted_vertices[chosen_vertex++]);    
     }
 }
@@ -327,7 +324,7 @@ size_t AntColonyOptimization::rouletteWheelSelection(const std::vector<int>& two
  * @details This function sorts the vertices of the graph in descending order based on their degree 
  * and selects the vertex with the highest degree. For each selected vertex with a label of 4 or 3 
  * in the solution, it attempts to reduce the label to 2 and checks if the solution remains feasible.
- * If the solution remains feasible, the label is updated to 0; otherwise, the original label is restored.
+ * If the solution remains feasible, the label is updated to -1; otherwise, the original label is restored.
  * This process continues until all vertices have been processed.
  * 
  * @return A vector of integers representing the solution with potentially reduced labels, while 
@@ -346,7 +343,7 @@ void AntColonyOptimization::destroySolution(std::vector<int>& solution) {
     while (itr != 0 && (temp.getOrder() > 0)) {
        vertex = chooseVertex(temp);
        
-       if ((solution[vertex] == 0) || (solution[vertex] == 2) || (solution[vertex] == 3)) {
+       if ((solution[vertex] < 4)) {
             solution[vertex] = -1;
        }
        
@@ -412,7 +409,7 @@ float AntColonyOptimization::computeConvergence(const std::vector<float>& graph_
         temp += std::max(max_pheromone - graph_pheromones[i], graph_pheromones[i] - min_pheromone);
     }
 
-    this->convergence_factor = 2 * ((temp / (number_of_ants * (max_pheromone + min_pheromone)))) - 1;
+    this->convergence_factor = 2 * ((temp / (graph_pheromones.size() * (max_pheromone + min_pheromone)))) - 1;
 
     return this->convergence_factor;
 }

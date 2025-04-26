@@ -1,0 +1,16 @@
+graph_name,graph_order,graph_size,graph_min_degree,graph_max_degree,fitness_2_5,lower_bound,upper_bound,graph_density,elapsed_time(seconds),is_feasible
+random_graph7-order75-edge_probability-0.2,75,549,8,21,38,13,112,0.197838,0.00333803,1
+random_graph7-order75-edge_probability-0.2,75,549,8,21,38,13,112,0.197838,0.00323154,1
+random_graph7-order75-edge_probability-0.2,75,549,8,21,40,13,112,0.197838,0.00330189,1
+random_graph7-order75-edge_probability-0.2,75,549,8,21,38,13,112,0.197838,0.00330434,1
+random_graph7-order75-edge_probability-0.2,75,549,8,21,38,13,112,0.197838,0.00323846,1
+random_graph7-order75-edge_probability-0.2,75,549,8,21,38,13,112,0.197838,0.0032504,1
+random_graph7-order75-edge_probability-0.2,75,549,8,21,41,13,112,0.197838,0.00321699,1
+random_graph7-order75-edge_probability-0.2,75,549,8,21,44,13,112,0.197838,0.00327243,1
+random_graph7-order75-edge_probability-0.2,75,549,8,21,40,13,112,0.197838,0.00320796,1
+random_graph7-order75-edge_probability-0.2,75,549,8,21,37,13,112,0.197838,0.00326887,1
+random_graph7-order75-edge_probability-0.2,75,549,8,21,40,13,112,0.197838,0.00327745,1
+random_graph7-order75-edge_probability-0.2,75,549,8,21,39,13,112,0.197838,0.00318683,1
+random_graph7-order75-edge_probability-0.2,75,549,8,21,38,13,112,0.197838,0.00328786,1
+random_graph7-order75-edge_probability-0.2,75,549,8,21,39,13,112,0.197838,0.00337364,1
+random_graph7-order75-edge_probability-0.2,75,549,8,21,44,13,112,0.197838,0.00321352,1

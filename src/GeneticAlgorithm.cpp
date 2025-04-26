@@ -78,7 +78,7 @@ std::vector<Chromosome>& GeneticAlgorithm::createNewPopulation() {
         
         selected2 = tournamentSelection(old_population, tournament_population_size);      
 
-       	if (getRandomFloat(0.0, 1.0) <= crossover_rate) {  		
+		if (getRandomFloat(0.0, 1.0) <= crossover_rate) {  		
         	offspring = this->twoPointCrossOver(selected1, selected2);
 		} 
         
@@ -93,6 +93,8 @@ std::vector<Chromosome>& GeneticAlgorithm::createNewPopulation() {
     
     return population;
 }
+
+
 
 void GeneticAlgorithm::elitism(std::vector<Chromosome>& population, float elitism_rate) {
     size_t iterations { static_cast<size_t>(std::ceil(population.size() * elitism_rate)) };
