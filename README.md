@@ -1,6 +1,6 @@
 # Meta-heuristic Algorithms for Triple Roman Domination Problem
 
-In this project, we implement two algorithms based on meta-heuristics for solving the Triple Roman Domination Problem, an NP-Complete Combinatorial Optimization Problem, implementation of the content of my [monagraphy](https://drive.google.com/file/d/1vaPgLHMxWFpXXzfMNvM1Z-oMuRDs-Nt8/view). These meta-heuristics are based on Genetic Algorithms and Ant Colony Optimization.
+In this project, we implement two algorithms based on meta-heuristics for solving the Triple Roman Domination Problem, an NP-Complete Combinatorial Optimization Problem, implementation of the content of my [monagraphy](https://drive.google.com/file/d/1IxBw_odR99kklE6b3ANmi-9bubvGC4mp/view?usp=sharing). These meta-heuristics are based on Genetic Algorithms and Ant Colony Optimization.
 
 # What is Triple Roman Domination Problem?
 
